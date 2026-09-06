@@ -47,7 +47,7 @@ const problem = (file, title, msg) => {
 
 // "YYYY-MM" -> decimal year (mid-month); "now" -> null (ongoing).
 // Anything else is reported instead of silently misparsing.
-function parseDate(s, ctx, field) {
+export function parseDate(s, ctx, field) {
   if (!s || s.trim().toLowerCase() === 'now') return null
   const m = s.trim().match(/^(\d{4})(?:-(\d{1,2}))?$/)
   if (!m) {
@@ -84,7 +84,7 @@ for (const key of Object.keys(TRACK_SOURCES))
       'file has no track in site.config.js — not rendered'
     )
 
-const slug = (s) =>
+export const slug = (s) =>
   s
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, '-')
@@ -92,7 +92,7 @@ const slug = (s) =>
 
 // Split a markdown file into "## Title" blocks with `- key: value` fields
 // and a free-text body.
-function parseBlocks(md) {
+export function parseBlocks(md) {
   const src = md.replace(/<!--[\s\S]*?-->/g, '')
   return src
     .split(/\n(?=## )/)
@@ -112,7 +112,7 @@ function parseBlocks(md) {
     })
 }
 
-function parseTrack(md, track, file) {
+export function parseTrack(md, track, file) {
   return parseBlocks(md)
     .map(({ title, fields, body }) => {
       const ctx = { file, title }
@@ -204,7 +204,7 @@ function parseTrack(md, track, file) {
 // Sides are chosen dynamically, not per track: walking branches in date
 // order, each one lands on the side carrying the least overlapping card
 // load, so both columns stay busy no matter how the content shifts.
-function assignSides(branches) {
+export function assignSides(branches) {
   const placed = []
   for (const b of branches) {
     const load = (side) =>
@@ -228,7 +228,7 @@ function assignSides(branches) {
 
 // Greedy interval coloring per side: first free lane wins, so concurrent
 // branches fan out and lanes are reclaimed once a branch has merged back.
-function assignLanes(branches) {
+export function assignLanes(branches) {
   for (const side of [-1, 1]) {
     const list = branches
       .filter((b) => b.side === side)
