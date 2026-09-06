@@ -8,6 +8,16 @@ updates:
     open-pull-requests-limit: 5
     commit-message:
       prefix: build
+    ignore:
+      # eslint-plugin-jsx-a11y peers at eslint ^9 and 6.10.2 is its latest
+      # release, so pulling eslint 10 in makes `npm ci` unresolvable. Holding
+      # the major keeps a11y linting; drop these two entries once jsx-a11y
+      # ships a release that peers at eslint 10.
+      - dependency-name: eslint
+        update-types: ['version-update:semver-major']
+      - dependency-name: '@eslint/js'
+        update-types: ['version-update:semver-major']
+
     groups:
       # One PR for the whole toolchain rather than a dozen: these move
       # together and CI proves them together.
