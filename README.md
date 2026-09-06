@@ -21,16 +21,22 @@ npm run dev
 
 Then, in order:
 
-1. **`src/data.js`** — your name, handle, email, links, pinned repos, stack.
-2. **`content/*.md`** — your timeline, one file per track.
-3. **`content/blog/*.md`** — your posts (delete `hello-world.md`).
-4. **`public/favicon.svg`** — swap the graph mark for your own.
+1. **`site.config.js`** — your name, handle, hero copy, links, footer.
+2. **`src/data.js`** — pinned repos, research, languages, stack.
+3. **`content/*.md`** — your timeline, one file per track.
+4. **`content/blog/*.md`** — your posts (delete `hello-world.md`).
+5. **`public/favicon.svg`** — swap the graph mark for your own.
 
 That is the whole setup. When this grep comes back empty, you are done:
 
 ```sh
-grep -rniE "yourhandle|your name|yoursite|example\.com" src/ content/ index.html
+grep -rniE "yourhandle|your name|yoursite|example\.com" \
+  site.config.js src/ content/ index.html
 ```
+
+Everything that identifies you lives in `site.config.js`. Deleting a link
+from `links[]` removes it from the Contact table and from whichever section
+used it — drop `researchgate` and the Research section stops linking out.
 
 ## Editing the timeline
 

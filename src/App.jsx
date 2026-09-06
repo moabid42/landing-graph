@@ -2,20 +2,8 @@ import { useEffect, useState } from 'react'
 import Timeline from './Timeline.jsx'
 import Markdown from './markdown.jsx'
 import { POSTS } from './blog.js'
-import {
-  WORK,
-  STACK,
-  LANGUAGES,
-  RESEARCH,
-  FULL_NAME,
-  OWNER,
-  SITE_NAME,
-  EMAIL,
-  GITHUB_URL,
-  LINKEDIN_URL,
-  MEDIUM_URL,
-  RESEARCHGATE_URL,
-} from './data.js'
+import { WORK, STACK, LANGUAGES, RESEARCH } from './data.js'
+import config from '../site.config.js'
 import { ENTRIES } from './content.js'
 import {
   IconRepo,
@@ -26,6 +14,24 @@ import {
   IconPencil,
   IconFlask,
 } from './icons.jsx'
+
+const { identity, links, seo, footer } = config
+
+// Look a remote up by name. A name that is not in site.config.js returns
+// null, and whatever renders it hides itself — deleting a link is enough.
+const linkTo = (name) => links.find((l) => l.name === name)?.url ?? null
+
+// "https://github.com/x" -> "github.com/x"; "mailto:a@b" -> "a@b"
+const linkLabel = (url) => url.replace(/^https?:\/\//, '').replace(/^mailto:/, '')
+
+// Config strings may use `backticks` for inline code, the way markdown does.
+const ticks = (s) =>
+  s.split(/`([^`]+)`/g).map((part, i) => (i % 2 ? <code key={i}>{part}</code> : part))
+
+const MAILTO = `mailto:${identity.email}`
+const MEDIUM_URL = linkTo('medium')
+const RESEARCHGATE_URL = linkTo('researchgate')
+const GITHUB_URL = linkTo('github')
 
 function useTheme() {
   const [theme, setTheme] = useState(() => {
@@ -104,10 +110,19 @@ export default function App() {
     page * POSTS_PER_PAGE
   )
 
+  // index.html carries these as a static fallback; config is the source of
+  // truth, so a fork only edits site.config.js.
+  useEffect(() => {
+    const set = (name, content) =>
+      document.querySelector(`meta[name="${name}"]`)?.setAttribute('content', content)
+    set('description', seo.description)
+    set('theme-color', seo.themeColor)
+  }, [])
+
   useEffect(() => {
     document.title = post
-      ? `${post.title} · ${SITE_NAME}`
-      : `${OWNER} / ${SITE_NAME}`
+      ? `${post.title} · ${identity.repo}`
+      : `${identity.handle} / ${identity.repo}`
     if (post) window.scrollTo(0, 0)
     else if (window.location.hash === '#blog')
       document.getElementById('blog')?.scrollIntoView()
@@ -118,12 +133,12 @@ export default function App() {
       <header className="gh-header">
         <div className="gh-header-inner">
           <div className="crumb">
-            <span className="avatar" aria-hidden="true">{OWNER[0]}</span>
+            <span className="avatar" aria-hidden="true">{identity.avatar}</span>
             <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer">
-              {OWNER}
+              {identity.handle}
             </a>
             <span className="slash">/</span>
-            <a href="#top" className="repo-name">{SITE_NAME}</a>
+            <a href="#top" className="repo-name">{identity.repo}</a>
             <span className="vis-badge">Public</span>
           </div>
           <div className="gh-actions">
@@ -187,26 +202,22 @@ export default function App() {
               <span>README.md</span>
             </div>
             <div className="readme-body">
-              <h1>{FULL_NAME}</h1>
-              <p className="hero-sub">
-                One line about what you do, who you do it for, and the thing
-                you are working on right now. Keep it short — the graph below
-                does the rest of the talking.
-              </p>
-              <blockquote>
-                The career below is rendered the only honest way:{' '}
-                <code>git log --graph --all</code>. Every job, degree and
-                project is a branch. Most of them ran at the same time.
-              </blockquote>
-              <p className="hero-status">
-                <span className="status">
-                  <span className="dot" aria-hidden="true" />
-                  now · what you are doing right now
-                </span>
-                <span className="loc">your city, xx</span>
-              </p>
+              <h1>{identity.name}</h1>
+              <p className="hero-sub">{identity.tagline}</p>
+              {identity.blurb && <blockquote>{ticks(identity.blurb)}</blockquote>}
+              {identity.status && (
+                <p className="hero-status">
+                  <span className="status">
+                    <span className="dot" aria-hidden="true" />
+                    {identity.status}
+                  </span>
+                  {identity.location && (
+                    <span className="loc">{identity.location}</span>
+                  )}
+                </p>
+              )}
               <div className="hero-cta">
-                <a className="gh-btn primary" href={`mailto:${EMAIL}`}>
+                <a className="gh-btn primary" href={MAILTO}>
                   <IconMail width={14} height={14} /> Email me
                 </a>
                 <a className="gh-btn" href="#timeline">
@@ -267,14 +278,16 @@ export default function App() {
             <h2>
               <IconPencil width={16} height={16} /> Writing
             </h2>
-            <a
-              className="sec-note"
-              href={MEDIUM_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              also on medium <span aria-hidden="true">↗</span>
-            </a>
+            {MEDIUM_URL && (
+              <a
+                className="sec-note"
+                href={MEDIUM_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                also on medium <span aria-hidden="true">↗</span>
+              </a>
+            )}
           </div>
           {POSTS.length === 0 ? (
             <div className="blankslate">
@@ -283,14 +296,16 @@ export default function App() {
               <p className="bs-text">
                 New writing lands on this page and on Medium at the same time.
               </p>
-              <a
-                className="gh-btn"
-                href={MEDIUM_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Read on Medium <span aria-hidden="true">↗</span>
-              </a>
+              {MEDIUM_URL && (
+                <a
+                  className="gh-btn"
+                  href={MEDIUM_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Read on Medium <span aria-hidden="true">↗</span>
+                </a>
+              )}
             </div>
           ) : (
             <>
@@ -350,14 +365,16 @@ export default function App() {
             <h2>
               <IconFlask width={16} height={16} /> Research
             </h2>
-            <a
-              className="sec-note"
-              href={RESEARCHGATE_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              full profile on researchgate <span aria-hidden="true">↗</span>
-            </a>
+            {RESEARCHGATE_URL && (
+              <a
+                className="sec-note"
+                href={RESEARCHGATE_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                full profile on researchgate <span aria-hidden="true">↗</span>
+              </a>
+            )}
           </div>
           {RESEARCH.length === 0 ? (
             <div className="blankslate">
@@ -367,14 +384,16 @@ export default function App() {
                 Titles and abstracts will be listed here, each linking to the
                 full text on ResearchGate.
               </p>
-              <a
-                className="gh-btn"
-                href={RESEARCHGATE_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                View on ResearchGate <span aria-hidden="true">↗</span>
-              </a>
+              {RESEARCHGATE_URL && (
+                <a
+                  className="gh-btn"
+                  href={RESEARCHGATE_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  View on ResearchGate <span aria-hidden="true">↗</span>
+                </a>
+              )}
             </div>
           ) : (
             <div className="paper-list">
@@ -450,51 +469,26 @@ export default function App() {
             </div>
             <table className="remotes">
               <tbody>
-                <tr>
-                  <td>origin</td>
-                  <td><a href={`mailto:${EMAIL}`}>{EMAIL}</a></td>
-                  <td className="kind">(email)</td>
-                </tr>
-                <tr>
-                  <td>github</td>
-                  <td>
-                    <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer">
-                      {GITHUB_URL.replace(/^https?:\/\//, '')}
-                    </a>
-                  </td>
-                  <td className="kind">(fetch)</td>
-                </tr>
-                <tr>
-                  <td>linkedin</td>
-                  <td>
-                    <a href={LINKEDIN_URL} target="_blank" rel="noopener noreferrer">
-                      {LINKEDIN_URL.replace(/^https?:\/\//, '')}
-                    </a>
-                  </td>
-                  <td className="kind">(fetch)</td>
-                </tr>
-                <tr>
-                  <td>medium</td>
-                  <td>
-                    <a href={MEDIUM_URL} target="_blank" rel="noopener noreferrer">
-                      {MEDIUM_URL.replace(/^https?:\/\//, '')}
-                    </a>
-                  </td>
-                  <td className="kind">(fetch)</td>
-                </tr>
-                <tr>
-                  <td>researchgate</td>
-                  <td>
-                    <a href={RESEARCHGATE_URL} target="_blank" rel="noopener noreferrer">
-                      {RESEARCHGATE_URL.replace(/^https?:\/\//, '')}
-                    </a>
-                  </td>
-                  <td className="kind">(fetch)</td>
-                </tr>
+                {links.map((l) => (
+                  <tr key={l.name}>
+                    <td>{l.name}</td>
+                    <td>
+                      <a
+                        href={l.url}
+                        {...(l.url.startsWith('mailto:')
+                          ? {}
+                          : { target: '_blank', rel: 'noopener noreferrer' })}
+                      >
+                        {linkLabel(l.url)}
+                      </a>
+                    </td>
+                    <td className="kind">({l.kind})</td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
-          <a className="gh-btn primary big-cta" href={`mailto:${EMAIL}`}>
+          <a className="gh-btn primary big-cta" href={MAILTO}>
             <IconMail width={14} height={14} /> Email me
           </a>
         </section>
@@ -503,10 +497,8 @@ export default function App() {
       </main>
 
       <footer>
-        <span>© {new Date().getFullYear()} {FULL_NAME} · your city</span>
-        <span>
-          rendered from <code>git log --graph --all</code> · v2.0
-        </span>
+        <span>{footer.text.replace('{year}', new Date().getFullYear())}</span>
+        <span>{ticks(footer.note)}</span>
       </footer>
     </>
   )

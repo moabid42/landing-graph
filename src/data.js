@@ -1,20 +1,8 @@
-// Everything on the page that is not the timeline lives here. Timeline
-// entries live in content/*.md and are parsed by src/content.js.
+// The lists that fill the Pinned, Research and Stack sections.
 //
-// This is the file to edit first after forking. Replace every value below
-// with your own — nothing here is referenced by the timeline engine.
-
-// ---------- identity ----------
-export const FULL_NAME = 'Your Name'
-export const OWNER = 'yourhandle' // the "owner" half of the header crumb
-export const SITE_NAME = 'yoursite.dev' // the "repo" half of the header crumb
-export const EMAIL = 'you@example.com'
-
-// ---------- remotes (the Contact table) ----------
-export const GITHUB_URL = 'https://github.com/yourhandle'
-export const LINKEDIN_URL = 'https://linkedin.com/in/yourhandle'
-export const MEDIUM_URL = 'https://medium.com/@yourhandle'
-export const RESEARCHGATE_URL = 'https://www.researchgate.net/profile/Your-Name'
+// Your name, links and hero copy are NOT here — those live in
+// site.config.js. Timeline entries live in content/*.md, blog posts in
+// content/blog/*.md. Everything below is yours to replace.
 
 // ---------- pinned repositories — the Pinned section ----------
 // Template:
@@ -57,5 +45,3 @@ export const STACK = [
   { cat: 'infrastructure', items: 'tool · tool · tool · tool' },
   { cat: 'spoken', items: 'Language (native) · Language (C1)' },
 ]
-
-// Blog posts are markdown files in content/blog/ — see src/blog.js.
