@@ -2,7 +2,7 @@ import { Fragment, useEffect, useState } from 'react'
 import Timeline from './timeline/index.jsx'
 import Markdown from './markdown.jsx'
 import { POSTS, loadBody } from './blog/index.js'
-import { STACK, LANGUAGES, RESEARCH } from './data.js'
+import { RESEARCH } from './data.js'
 import ErrorBoundary from './ErrorBoundary.jsx'
 import { applyMeta } from './seo/apply.js'
 import config from '../site.config.js'
@@ -17,7 +17,14 @@ import {
   IconFlask,
 } from './icons.jsx'
 
-const { identity, links, footer, work: WORK } = config
+const {
+  identity,
+  links,
+  footer,
+  work: WORK,
+  stack: STACK,
+  languages: LANGUAGES,
+} = config
 
 // Look a remote up by name. A name that is not in site.config.js returns
 // null, and whatever renders it hides itself — deleting a link is enough.

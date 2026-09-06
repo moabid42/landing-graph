@@ -130,6 +130,29 @@ describe('work', () => {
   })
 })
 
+describe('stack', () => {
+  it('gives every language a name and a hex colour', () => {
+    expect(config.languages.length).toBeGreaterThan(0)
+    for (const l of config.languages) {
+      expect(l.name?.trim(), l.name).toBeTruthy()
+      expect(l.color, l.name).toMatch(HEX)
+    }
+  })
+
+  it('has unique language names, since they key the bar', () => {
+    const names = config.languages.map((l) => l.name)
+    expect(new Set(names).size).toBe(names.length)
+  })
+
+  it('gives every stack row a category and its items', () => {
+    expect(config.stack.length).toBeGreaterThan(0)
+    for (const s of config.stack) {
+      expect(s.cat?.trim(), s.cat).toBeTruthy()
+      expect(s.items?.trim(), s.cat).toBeTruthy()
+    }
+  })
+})
+
 describe('seo and footer', () => {
   it('has a description and a theme colour', () => {
     expect(config.seo.description.trim()).not.toBe('')

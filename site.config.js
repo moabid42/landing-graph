@@ -131,30 +131,60 @@ export default {
     title: 'decnique',
     text: 'A domain-specific language and SMT-backed coverage engine that models SIEM detection rules and attacker techniques on one shared event schema — surfacing detection gaps in cloud IAM.',
     topics: ['dsl', 'smt', 'sigma', 'elastic', 'panther'],
-    href: 'https://github.com/moabid42',
+    href: 'https://github.com/moabid42/decnique',
     visibility: 'Public',
   },
   {
     title: 'mals3scan',
     text: 'Serverless AWS security pipeline that scans every file uploaded to S3 with YARA rules for malware and sensitive data, firing real-time alerts for incident response.',
     topics: ['aws', 'lambda', 'yara', 'terraform'],
-    href: 'https://github.com/moabid42',
+    href: 'https://github.com/moabid42/mals3scan',
     visibility: 'Public',
   },
   {
     title: 'l3ak-ctf-infra',
     text: 'Architecture and operations for a high-traffic yearly CTF: 15,000+ concurrent users and millions of requests inside the opening hour.',
-    topics: ['high-load', 'docker', 'monitoring'],
-    href: 'https://ctftime.org/team/220336',
-    visibility: 'Public',
+    topics: ['high-load', 'GCP', 'monitoring', 'distributed systems'],
+    href: null,
+    visibility: 'Internal',
   },
   {
     title: 'redteam-copilot',
-    text: 'First-of-its-kind internal infrastructure and copilot for red-team engagements at Schwarz Digits, accelerating workflows roughly tenfold.',
+    text: 'Developed a cloud red teaming copilot at Schwarz Digits, OPSEC safe and deterministic detection aware',
     topics: ['llm', 'red-team', 'automation'],
     href: null,
     visibility: 'Internal',
   },
+  ],
+
+  // ------------------------------------------------------------------- stack
+  // The Stack section: a GitHub-style language bar, then one row per
+  // category. Both lists render in the order written here.
+  //
+  // languages fill the bar in equal segments — name plus the colour GitHub
+  // uses for that language.
+  languages: [
+  { name: 'Python', color: '#3572A5' },
+  { name: 'C', color: '#555555' },
+  { name: 'C++', color: '#f34b7d' },
+  { name: 'Rust', color: '#dea584' },
+  { name: 'TypeScript', color: '#3178c6' },
+  { name: 'Assembly', color: '#6E4C13' },
+  ],
+
+  // stack rows are free text: `cat` is the label on the left, `items` the
+  // line on the right. Add or drop a row and the list follows.
+  stack: [
+  {
+    cat: 'security',
+    items:
+      'threat modeling · code review · red teaming · binary exploitation · cryptography · web security',
+  },
+  {
+    cat: 'infrastructure',
+    items: 'AWS · Docker · Terraform · Ansible · GitHub Actions · GitLab CI',
+  },
+  { cat: 'spoken', items: 'Arabic (native) · English, German, French (C1)' },
   ],
 
   // ------------------------------------------------------------------ footer

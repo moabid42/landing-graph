@@ -30,8 +30,8 @@ npm run dev
 Then, in order:
 
 1. **`site.config.js`** — your name, handle, hero copy, links, pinned repos,
-   footer.
-2. **`src/data.js`** — research, languages, stack.
+   stack, footer.
+2. **`src/data.js`** — research.
 3. **`content/timeline/*.md`** — your timeline, one file per track.
 4. **`content/blog/*.md`** — your posts, one file each; the filename is the url.
 5. **`public/favicon-default.svg`** — swap the graph mark for your own; it
