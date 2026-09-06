@@ -200,6 +200,12 @@ git submodule add https://github.com/yourhandle/landing-graph.git
 git submodule update --remote landing-graph    # pull template updates
 ```
 
+## Contributing
+
+[CONTRIBUTING.md](CONTRIBUTING.md) covers the setup, the commit convention and
+the few things worth knowing before changing the timeline. Security issues go
+through a [private advisory](SECURITY.md), not a public issue.
+
 ## License
 
 MIT — see [LICENSE](LICENSE).
