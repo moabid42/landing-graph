@@ -171,6 +171,16 @@ export default {
       tldr: 'Attack-path planners almost all assume they already know the network. Modelling reconnaissance as a planning action with its own OPSEC cost and information gain reaches the goal in 80.3% of randomised Active Directory graphs against 52.3% for a two-phase baseline — but only once the pursuit is directed and multi-step.',
       href: 'https://www.researchgate.net/publication/405230754_Recon_as_a_First-Class_Planning_Action_under_Partial_Observability',
     },
+    {
+      title: 'HOP: Hook Oriented Programming',
+      tldr: 'Licence checks fall to debuggers, and anti-debugging in turn falls to whatever an attacker can patch out. HOP is a Linux anti-debugging design that claims the one debugger slot a process is allowed to have, so the protection has to be evicted before a debugger can attach at all.',
+      href: 'https://www.researchgate.net/publication/396647415_HOP_-Hook_Oriented_Programming',
+    },
+    {
+      title: 'RCPRNG: Robust Complete Pseudo Random Number Generator',
+      tldr: 'Cryptographic PRNG models assume unlimited compute and clean entropy; embedded systems have neither, and there entropy accumulation and generation share the same scarce resources. RCPRNG folds both into one security model whose completeness property carries guarantees across arbitrary state transitions, and shows the Gaži-Tessaro sponge construction satisfies it.',
+      href: 'https://www.researchgate.net/publication/396647163_RCPRNG_-_Robust_Complete_Pseudo_Random_Number_Generator',
+    },
     // {
     //   title: 'Paper title, as published',
     //   tldr: 'What it found, in a sentence or two.',
