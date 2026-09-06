@@ -181,12 +181,6 @@ git submodule add https://github.com/yourhandle/landing-graph.git
 git submodule update --remote landing-graph    # pull template updates
 ```
 
-## Roadmap
-
-[plan.md](plan.md) is the live plan: config-driven identity, tracks and
-sections, then an isolated timeline engine that can be lifted out into any
-project.
-
 ## License
 
 MIT — see [LICENSE](LICENSE).

@@ -17,8 +17,3 @@ site.config.js
 # Timeline entries and blog posts are data, and the entry parser is
 # whitespace-sensitive. Formatting them is not worth the risk.
 content/
-
-# plan.md documents the original design in indented code blocks. Prettier is
-# not idempotent on those — it strips a level of indentation on every run and
-# never converges, corrupting the blocks. Left as written.
-plan.md
