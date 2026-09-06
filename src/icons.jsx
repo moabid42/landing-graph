@@ -11,6 +11,14 @@ const base = {
   'aria-hidden': true,
 }
 
+export const IconInfo = (p) => (
+  <svg {...base} {...p}>
+    <circle cx="8" cy="8" r="6.25" />
+    <path d="M8 7.25v4" />
+    <path d="M8 4.75v.5" />
+  </svg>
+)
+
 export const IconRepo = (p) => (
   <svg {...base} {...p}>
     <path d="M4.75 1.75h7.5v12.5h-6a1.5 1.5 0 0 1 0-3h6" />

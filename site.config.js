@@ -157,6 +157,23 @@ export default {
   },
   ],
 
+  // -------------------------------------------------------------------- note
+  // The GitHub-style Note callout at the foot of the README hero — the place
+  // to tell a first-time reader where new work shows up first. Set the whole
+  // block to null to hide it.
+  //
+  //   link   which remote in links[] it points at, by name. A name that is
+  //          not there hides the callout, same as everywhere else.
+  //   label  the text on the link at the bottom of the callout
+  //   text   the callout itself
+  note: {
+    link: 'linkedin',
+    label: 'Follow on LinkedIn',
+    text:
+      'Papers, posts and everything else I publish goes out on LinkedIn ' +
+      'first. Follow me there and you will see the next one as it lands.',
+  },
+
   // ---------------------------------------------------------------- research
   // The Research section: one clickable box per paper, opening its
   // ResearchGate page. An empty list shows the "being indexed" panel with a

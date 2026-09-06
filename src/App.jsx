@@ -14,6 +14,7 @@ import {
   IconMail,
   IconPencil,
   IconFlask,
+  IconInfo,
 } from './icons.jsx'
 
 const {
@@ -24,6 +25,7 @@ const {
   stack: STACK,
   languages: LANGUAGES,
   research: RESEARCH,
+  note,
 } = config
 
 // Look a remote up by name. A name that is not in site.config.js returns
@@ -67,6 +69,7 @@ const MEDIUM_URL = linkTo('medium')
 const RESEARCHGATE_URL = linkTo('researchgate')
 const GITHUB_URL = linkTo('github')
 const LINKEDIN_URL = linkTo('linkedin')
+const NOTE_URL = note ? linkTo(note.link) : null
 
 function useTheme() {
   const [theme, setTheme] = useState(() => {
@@ -301,6 +304,22 @@ export default function App() {
                       <IconBranch width={14} height={14} /> Follow the graph
                     </a>
                   </div>
+                  {NOTE_URL && (
+                    <aside className="gh-note">
+                      <p className="note-head">
+                        <IconInfo width={16} height={16} /> Note
+                      </p>
+                      <p className="note-body">{note.text}</p>
+                      <a
+                        className="note-link"
+                        href={NOTE_URL}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {note.label} <span aria-hidden="true">↗</span>
+                      </a>
+                    </aside>
+                  )}
                 </div>
               </div>
             </section>
