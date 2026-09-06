@@ -1,8 +1,10 @@
 # Contributing
 
-Thanks for looking. This is a personal-site template, so the bar for changes
-is a little unusual: a feature is worth adding if it helps someone put _their_
-career on the page, not if it makes this particular copy nicer.
+Thanks for looking. This repo is two things at once: my own site, and the
+template anyone can fork to build theirs. That makes the bar for changes a
+little unusual — a feature is worth adding if it helps someone put _their_
+career on the page, not if it makes my copy of it nicer. "It suits my
+timeline" is not a reason; "no fork can express this today" is.
 
 ## Getting set up
 

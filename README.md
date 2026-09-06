@@ -1,6 +1,8 @@
 # landing-graph
 
-A personal site template that renders your career as a git graph.
+A personal site that renders a career as a git graph. This is the template
+I use for my own site, and you are welcome to fork it and put your own data
+in.
 
 One trunk. Every job, degree, project and startup is a branch that forks
 out and merges back. Milestones are tagged commits. Everything still
@@ -10,10 +12,16 @@ graph; mobile gets an ordinal `git log --graph` flow.
 Content is markdown files in git. There is no CMS, no database, and no
 admin UI — that is the feature.
 
+The timeline in `content/`, the posts in `content/blog/` and the identity in
+`site.config.js` are mine — this repo is the running site, not a demo with
+placeholder text. That is deliberate: everything that makes it _mine_ is
+data, so replacing that data makes it yours. No code changes, no build
+flags, no fields left behind in a component somewhere.
+
 ## Quickstart
 
 ```sh
-git clone https://github.com/yourhandle/landing-graph.git
+git clone https://github.com/moabid42/landing-graph.git
 cd landing-graph
 npm install
 npm run dev
@@ -25,14 +33,19 @@ Then, in order:
 2. **`src/data.js`** — pinned repos, research, languages, stack.
 3. **`content/timeline/*.md`** — your timeline, one file per track.
 4. **`content/blog/*.md`** — your posts, one file each; the filename is the url.
-5. **`public/favicon.svg`** — swap the graph mark for your own.
+5. **`public/favicon-default.svg`** — swap the graph mark for your own; it
+   is the icon `index.html` points at, and what `npm run og` draws the share
+   card from.
 
-That is the whole setup. When this grep comes back empty, you are done:
+That is the whole setup. What you are replacing is my data, so the check is
+that none of it survives — when this grep comes back empty, the site is
+yours:
 
 ```sh
-grep -rniE "yourhandle|your name|yoursite|example\.com" \
-  site.config.js src/ content/ index.html
+grep -rniE "moabid|mouad" site.config.js src/data.js content/ index.html
 ```
+
+Then `npm run og` to regenerate the share card with your name on it.
 
 Everything that identifies you lives in `site.config.js`. Deleting a link
 from `links[]` removes it from the Contact table and from whichever section
@@ -188,6 +201,7 @@ npm run build        # production bundle into dist/
 | `npm run e2e:ui`        | playwright in watch mode, with a browser          |
 | `npm run size`          | entry payload against its budget (after a build)  |
 | `npm run lighthouse`    | lighthouse budgets against `dist/`                |
+| `npm run og`            | redraw `public/og.png` from the mark and config   |
 
 Unit tests cover the layer that turns markdown and `site.config.js` into the
 shapes the page renders — dates, entry fields, branch lanes, blog
@@ -235,11 +249,11 @@ only came for the graph.
 
 ## Using it as a submodule
 
-If you would rather keep your content in its own private repo and pull the
-template in:
+If you would rather keep your content in its own private repo and pull this
+repo in as the engine:
 
 ```sh
-git submodule add https://github.com/yourhandle/landing-graph.git
+git submodule add https://github.com/moabid42/landing-graph.git
 git submodule update --remote landing-graph    # pull template updates
 ```
 

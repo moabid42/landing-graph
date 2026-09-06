@@ -2,7 +2,7 @@
   "name": "landing-graph",
   "private": true,
   "version": "1.0.0",
-  "description": "A personal site template that renders your career as a git graph.",
+  "description": "A personal site that renders a career as a git graph. Mine, and a template to fork.",
   "license": "MIT",
   "type": "module",
   "scripts": {

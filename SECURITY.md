@@ -2,8 +2,8 @@
 
 ## Scope
 
-This is a static site template. It has no server, no database, no accounts
-and no user input — it renders markdown you wrote into HTML you host. That
+This is a static site — mine, and the template it is built on. It has no
+server, no database, no accounts and no user input — it renders markdown you wrote into HTML you host. That
 rules out most of what usually goes wrong.
 
 What is worth reporting:
