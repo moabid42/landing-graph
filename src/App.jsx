@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import Timeline from './Timeline.jsx'
+import Timeline from './timeline/index.jsx'
 import Markdown from './markdown.jsx'
 import { POSTS } from './blog.js'
 import { WORK, STACK, LANGUAGES, RESEARCH } from './data.js'

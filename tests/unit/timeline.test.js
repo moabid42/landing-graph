@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { clamp, fmtDate, nowDecimal, sha } from '../../src/Timeline.jsx'
+import { clamp, fmtDate, nowDecimal, sha } from '../../src/timeline/format.js'
 import { parseDate } from '../../src/content.js'
 
 describe('clamp', () => {
