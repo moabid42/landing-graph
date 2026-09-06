@@ -143,7 +143,7 @@ export default {
   },
   {
     title: 'l3ak-ctf-infra',
-    text: 'Architecture and operations for a high-traffic yearly CTF: 15,000+ concurrent users and millions of requests inside the opening hour.',
+    text: 'Architecture and operations for a high-traffic yearly CTF: 10,000+ concurrent users and millions of requests inside the opening hour.',
     topics: ['high-load', 'GCP', 'monitoring', 'distributed systems'],
     href: null,
     visibility: 'Internal',
