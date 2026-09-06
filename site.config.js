@@ -28,7 +28,8 @@ export default {
     // reader; rewrite it in your own voice or set it to null to hide it.
     blurb:
       'The career below is rendered the only honest way: `git log --graph ' +
-      '--all`. Every job, degree and project is a branch. Most of them ran ' +
+      '--all`.\n' +
+      'Every job, degree and project is a branch. Most of them ran ' +
       'at the same time.',
 
     // The green-dot status line. Set status to null to hide the whole row.

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import Timeline from './timeline/index.jsx'
 import Markdown from './markdown.jsx'
 import { POSTS, loadBody } from './blog/index.js'
@@ -27,11 +27,20 @@ const linkTo = (name) => links.find((l) => l.name === name)?.url ?? null
 const linkLabel = (url) =>
   url.replace(/^https?:\/\/(www\.)?/, '').replace(/^mailto:/, '')
 
-// Config strings may use `backticks` for inline code, the way markdown does.
+// Config strings may use `backticks` for inline code, the way markdown does,
+// and a newline wherever the line should break.
+const lines = (s, key) =>
+  s.split('\n').map((line, i) => (
+    <Fragment key={`${key}-${i}`}>
+      {i > 0 && <br />}
+      {line}
+    </Fragment>
+  ))
+
 const ticks = (s) =>
   s
     .split(/`([^`]+)`/g)
-    .map((part, i) => (i % 2 ? <code key={i}>{part}</code> : part))
+    .map((part, i) => (i % 2 ? <code key={i}>{part}</code> : lines(part, i)))
 
 const MAILTO = `mailto:${identity.email}`
 const MEDIUM_URL = linkTo('medium')
