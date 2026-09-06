@@ -76,7 +76,10 @@ export default {
     // The picture shown when a link is posted to LinkedIn, X or Slack.
     // A path under public/, or a full url. 1200x630 is the safe size.
     // Empty means links share without a picture.
-    image: '',
+    //
+    // public/og.png is generated from public/favicon-default.svg and the
+    // identity above — run `npm run og` after changing either.
+    image: '/og.png',
 
     themeColor: '#0d1117',
   },

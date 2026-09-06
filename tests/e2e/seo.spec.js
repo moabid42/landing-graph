@@ -93,6 +93,15 @@ test.describe('share cards and crawlability', () => {
     }
   })
 
+  // seo.image is a path, not a promise — a card that 404s shares as a bare
+  // link and nothing else complains.
+  test('the share image is really there', async ({ request }) => {
+    test.skip(!config.seo.image, 'no share image configured')
+    const res = await request.get(config.seo.image)
+    expect(res.ok(), config.seo.image).toBe(true)
+    expect(res.headers()['content-type']).toContain('image/')
+  })
+
   test('robots.txt points at the sitemap', async ({ request }) => {
     const res = await request.get('/robots.txt')
     expect(res.ok()).toBe(true)

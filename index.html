@@ -16,8 +16,7 @@
     <!-- Share card. src/seo/apply.js keeps these in step as the router moves
          between the README and a post; these values are the fallback for
          crawlers that never run scripts. Edit site.config.js, not here.
-         No og:image while seo.image is empty — a card pointing at a missing
-         file shares worse than one with no picture at all. -->
+         og.png is generated — see `npm run og`. -->
     <meta property="og:site_name" content="moabid.me" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="moabid42 / moabid.me" />
@@ -29,11 +28,19 @@
       property="og:url"
       content="https://moabid42.github.io/landing-graph/"
     />
-    <meta name="twitter:card" content="summary" />
+    <meta
+      property="og:image"
+      content="https://moabid42.github.io/landing-graph/og.png"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="moabid42 / moabid.me" />
     <meta
       name="twitter:description"
       content="Mouad Abid — software security engineer. Career rendered as git log --graph --all: every job, degree and project as a branch."
+    />
+    <meta
+      name="twitter:image"
+      content="https://moabid42.github.io/landing-graph/og.png"
     />
     <link rel="icon" type="image/svg+xml" href="/favicon-default.svg" />
     <link

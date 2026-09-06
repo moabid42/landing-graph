@@ -21,7 +21,8 @@
     "e2e:report": "playwright show-report",
     "prepare": "husky",
     "size": "node scripts/check-bundle.js",
-    "lighthouse": "node scripts/lighthouse.js"
+    "lighthouse": "node scripts/lighthouse.js",
+    "og": "node scripts/og-image.js"
   },
   "dependencies": {
     "mermaid": "^11.17.2",
