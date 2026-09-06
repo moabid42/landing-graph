@@ -126,14 +126,20 @@ no base path to configure. Point Netlify, Vercel or Pages at `dist/`.
 ### GitHub Pages
 
 [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml) does it for
-you. One-time setup in your fork:
+you. Two things to do first:
 
-1. **Settings → Pages → Source → GitHub Actions.**
+1. **Settings → Pages → Source → GitHub Actions.** This one is unavoidable:
+   until the repo has a Pages site, the publish step fails with a bare
+   `404 ... Ensure GitHub Pages has been enabled`. The workflow cannot do it
+   for you — `actions/configure-pages` can create the site, but its
+   `enablement` input needs a personal access token, and `GITHUB_TOKEN` is
+   explicitly not allowed to.
 2. Set `seo.url` in `site.config.js` to where the site will live —
    `https://you.github.io/repo` for a project site. That is what canonical
    urls, `og:url` and `sitemap.xml` are built from, so a stale value is worse
    than an empty one.
-3. Push to `main`, or run the workflow by hand from the Actions tab.
+
+Then push to `main`, or run the workflow by hand from the Actions tab.
 
 The workflow lints, runs both test suites, builds, checks the entry-payload
 budget, and only then packages `dist/` and publishes it. It repeats the
