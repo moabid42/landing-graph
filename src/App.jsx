@@ -66,6 +66,7 @@ const MAILTO = `mailto:${identity.email}`
 const MEDIUM_URL = linkTo('medium')
 const RESEARCHGATE_URL = linkTo('researchgate')
 const GITHUB_URL = linkTo('github')
+const LINKEDIN_URL = linkTo('linkedin')
 
 function useTheme() {
   const [theme, setTheme] = useState(() => {
@@ -207,14 +208,16 @@ export default function App() {
             <span className="vis-badge">Public</span>
           </div>
           <div className="gh-actions">
-            <a
-              className="gh-btn"
-              href={GITHUB_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Follow <span aria-hidden="true">↗</span>
-            </a>
+            {LINKEDIN_URL && (
+              <a
+                className="gh-btn"
+                href={LINKEDIN_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Follow <span aria-hidden="true">↗</span>
+              </a>
+            )}
             <button
               className="gh-btn"
               aria-label={

@@ -43,8 +43,8 @@ export default {
   // Rendered as the `git remote -v` table in the Contact section, in this
   // order. Sections elsewhere look these up by name: "medium" is the Writing
   // section's link, "researchgate" is the Research section's, "github" is the
-  // header crumb. Add, remove or reorder freely — a missing name just hides
-  // whatever renders it.
+  // header crumb and "linkedin" is the Follow button. Add, remove or reorder
+  // freely — a missing name just hides whatever renders it.
   links: [
     { name: 'origin', url: 'mailto:moabid42@proton.me', kind: 'email' },
     { name: 'github', url: 'https://github.com/moabid42', kind: 'fetch' },
