@@ -549,7 +549,10 @@ section { padding: 72px 0 24px; }
 }
 .md-mermaid svg { max-width: 100%; height: auto; }
 .md-mermaid.loading {
-  color: var(--muted); font-family: var(--mono); font-size: 12px;
+  /* --muted on the subtle panel is 4.14:1, under the 4.5 floor. This text is
+     on screen for a moment on a slow connection, so it still has to be
+     readable. */
+  color: var(--fg); font-family: var(--mono); font-size: 12px;
   min-height: 80px; align-items: center;
 }
 .md-mermaid-err code { color: #f85149; }

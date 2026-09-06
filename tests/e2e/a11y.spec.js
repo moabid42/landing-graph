@@ -44,8 +44,23 @@ test.describe('accessibility', () => {
     await page.goto('/')
     await page.locator('#blog a[href^="#/blog/"]').first().click()
     await page.locator('h1').waitFor()
+    // mermaid renders asynchronously; scan the finished diagram, not the
+    // placeholder (which gets its own check below)
+    await expect(page.locator('.md-mermaid.loading')).toHaveCount(0)
     const { violations } = await scan(page).analyze()
     expect(report(violations)).toBe('')
+  })
+
+  test('the diagram placeholder is readable while it renders', async ({
+    page,
+  }) => {
+    await page.goto('/')
+    await page.locator('#blog a[href^="#/blog/"]').first().click()
+    const { violations } = await scan(page)
+      .include('.md-body')
+      .disableRules(['role-img-alt'])
+      .analyze()
+    expect(report(violations.filter((v) => v.id === 'color-contrast'))).toBe('')
   })
 
   test('a filtered timeline has no violations', async ({ page }) => {
