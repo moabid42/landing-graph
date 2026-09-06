@@ -38,8 +38,32 @@ jobs:
       - name: Unit tests with coverage
         run: npm run test:coverage
 
+      - name: Coverage summary
+        if: always()
+        run: |
+          {
+            echo '### Unit test coverage'
+            echo '```'
+            npx vitest run --coverage --coverage.reporter=text-summary 2>/dev/null \
+              | sed -n '/Coverage summary/,/=====/p'
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload coverage
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage
+          path: coverage
+          retention-days: 7
+
       - name: Build
         run: npm run build
+
+      # A static import of mermaid would turn a 60 kB first load into 3 MB
+      # without failing anything else.
+      - name: Check the entry payload against its budget
+        run: npm run size
 
       - name: Upload the built site
         uses: actions/upload-artifact@v4
@@ -83,6 +107,42 @@ jobs:
         with:
           name: playwright-report
           path: playwright-report
+          retention-days: 7
+
+  lighthouse:
+    name: lighthouse
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - run: npm ci
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+
+      # Lighthouse runs on the same pinned Chromium as the e2e suite.
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - run: npm run build
+
+      - name: Lighthouse budgets
+        run: npm run lighthouse
+
+      - name: Upload the reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse
+          path: .lighthouseci
           retention-days: 7
 
   commit-messages:

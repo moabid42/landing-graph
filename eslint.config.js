@@ -49,7 +49,12 @@ export default [
 
   // Node code: tests and tooling.
   {
-    files: ['tests/**/*.js', 'plugins/**/*.js', '*.config.js'],
+    files: [
+      'tests/**/*.js',
+      'plugins/**/*.js',
+      'scripts/**/*.js',
+      '*.config.js',
+    ],
     languageOptions: {
       ecmaVersion: 2023,
       sourceType: 'module',
