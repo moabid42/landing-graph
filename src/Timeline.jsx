@@ -25,6 +25,7 @@ const TRACK_CSS =
 const trackVar = (track) => ({ '--tl-c': `var(--tl-track-${track})` })
 
 const CV = 44 // curve length of a branch-out / merge-in join, px
+const HEAD_GAP = 72 // clearance kept under the lowest card before HEAD
 const BREAK_PX = 56 // total height a run of empty years collapses to
 
 function nowDecimal() {
@@ -471,6 +472,8 @@ function DesktopTimeline({ filter }) {
   const [width, setWidth] = useState(0)
   const [tops, setTops] = useState(null)
   const [extra, setExtra] = useState(0)
+  // bottom of the lowest card, measured; HEAD is parked below it
+  const [contentBottom, setContentBottom] = useState(0)
   // per-month trunk heights, sized by how much card content starts in each
   // month (measured after first layout); null = first render, fixed scale
   const [density, setDensity] = useState(null)
@@ -574,7 +577,13 @@ function DesktopTimeline({ filter }) {
   const maxLane = Math.max(1, ...BRANCHES.map((b) => Math.abs(b.lane)))
   const LANE_W = Math.min(28, Math.round((GAP - 14) / maxLane))
   const laneX = (lane) => trunkX + lane * LANE_W
-  const headY = y(NOW)
+  // HEAD is the tip of the graph, so it sits under the last card rather than
+  // on today's date — an entry that started this month would otherwise land
+  // its node right on the HEAD dot, and its card would hang below "now".
+  const headY = Math.max(y(NOW), contentBottom + HEAD_GAP)
+  // an open branch runs all the way down to HEAD; a closed one stops at its
+  // own end date (the same rule the mobile graph uses)
+  const endY = (b) => (b.end === null ? headY : Math.min(y(b.end), headY))
 
   /* ---- container width ---- */
   useLayoutEffect(() => {
@@ -641,7 +650,8 @@ function DesktopTimeline({ filter }) {
       }
     }
     setTops(next)
-    setExtra(Math.max(0, maxBottom + 70 - H))
+    setContentBottom(maxBottom)
+    setExtra(Math.max(0, Math.max(y(NOW), maxBottom + HEAD_GAP) + 56 - H))
   }, [width, tops, density]) // eslint-disable-line react-hooks/exhaustive-deps
 
   /* ---- scroll: trunk progress + sticky year ---- */
@@ -704,7 +714,7 @@ function DesktopTimeline({ filter }) {
     const sx = trunkX
     const lx = laneX(b.lane)
     const sy = y(b.start)
-    const ey = Math.min(y(b.end ?? NOW), headY)
+    const ey = endY(b)
     const cv = Math.min(CV, Math.max(6, (ey - sy) / 2)) // short arcs stay sane
     let d = `M ${sx} ${sy} C ${sx} ${sy + cv * 0.6} ${lx} ${sy + cv * 0.4} ${lx} ${sy + cv}`
     d += ` L ${lx} ${ey - cv}`
@@ -824,7 +834,7 @@ function DesktopTimeline({ filter }) {
                 const top = tops ? tops[e.id] : y(e.start) - 14
                 const lx = laneX(br.lane)
                 const sy = y(br.start)
-                const ey = Math.min(y(br.end ?? NOW), headY)
+                const ey = endY(br)
                 const cv = Math.min(CV, Math.max(6, (ey - sy) / 2))
                 const cy = clamp(top + 24, sy + cv, ey - cv)
                 const cardStyle =
