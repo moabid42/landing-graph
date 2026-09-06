@@ -151,6 +151,8 @@ npm run build        # production bundle into dist/
 | `npm run test:coverage` | the same, with an 85% threshold                   |
 | `npm run e2e`           | playwright against the built site                 |
 | `npm run e2e:ui`        | playwright in watch mode, with a browser          |
+| `npm run size`          | entry payload against its budget (after a build)  |
+| `npm run lighthouse`    | lighthouse budgets against `dist/`                |
 
 Unit tests cover the layer that turns markdown and `site.config.js` into the
 shapes the page renders — dates, entry fields, branch lanes, blog
@@ -178,8 +180,15 @@ To commit without them once: `git commit --no-verify`.
 
 [`.github/workflows/ci.yml`](.github/workflows/ci.yml) runs on every push to
 `main` and every pull request: lint and formatting, unit tests with coverage,
-a production build, the end-to-end suite, and commitlint over the commits in
-the pull request.
+a production build, the entry-payload budget, the end-to-end suite, Lighthouse
+budgets, and commitlint over the commits in the pull request.
+
+The entry-payload budget in [`scripts/check-bundle.js`](scripts/check-bundle.js)
+is the one worth knowing about. `dist/` is a few megabytes, almost all of it
+mermaid, split into chunks that load only when a post actually contains a
+diagram. The budget covers what the browser fetches before first paint
+(~60 kB gzipped), so turning one dynamic import into a static one fails the
+build instead of quietly shipping 3 MB.
 
 ## Using it as a submodule
 
