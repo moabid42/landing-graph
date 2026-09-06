@@ -122,6 +122,16 @@ npm run build     # -> dist/
 GitHub Pages project sites included. Point Netlify, Vercel or Pages at
 `dist/` and you are done.
 
+## Search engines and share cards
+
+`seo.url` in `site.config.js` is the origin the site is served from. It drives
+the canonical url on every route, the `og:url`, and a `sitemap.xml` +
+`robots.txt` generated at build time. `seo.image` is the picture shown when
+someone posts a link — put a 1200x630 png in `public/` and point at it.
+
+Each blog post overrides the title and description with its own, so a shared
+post link reads as that post rather than as the site.
+
 ## Development
 
 ```sh

@@ -4,6 +4,7 @@ import Markdown from './markdown.jsx'
 import { POSTS } from './blog.js'
 import { WORK, STACK, LANGUAGES, RESEARCH } from './data.js'
 import ErrorBoundary from './ErrorBoundary.jsx'
+import { applyMeta } from './seo.js'
 import config from '../site.config.js'
 import { ENTRIES } from './content.js'
 import {
@@ -16,7 +17,7 @@ import {
   IconFlask,
 } from './icons.jsx'
 
-const { identity, links, seo, footer } = config
+const { identity, links, footer } = config
 
 // Look a remote up by name. A name that is not in site.config.js returns
 // null, and whatever renders it hides itself — deleting a link is enough.
@@ -117,21 +118,10 @@ export default function App() {
     page * POSTS_PER_PAGE
   )
 
-  // index.html carries these as a static fallback; config is the source of
-  // truth, so a fork only edits site.config.js.
+  // Title, description, canonical and the share card, per route. index.html
+  // carries the same values statically for crawlers that never run scripts.
   useEffect(() => {
-    const set = (name, content) =>
-      document
-        .querySelector(`meta[name="${name}"]`)
-        ?.setAttribute('content', content)
-    set('description', seo.description)
-    set('theme-color', seo.themeColor)
-  }, [])
-
-  useEffect(() => {
-    document.title = post
-      ? `${post.title} · ${identity.repo}`
-      : `${identity.handle} / ${identity.repo}`
+    applyMeta(post)
     if (post) window.scrollTo(0, 0)
     else if (window.location.hash === '#blog')
       document.getElementById('blog')?.scrollIntoView()

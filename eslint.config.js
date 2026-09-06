@@ -19,7 +19,7 @@ export default [
 
   // Browser code: the site itself.
   {
-    files: ['src/**/*.{js,jsx}', 'site.config.js', 'vite.config.js'],
+    files: ['src/**/*.{js,jsx}', 'site.config.js'],
     languageOptions: {
       ecmaVersion: 2023,
       sourceType: 'module',
@@ -49,7 +49,7 @@ export default [
 
   // Node code: tests and tooling.
   {
-    files: ['tests/**/*.js', '*.config.js', '.lintstagedrc.js'],
+    files: ['tests/**/*.js', 'plugins/**/*.js', '*.config.js'],
     languageOptions: {
       ecmaVersion: 2023,
       sourceType: 'module',

@@ -59,9 +59,19 @@ export default {
   // Applied to the document at runtime. index.html carries the same values
   // as a static fallback for crawlers that do not run scripts.
   seo: {
+    // Where the site is served from, no trailing slash. Canonical urls, the
+    // share image and sitemap.xml are all built from this. Leave it empty
+    // and those are simply left out.
+    url: 'https://yoursite.dev',
+
     description:
       'Your Name — what you do. Career rendered as git log --graph --all: ' +
       'every job, degree and project as a branch.',
+
+    // The picture shown when a link is posted to LinkedIn, X or Slack.
+    // A path under public/, or a full url. 1200x630 is the safe size.
+    image: '/og.png',
+
     themeColor: '#0d1117',
   },
 
