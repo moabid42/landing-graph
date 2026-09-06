@@ -21,7 +21,7 @@
     "e2e:report": "playwright show-report",
     "prepare": "husky",
     "size": "node scripts/check-bundle.js",
-    "audit": "npm audit --omit=dev",
+    "audit": "npm audit",
     "lighthouse": "node scripts/lighthouse.js",
     "og": "node scripts/og-image.js"
   },
@@ -35,7 +35,6 @@
     "@commitlint/cli": "^21.2.2",
     "@commitlint/config-conventional": "^21.2.2",
     "@eslint/js": "^9.39.5",
-    "@lhci/cli": "^0.15.1",
     "@playwright/test": "^1.63.0",
     "@vitejs/plugin-react": "^5.1.0",
     "@vitest/coverage-v8": "^5.0.0",
@@ -51,13 +50,6 @@
     "prettier": "^3.9.6",
     "vite": "^8.2.2",
     "vitest": "^5.0.0"
-  },
-  "overrides": {
-    "@lhci/cli": {
-      "qs": "^6.16.0",
-      "tmp": "^0.2.7",
-      "uuid": "^14.0.2"
-    }
   },
   "lint-staged": {
     "*.{js,jsx}": [

@@ -21,35 +21,27 @@ anything requiring commit access to the repository.
 
 ## Dependency advisories
 
-`npm audit` reports a number that looks alarming and mostly is not. The check
-that matters is the one CI gates on:
-
 ```sh
-npm run audit        # npm audit --omit=dev
+npm run audit        # npm audit, no flags, no exceptions
 ```
 
-That covers what a visitor downloads — React, mermaid and the bundle Vite
-builds — and it is currently clean. Everything `npm audit` reports without
-`--omit=dev` is build-time tooling that never reaches a browser.
+Clean, and CI fails if it stops being clean. There is no allowlist and no
+`--omit=dev` carve-out, which is the point: an audit with exceptions is one
+nobody reads.
 
-Of that tooling, `qs`, `tmp` and `uuid` were fixable without downgrading
-anything and are pinned forward in the `overrides` block of `package.json`,
-scoped under `@lhci/cli` so the override cannot drag an unrelated package
-backwards.
+Keeping it that way cost one architectural decision. Lighthouse is not a
+dependency of this repo. `@lhci/cli` pulls in Lighthouse and puppeteer — 276
+packages — and one of them, `extract-zip`, has an advisory with **no
+published fix**: `2.0.1` is the newest release and the advisory covers
+`<=2.0.1`. Nothing can override it. `npm audit fix --force` "resolves" it by
+installing `@lhci/cli@0.6.1`, nine minor versions back, which breaks the
+budgets outright.
 
-One remains, counted several times because five packages depend on it:
-`extract-zip`, reached through `@lhci/cli` → `lighthouse` → `puppeteer-core`
-→ `@puppeteer/browsers`. It has no fix. `2.0.1` is the latest published
-version and the advisory covers `<=2.0.1`, so no override can resolve it.
-`npm audit fix --force` "fixes" it by installing `@lhci/cli@0.6.1` — nine
-minor versions back — which breaks `npm run lighthouse` outright. That trade
-is not worth making for a dev dependency.
-
-It is also not reachable here. `extract-zip` is used when
-`@puppeteer/browsers` unpacks a browser it downloaded, and nothing downloads
-a browser in this repo: `puppeteer-core` does not fetch browsers (that is
-what separates it from `puppeteer`), and `scripts/lighthouse.js` points
-`CHROME_PATH` at the Chromium Playwright already installed.
+So the budgets run out-of-tree instead, through
+`treosh/lighthouse-ci-action` in [`ci.yml`](.github/workflows/ci.yml). Same
+`lighthouserc.cjs`, same Lighthouse 12.6, none of it in the lockfile.
+`scripts/lighthouse.js` still runs it locally by fetching lhci with `npx` at
+run time, so a performance change can be checked without pushing.
 
 ## Reporting
 

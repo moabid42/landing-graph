@@ -200,7 +200,8 @@ npm run build        # production bundle into dist/
 | `npm run e2e`           | playwright against the built site                 |
 | `npm run e2e:ui`        | playwright in watch mode, with a browser          |
 | `npm run size`          | entry payload against its budget (after a build)  |
-| `npm run lighthouse`    | lighthouse budgets against `dist/`                |
+| `npm run lighthouse`    | lighthouse budgets (fetches lhci via `npx`)       |
+| `npm run audit`         | `npm audit` — CI fails on any advisory            |
 | `npm run og`            | redraw `public/og.png` from the mark and config   |
 
 Unit tests cover the layer that turns markdown and `site.config.js` into the
@@ -229,8 +230,16 @@ To commit without them once: `git commit --no-verify`.
 
 [`.github/workflows/ci.yml`](.github/workflows/ci.yml) runs on every push to
 `main` and every pull request: lint and formatting, unit tests with coverage,
-a production build, the entry-payload budget, the end-to-end suite, Lighthouse
-budgets, and commitlint over the commits in the pull request.
+a production build, the entry-payload budget, `npm audit`, the end-to-end
+suite, Lighthouse budgets, and commitlint over the commits in the pull
+request.
+
+Lighthouse is the one check that is not an npm dependency. `@lhci/cli` brings
+276 packages with it, including one advisory that has no published fix, so
+the budgets run through `treosh/lighthouse-ci-action` instead — same
+`lighthouserc.cjs`, same Lighthouse, nothing in the lockfile. `npm run
+lighthouse` still works locally; it fetches lhci with `npx` on demand. See
+[SECURITY.md](SECURITY.md).
 
 The entry-payload budget in [`scripts/check-bundle.js`](scripts/check-bundle.js)
 is the one worth knowing about. `dist/` is a few megabytes, almost all of it

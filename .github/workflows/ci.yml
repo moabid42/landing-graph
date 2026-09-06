@@ -130,28 +130,25 @@ jobs:
 
       - run: npm ci
 
-      - name: Cache Playwright browsers
-        uses: actions/cache@v6
-        with:
-          path: ~/.cache/ms-playwright
-          key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
-
-      # Lighthouse runs on the same pinned Chromium as the e2e suite.
-      - name: Install Chromium
-        run: npx playwright install --with-deps chromium
-
+      # lighthouserc.cjs collects from staticDistDir, so there has to be a
+      # dist/ to serve.
       - run: npm run build
 
+      # The action brings its own Lighthouse and its own Chrome. That is the
+      # whole reason it is an action and not a dependency: @lhci/cli pulled 72
+      # packages into the lockfile, including extract-zip — an advisory with
+      # no published fix, reached only through puppeteer's browser installer,
+      # which nothing here ever calls. Running it out-of-tree keeps `npm
+      # audit` clean without giving up the budgets.
+      #
+      # The budgets themselves did not move: same lighthouserc.cjs, and the
+      # action ships the same Lighthouse 12.6 this repo used to install.
       - name: Lighthouse budgets
-        run: npm run lighthouse
-
-      - name: Upload the reports
-        if: always()
-        uses: actions/upload-artifact@v7
+        uses: treosh/lighthouse-ci-action@v12
         with:
-          name: lighthouse
-          path: .lighthouseci
-          retention-days: 7
+          configPath: ./lighthouserc.cjs
+          uploadArtifacts: true
+          artifactName: lighthouse
 
   commit-messages:
     name: commit messages
