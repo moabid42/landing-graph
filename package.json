@@ -2,6 +2,8 @@
   "name": "landing-graph",
   "private": true,
   "version": "1.0.0",
+  "description": "A personal site template that renders your career as a git graph.",
+  "license": "MIT",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -43,8 +45,6 @@
     "vite": "^8.2.2",
     "vitest": "^5.0.0"
   },
-  "description": "A personal site template that renders your career as a git graph.",
-  "license": "MIT",
   "lint-staged": {
     "*.{js,jsx}": [
       "eslint --fix",
@@ -53,5 +53,27 @@
     "*.{json,md,html,css,yml,yaml}": [
       "prettier --write --ignore-unknown"
     ]
+  },
+  "keywords": [
+    "portfolio",
+    "personal-site",
+    "template",
+    "react",
+    "vite",
+    "git-graph",
+    "timeline",
+    "resume"
+  ],
+  "author": "moabid42",
+  "homepage": "https://github.com/moabid42/landing-graph#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/moabid42/landing-graph.git"
+  },
+  "bugs": {
+    "url": "https://github.com/moabid42/landing-graph/issues"
+  },
+  "engines": {
+    "node": "^22.12.0 || ^24.0.0 || >=26.0.0"
   }
 }
