@@ -10,7 +10,7 @@ branch each. Good for recurring activity — talks, teaching, writing.
 ## Your first talk
 - org: Conference · City
 - date: 2024-05
-- topics: topic, topic
+- topics: conference, reversing
 - link: https://example.com/talk
 
 What you talked about, in one line.
@@ -18,6 +18,6 @@ What you talked about, in one line.
 ## Your second talk
 - org: Meetup · City
 - date: 2025-02
-- topics: topic
+- topics: meetup
 
 Both talks sit on the same branch because this track is continuous.

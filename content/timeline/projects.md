@@ -25,7 +25,7 @@ matter — the graph sorts by date and assigns branch lanes automatically.
 - org: Context · scale
 - start: 2023-01
 - end: 2023-05
-- topics: topic, topic
+- topics: rust, cli
 - link: https://github.com/yourhandle
 
 What you built and what it does. Link to the repo, the demo, or the
@@ -34,7 +34,7 @@ write-up.
 ## a-weekend-project
 - org: Personal
 - date: 2023-09
-- topics: topic
+- topics: weekend-hack
 
 Use `date:` instead of `start`/`end` for something that happened on one
 day. It renders as a single date with a short arc.

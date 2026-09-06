@@ -25,7 +25,7 @@ matter — the graph sorts by date and assigns branch lanes automatically.
 - org: University
 - start: 2019-09
 - end: 2022-06
-- topics: subject, subject
+- topics: algorithms, systems
 
 What you studied. Add `(dropped)` after the end date for a programme you
 left — it closes the branch without merging it back.
@@ -34,6 +34,6 @@ left — it closes the branch without merging it back.
 - org: Another University
 - start: 2018-09
 - end: 2019-06 (dropped)
-- topics: subject
+- topics: mathematics
 
 Chapters that did not work out are still part of the graph.

@@ -25,7 +25,7 @@ matter — the graph sorts by date and assigns branch lanes automatically.
 - org: Company · City
 - start: 2022-03
 - end: 2024-06
-- topics: topic, topic, topic
+- topics: backend, infrastructure, mentoring
 - time: full-time
 - link: https://example.com
 
@@ -36,7 +36,7 @@ sentences — the card stays readable at any width.
 - org: Company · City
 - start: 2024-07
 - end: now
-- topics: topic, topic
+- topics: security, automation
 - time: full-time
 
 An entry with `end: now` stays open and merges into HEAD at the bottom

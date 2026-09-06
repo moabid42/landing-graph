@@ -25,7 +25,7 @@ matter — the graph sorts by date and assigns branch lanes automatically.
 - org: Your Company · City
 - start: 2023-03
 - end: now
-- topics: topic, topic
+- topics: product, fundraising
 - time: part-time
 
 What the company does, and your part in it.
