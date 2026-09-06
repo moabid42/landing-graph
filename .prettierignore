@@ -1,0 +1,24 @@
+dist/
+coverage/
+playwright-report/
+test-results/
+package-lock.json
+
+# styles.css groups related declarations on one line on purpose — the file
+# reads as a stylesheet, not as one property per line. Prettier would undo
+# that and triple its length, so it stays hand-formatted.
+src/styles.css
+
+# site.config.js is a hand-aligned table that a human edits: one track per
+# line, one remote per line. Prettier explodes those into blocks and the
+# shape stops being readable at a glance.
+site.config.js
+
+# Timeline entries and blog posts are data, and the entry parser is
+# whitespace-sensitive. Formatting them is not worth the risk.
+content/
+
+# plan.md documents the original design in indented code blocks. Prettier is
+# not idempotent on those — it strips a level of indentation on every run and
+# never converges, corrupting the blocks. Left as written.
+plan.md
