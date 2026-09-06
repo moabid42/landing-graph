@@ -50,7 +50,7 @@
       "eslint --fix",
       "prettier --write"
     ],
-    "*.{json,md,html,css}": [
+    "*.{json,md,html,css,yml,yaml}": [
       "prettier --write --ignore-unknown"
     ]
   }
