@@ -21,6 +21,7 @@
     "e2e:report": "playwright show-report",
     "prepare": "husky",
     "size": "node scripts/check-bundle.js",
+    "audit": "npm audit --omit=dev",
     "lighthouse": "node scripts/lighthouse.js",
     "og": "node scripts/og-image.js"
   },

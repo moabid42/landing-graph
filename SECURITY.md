@@ -19,6 +19,38 @@ What is worth reporting:
 Not in scope: content you wrote yourself rendering as you wrote it, and
 anything requiring commit access to the repository.
 
+## Dependency advisories
+
+`npm audit` reports a number that looks alarming and mostly is not. The check
+that matters is the one CI gates on:
+
+```sh
+npm run audit        # npm audit --omit=dev
+```
+
+That covers what a visitor downloads — React, mermaid and the bundle Vite
+builds — and it is currently clean. Everything `npm audit` reports without
+`--omit=dev` is build-time tooling that never reaches a browser.
+
+Of that tooling, `qs`, `tmp` and `uuid` were fixable without downgrading
+anything and are pinned forward in the `overrides` block of `package.json`,
+scoped under `@lhci/cli` so the override cannot drag an unrelated package
+backwards.
+
+One remains, counted several times because five packages depend on it:
+`extract-zip`, reached through `@lhci/cli` → `lighthouse` → `puppeteer-core`
+→ `@puppeteer/browsers`. It has no fix. `2.0.1` is the latest published
+version and the advisory covers `<=2.0.1`, so no override can resolve it.
+`npm audit fix --force` "fixes" it by installing `@lhci/cli@0.6.1` — nine
+minor versions back — which breaks `npm run lighthouse` outright. That trade
+is not worth making for a dev dependency.
+
+It is also not reachable here. `extract-zip` is used when
+`@puppeteer/browsers` unpacks a browser it downloaded, and nothing downloads
+a browser in this repo: `puppeteer-core` does not fetch browsers (that is
+what separates it from `puppeteer`), and `scripts/lighthouse.js` points
+`CHROME_PATH` at the Chromium Playwright already installed.
+
 ## Reporting
 
 Open a private security advisory through GitHub:
