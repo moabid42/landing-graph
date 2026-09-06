@@ -3,8 +3,8 @@
 <!--
 HOW TO EDIT — same format everywhere:
 
-  ## Entry title
-  - org: Organisation · City
+  ## Program title
+  - org: Institution
   - start: YYYY-MM
   - end: YYYY-MM        (write "now" while ongoing; add "(dropped)" after
                          the date for a chapter closed without merging)
@@ -15,25 +15,32 @@ HOW TO EDIT — same format everywhere:
   - link: https://…     (optional — adds a "Learn more" button: project
                          repo, company site, talk recording, anything)
 
-  Description paragraph, one or two sentences.
-
-Add a block to add an entry, delete one to remove it. Order does not
-matter — the graph sorts by date and assigns branch lanes automatically.
+  Description paragraph.
 -->
 
-## Your degree
-- org: University
-- start: 2019-09
-- end: 2022-06
-- topics: algorithms, systems
+## FSTT, MIP
+- org: Université Abdelmalek Essaâdi
+- start: 2020-09
+- end: 2022-02 (dropped)
+- topics: math, informatics, physics
+- link: https://fstt.uae.ac.ma/
 
-What you studied. Add `(dropped)` after the end date for a programme you
-left — it closes the branch without merging it back.
+First Reality Check
 
-## A programme you left
-- org: Another University
-- start: 2018-09
-- end: 2019-06 (dropped)
-- topics: mathematics
+## Core curriculum, software engineering
+- org: 42 Heilbronn
+- start: 2022-03
+- end: 2023-03
+- topics: c, c++, systems
+- link: https://www.42heilbronn.de/en/
 
-Chapters that did not work out are still part of the graph.
+Intensive peer-to-peer program: C, C++, systems programming, networking, full-stack.
+
+## B.Sc. Computer Science, dual study
+- org: DHBW Mannheim
+- start: 2023-09
+- end: 2026-08
+- topics: math, software engineering, security, cryptography
+- link: https://www.mannheim.dhbw.de/
+
+Software engineering, IT security, network security, cryptography, alongside full-time work, the whole way through.

@@ -1,10 +1,11 @@
 # Work — timeline entries
 
 <!--
-HOW TO EDIT — same format everywhere:
+HOW TO EDIT
+Each entry is a block starting with a "## Title" heading:
 
-  ## Entry title
-  - org: Organisation · City
+  ## Job title
+  - org: Company · City
   - start: YYYY-MM
   - end: YYYY-MM        (write "now" while ongoing; add "(dropped)" after
                          the date for a chapter closed without merging)
@@ -17,27 +18,65 @@ HOW TO EDIT — same format everywhere:
 
   Description paragraph, one or two sentences.
 
-Add a block to add an entry, delete one to remove it. Order does not
+Add a block to add an entry, delete one to remove it. Order doesn't
 matter — the graph sorts by date and assigns branch lanes automatically.
 -->
 
-## Your job title
-- org: Company · City
-- start: 2022-03
-- end: 2024-06
-- topics: backend, infrastructure, mentoring
+## Private Tutor, freelance
+- org: Morocco
+- start: 2020-08
+- end: 2022-01
+- topics: math, english, french
+- time: part-time
+
+Prepared with Bac students for the national exam, and helped children between the ages of 4 and 10 with their homework.
+
+## Cloud Security Engineer, internship
+- org: Haufe Group · Freiburg
+- start: 2023-03
+- end: 2023-08
+- topics: aws, lambda, terraform
 - time: full-time
-- link: https://example.com
+- link: https://www.haufegroup.com/en
 
-What you actually did, and what changed because you did it. One or two
-sentences — the card stays readable at any width.
+Built MalS3Scan, a serverless AWS pipeline that YARA-scans every S3 upload and alerts incident response in real time.
 
-## Your current role
-- org: Company · City
-- start: 2024-07
+## System Engineer, POS systems
+- org: Schwarz Digits · Weinsberg
+- start: 2023-09
+- end: 2025-07
+- topics: rhel, OS, infra, pentest
+- time: full-time
+- link: https://schwarz-digits.de/en
+
+Owned integration and security for 150,000+ point-of-sale systems; yearly pentests against production with zero downtime.
+
+## Software Security Engineering tutor & speaker
+- org: 42 Heilbronn & Arkadia
+- start: 2023-11
+- end: 2025-11
+- topics: teaching, software, security, infrastructure
+- time: part-time
+- link: https://www.42heilbronn.de/en/
+
+Live advanced classes on C, data structures, reverse engineering and binary exploitation. Hosted Cybersecurity Day for 100+ onsite people.
+
+## Offensive Security Engineer
+- org: Schwarz Digits · Berlin, remote
+- start: 2025-07
 - end: now
-- topics: security, automation
+- topics: red team, infra, research
 - time: full-time
+- https://schwarz-digits.de/en
 
-An entry with `end: now` stays open and merges into HEAD at the bottom
-of the graph.
+Internal red teaming across the group's global infrastructure and EDR bypass developement. Built the company's first AI-powered red-teaming copilot.
+
+## Software Security Engineer
+- org: Mingabyte · Munich
+- start: 2025-12
+- end: now
+- topics: rust, threat modeling, TISAX
+- time: part-time
+- link: https://mingabyte.de/en/
+
+Architected a secure high-load AI inference system in Rust. Lead execution and delivery of the company's TISAX certification
