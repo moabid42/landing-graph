@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import config from '../../site.config.js'
-import { canonical, metaFor, shareImage } from '../../src/seo.js'
+import { canonical, metaFor, shareImage } from '../../src/seo/meta.js'
 
 const origin = (config.seo.url || '').replace(/\/+$/, '')
 const post = {

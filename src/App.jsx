@@ -4,7 +4,7 @@ import Markdown from './markdown.jsx'
 import { POSTS } from './blog.js'
 import { WORK, STACK, LANGUAGES, RESEARCH } from './data.js'
 import ErrorBoundary from './ErrorBoundary.jsx'
-import { applyMeta } from './seo.js'
+import { applyMeta } from './seo/apply.js'
 import config from '../site.config.js'
 import { ENTRIES } from './content.js'
 import {

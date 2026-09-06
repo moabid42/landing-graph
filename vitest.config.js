@@ -17,7 +17,14 @@ export default mergeConfig(
         // App.jsx / Timeline.jsx and is covered by the Playwright suite
         // against a real browser; counting it here would produce a number no
         // unit test is meant to move.
-        include: ['src/content.js', 'src/blog.js', 'src/loadContent.js'],
+        include: [
+          'src/content.js',
+          'src/blog.js',
+          'src/loadContent.js',
+          'src/seo/meta.js',
+          'src/timeline/scale.js',
+          'src/timeline/format.js',
+        ],
         reporter: ['text', 'lcov'],
         thresholds: { statements: 85, branches: 85, functions: 85, lines: 85 },
       },

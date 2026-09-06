@@ -2,13 +2,13 @@ import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { BRANCHES, ENTRIES, POINTS } from '../content.js'
 import { IconTag } from '../icons.jsx'
 import { clamp, nowDecimal } from './format.js'
+import { buildScale } from './scale.js'
 import { BRANCH_OF, trackVar } from './tracks.js'
 import useReducedMotion from './useReducedMotion.js'
 import Card from './Card.jsx'
 
 const CV = 44 // curve length of a branch-out / merge-in join, px
 const HEAD_GAP = 72 // clearance kept under the lowest card before HEAD
-const BREAK_PX = 56 // total height a run of empty years collapses to
 
 /* =====================================================================
    Desktop: full two-sided graph on a proportional time scale.
@@ -33,90 +33,12 @@ export default function DesktopTimeline({ filter }) {
   const NOW = useMemo(nowDecimal, [])
 
   /* ---- geometry ---- */
-  const YEAR_PX = 300
-  const MIN_MONTH_PX = 10 // floor for months where nothing starts
-  const PAD_TOP = 80
-
-  // Piecewise scale derived from the content: the range starts at the
-  // earliest dated thing, runs of years with no activity collapse into a
-  // short "···" break on the trunk, and within active years each month is
-  // as tall as the boxes that start in it need — density, not elapsed time.
-  const scale = useMemo(() => {
-    const dates = [NOW]
-    ENTRIES.forEach((e) => dates.push(e.start, e.end ?? NOW))
-    POINTS.forEach((p) => dates.push(p.at))
-    const startYear = Math.floor(Math.min(...dates))
-    const endYear = Math.floor(NOW)
-    const active = {}
-    for (let Y = startYear; Y <= endYear; Y++) {
-      active[Y] =
-        Y === endYear ||
-        ENTRIES.some((e) => e.start < Y + 1 && (e.end ?? NOW) > Y) ||
-        POINTS.some((p) => p.at >= Y && p.at < Y + 1)
-    }
-    const height = {}
-    const monthH = {}
-    const monthOff = {}
-    const breaks = []
-    for (let Y = startYear; Y <= endYear; Y++) {
-      if (active[Y]) {
-        const hs = []
-        const offs = []
-        let a = 0
-        for (let m = 0; m < 12; m++) {
-          const mh = density
-            ? Math.max(MIN_MONTH_PX, density[Y * 12 + m] || 0)
-            : YEAR_PX / 12
-          hs.push(mh)
-          offs.push(a)
-          a += mh
-        }
-        monthH[Y] = hs
-        monthOff[Y] = offs
-        height[Y] = a
-        continue
-      }
-      let to = Y
-      while (to + 1 <= endYear && !active[to + 1]) to++
-      const run = to - Y + 1
-      for (let i = 0; i < run; i++) height[Y + i] = BREAK_PX / run
-      breaks.push({ from: Y, to })
-      Y = to
-    }
-    const offset = {}
-    let acc = PAD_TOP
-    for (let Y = startYear; Y <= endYear; Y++) {
-      offset[Y] = acc
-      acc += height[Y]
-    }
-    offset[endYear + 1] = acc
-    const y = (d) => {
-      const Y = Math.floor(d)
-      if (Y < startYear) return PAD_TOP
-      if (Y > endYear) return offset[endYear + 1] + (d - endYear - 1) * YEAR_PX
-      if (!monthH[Y]) return offset[Y] + (d - Y) * height[Y]
-      const f = (d - Y) * 12
-      const mi = clamp(Math.floor(f), 0, 11)
-      // within a month, time advances at the floor slope only — a month's
-      // extra height belongs to the boxes starting in it, below their date
-      const slope = Math.min(monthH[Y][mi], MIN_MONTH_PX)
-      return offset[Y] + monthOff[Y][mi] + (f - mi) * slope
-    }
-    const invY = (px) => {
-      let Y = startYear
-      while (Y < endYear + 1 && offset[Y + 1] <= px) Y++
-      if (Y > endYear) return endYear + (px - offset[endYear + 1]) / YEAR_PX + 1
-      const rel = Math.max(0, px - offset[Y])
-      if (!monthH[Y]) return Y + rel / height[Y]
-      let mi = 0
-      while (mi < 11 && monthOff[Y][mi + 1] <= rel) mi++
-      const slope = Math.min(monthH[Y][mi], MIN_MONTH_PX)
-      return Y + (mi + clamp((rel - monthOff[Y][mi]) / slope, 0, 1)) / 12
-    }
-    const years = []
-    for (let Y = startYear; Y <= endYear; Y++) if (active[Y]) years.push(Y)
-    return { startYear, y, invY, years, breaks }
-  }, [NOW, density])
+  // Piecewise scale derived from the content. The arithmetic lives in
+  // scale.js so it can be tested without a browser.
+  const scale = useMemo(
+    () => buildScale({ now: NOW, entries: ENTRIES, points: POINTS, density }),
+    [NOW, density]
+  )
   const { y, invY } = scale
 
   const H = Math.round(y(NOW + 0.12) + 130)
