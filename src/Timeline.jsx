@@ -695,7 +695,7 @@ function DesktopTimeline({ filter }) {
       (es) =>
         es.forEach((x) => {
           if (x.isIntersecting) {
-            const id = x.target.dataset.id
+            const id = x.target.closest('[data-id]').dataset.id
             setRevealed((prev) =>
               prev.has(id) ? prev : new Set(prev).add(id)
             )
@@ -704,8 +704,16 @@ function DesktopTimeline({ filter }) {
         }),
       { rootMargin: '0px 0px -6% 0px' }
     )
+    // A tl-entry <li> is position:static with every part absolutely
+    // positioned, so the <li> is a zero-height box sitting at the top of the
+    // timeline, nowhere near its card. Watching it means an entry only
+    // reveals when the TOP of the timeline scrolls into view — reload halfway
+    // down and the cards never appear. Watch the card, which is where the
+    // entry actually is. Tags carry their own box, so they are watched directly.
     wrapRef.current
-      ?.querySelectorAll('.tl-item:not(.revealed)')
+      ?.querySelectorAll(
+        '.tl-point:not(.revealed), .tl-entry:not(.revealed) .tl-card'
+      )
       .forEach((n) => io.observe(n))
     return () => io.disconnect()
   }, [tops, reduced])
