@@ -4,3 +4,5 @@ dist/
 .DS_Store
 .gstack/
 coverage/
+playwright-report/
+test-results/
