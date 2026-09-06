@@ -24,6 +24,12 @@ updates:
       dev-tooling:
         dependency-type: development
         patterns: ['*']
+      # react and react-dom peer on each other exactly, so a PR that moves
+      # one without the other cannot install. Same reasoning as above: what
+      # ships together gets reviewed together.
+      runtime:
+        dependency-type: production
+        patterns: ['*']
 
   - package-ecosystem: github-actions
     directory: /
