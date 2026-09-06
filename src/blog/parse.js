@@ -11,14 +11,13 @@
 //   ---
 //
 //   Markdown body… (```mermaid fences render as live diagrams)
-const files = import.meta.glob('../content/blog/*.md', {
-  query: '?raw',
-  import: 'default',
-  eager: true,
-})
+//
+// Pure on purpose: no Vite, no import.meta. plugins/blogMeta.js runs this in
+// Node at build time to produce the post index, and the browser runs the same
+// function on the raw file to get the body. One parser, so an index can never
+// disagree with the post it points at.
 
-// One file in, one post out. Exported so the shape is testable without a
-// browser; POSTS below is just this applied to everything in content/blog.
+// One file in, one post out.
 export function parsePost(path, raw) {
   const slug = path.split('/').pop().replace(/\.md$/, '')
   let meta = {}
@@ -47,8 +46,10 @@ export function parsePost(path, raw) {
   }
 }
 
-// Newest first; drafts never ship.
-export const POSTS = Object.entries(files)
-  .map(([path, raw]) => parsePost(path, raw))
-  .filter((p) => !p.draft)
-  .sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0))
+// The post without its body — everything the Writing list needs to render a
+// row and the router needs to resolve a slug.
+export function postMeta(path, raw) {
+  const post = parsePost(path, raw)
+  delete post.body
+  return post
+}

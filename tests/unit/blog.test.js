@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest'
-import { POSTS, parsePost } from '../../src/blog.js'
+import { parsePost, postMeta } from '../../src/blog/parse.js'
+import { POSTS, loadBody } from '../../src/blog/index.js'
 
 const withFm = (fm, body = 'Body text.\n') => `---\n${fm}\n---\n${body}`
 
@@ -93,11 +94,43 @@ describe('shipped posts', () => {
     expect(dates).toEqual([...dates].sort().reverse())
   })
 
-  it('gives every post a title, a date and a body', () => {
+  it('gives every post a title and a date', () => {
     for (const p of POSTS) {
       expect(p.title, p.slug).toBeTruthy()
       expect(p.date, p.slug).toMatch(/^\d{4}-\d{2}-\d{2}$/)
-      expect(p.body.trim(), p.slug).not.toBe('')
     }
+  })
+
+  // The index is built by plugins/blogMeta.js and the bodies are fetched
+  // separately, so "the list has an entry" and "the post has words in it"
+  // are now two different claims. Check both.
+  it('keeps the bodies out of the index', () => {
+    for (const p of POSTS) expect(p, p.slug).not.toHaveProperty('body')
+  })
+
+  it('can load a body for every post in the index', async () => {
+    for (const p of POSTS) {
+      const body = await loadBody(p.slug)
+      expect(body.trim(), p.slug).not.toBe('')
+      expect(body, p.slug).not.toContain('title:')
+    }
+  })
+
+  it('rejects for a slug that is not a post', async () => {
+    await expect(loadBody('no-such-post')).rejects.toThrow(/no-such-post/)
+  })
+})
+
+describe('postMeta', () => {
+  it('is parsePost without the body', () => {
+    const raw = withFm('title: T\ndate: 2024-01-01', '# Heading\n')
+    const full = parsePost('x/a.md', raw)
+    const meta = postMeta('x/a.md', raw)
+    expect(meta).not.toHaveProperty('body')
+    expect(meta).toEqual(
+      Object.fromEntries(Object.entries(full).filter(([k]) => k !== 'body'))
+    )
+    expect(meta.title).toBe('T')
+    expect(meta.date).toBe('2024-01-01')
   })
 })

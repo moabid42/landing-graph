@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import Timeline from './timeline/index.jsx'
 import Markdown from './markdown.jsx'
-import { POSTS } from './blog.js'
+import { POSTS, loadBody } from './blog/index.js'
 import { WORK, STACK, LANGUAGES, RESEARCH } from './data.js'
 import ErrorBoundary from './ErrorBoundary.jsx'
 import { applyMeta } from './seo/apply.js'
@@ -71,7 +71,27 @@ function useRoute() {
   return m ? m[1] : null
 }
 
+// The body is a dynamic import (see src/blog/index.js), so it arrives a beat
+// after the heading. Everything above the fold — title, date, topics — comes
+// from the eager index and renders immediately.
 function PostPage({ post }) {
+  const [body, setBody] = useState(null)
+  const [failed, setFailed] = useState(false)
+
+  useEffect(() => {
+    let current = true
+    setBody(null)
+    setFailed(false)
+    loadBody(post.slug).then(
+      (text) => current && setBody(text),
+      () => current && setFailed(true)
+    )
+    // A fast second navigation must not let the first body win the race.
+    return () => {
+      current = false
+    }
+  }, [post.slug])
+
   return (
     <section className="post-page" aria-label="Blog post">
       <p className="post-back">
@@ -97,7 +117,17 @@ function PostPage({ post }) {
             )}
           </div>
           <ErrorBoundary label="This post">
-            <Markdown src={post.body} />
+            {failed ? (
+              <p className="post-status" role="alert">
+                This post failed to load. Reloading the page usually fixes it.
+              </p>
+            ) : body === null ? (
+              <p className="post-status" aria-live="polite">
+                Loading…
+              </p>
+            ) : (
+              <Markdown src={body} />
+            )}
           </ErrorBoundary>
         </div>
       </article>

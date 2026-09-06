@@ -44,23 +44,38 @@ test.describe('accessibility', () => {
     await page.goto('/')
     await page.locator('#blog a[href^="#/blog/"]').first().click()
     await page.locator('h1').waitFor()
-    // mermaid renders asynchronously; scan the finished diagram, not the
-    // placeholder (which gets its own check below)
+    // the body is a dynamic import, and mermaid another one inside it; scan
+    // the finished post, not either placeholder (both get their own check
+    // below)
+    await expect(page.locator('.post-status')).toHaveCount(0)
     await expect(page.locator('.md-mermaid.loading')).toHaveCount(0)
     const { violations } = await scan(page).analyze()
     expect(report(violations)).toBe('')
   })
 
-  test('the diagram placeholder is readable while it renders', async ({
+  // Opening a post shows two placeholders in turn: the post body is a
+  // dynamic import, and mermaid is another one inside it. Both are on screen
+  // for a moment on a slow connection, so both have to be readable.
+  test('the loading placeholders are readable while a post renders', async ({
     page,
   }) => {
     await page.goto('/')
     await page.locator('#blog a[href^="#/blog/"]').first().click()
-    const { violations } = await scan(page)
-      .include('.md-body')
-      .disableRules(['role-img-alt'])
-      .analyze()
-    expect(report(violations.filter((v) => v.id === 'color-contrast'))).toBe('')
+
+    const contrast = async (root) => {
+      const { violations } = await scan(page)
+        .include(root)
+        .disableRules(['role-img-alt'])
+        .analyze()
+      return report(violations.filter((v) => v.id === 'color-contrast'))
+    }
+
+    // first the body placeholder, while the post chunk is in flight
+    expect(await contrast('.readme-body')).toBe('')
+
+    // then the diagram placeholder, while mermaid is in flight
+    await expect(page.locator('.post-status')).toHaveCount(0)
+    expect(await contrast('.md-body')).toBe('')
   })
 
   test('a filtered timeline has no violations', async ({ page }) => {

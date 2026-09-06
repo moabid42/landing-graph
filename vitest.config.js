@@ -14,12 +14,12 @@ export default mergeConfig(
       coverage: {
         provider: 'v8',
         // The parsing layer, which is what unit tests own. Rendering lives in
-        // App.jsx / Timeline.jsx and is covered by the Playwright suite
+        // App.jsx and src/timeline/ and is covered by the Playwright suite
         // against a real browser; counting it here would produce a number no
         // unit test is meant to move.
         include: [
           'src/content.js',
-          'src/blog.js',
+          'src/blog/parse.js',
           'src/loadContent.js',
           'src/seo/meta.js',
           'src/timeline/scale.js',

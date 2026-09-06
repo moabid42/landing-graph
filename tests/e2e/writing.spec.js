@@ -21,6 +21,11 @@ test.describe('the writing section', () => {
     await expect(page).toHaveTitle(
       new RegExp(title.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
     )
+
+    // the body arrives separately from the heading — wait it out and check
+    // that prose actually rendered, not just the placeholder
+    await expect(page.locator('.post-status')).toHaveCount(0)
+    await expect(page.locator('.readme-body .md-body').last()).not.toBeEmpty()
   })
 
   test('opens a post directly by url', async ({ page }) => {

@@ -557,6 +557,13 @@ section { padding: 72px 0 24px; }
 }
 .md-mermaid-err code { color: #f85149; }
 
+/* Shown while a post body loads, and if it fails. Same reasoning as the
+   mermaid placeholder above: brief, but it still has to be readable. */
+.post-status {
+  color: var(--fg); font-family: var(--mono); font-size: 12px;
+  padding: 10px 0;
+}
+
 .post-list { list-style: none; border-top: 1px solid var(--border-muted); }
 .post-row {
   display: flex; align-items: baseline; gap: 16px;
