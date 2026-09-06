@@ -58,14 +58,19 @@ measures card heights, then feeds those back as state to size each month. It
 looks like a render loop and is not — see the comment in `eslint.config.js`
 about the two React Compiler rules that are switched off for it.
 
-**Layout maths goes in a pure module.** `src/timeline/scale.js` and
-`src/seo/meta.js` are pure so they can be tested without a browser. If you add
-geometry, put the arithmetic somewhere a unit test can reach it. Both shipped
-layout bugs in this repo lived in code that only a browser could exercise.
+**Layout maths goes in a pure module.** `src/timeline/scale.js`,
+`src/seo/meta.js` and `src/blog/parse.js` are pure so they can be tested
+without a browser. If you add geometry, put the arithmetic somewhere a unit
+test can reach it. Both shipped layout bugs in this repo lived in code that
+only a browser could exercise. `parse.js` earns it twice over: the build
+plugin runs it in Node and the browser runs it on the raw file, so one parser
+serves both and an index can never disagree with the post it points at.
 
-**Adding a dependency needs a reason.** The site ships ~60 kB gzipped before
+**Adding a dependency needs a reason.** The site ships ~65 kB gzipped before
 first paint and `npm run size` fails the build if that grows. Anything large
-belongs behind a dynamic `import()`, the way mermaid is.
+belongs behind a dynamic `import()`, the way mermaid and the blog post bodies
+are. Content counts as weight too: adding a post must not make the landing
+page heavier, which is what the `?meta` / `?raw` split in `src/blog/` buys.
 
 ## Reporting a bug
 

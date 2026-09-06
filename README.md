@@ -23,8 +23,8 @@ Then, in order:
 
 1. **`site.config.js`** — your name, handle, hero copy, links, footer.
 2. **`src/data.js`** — pinned repos, research, languages, stack.
-3. **`content/*.md`** — your timeline, one file per track.
-4. **`content/blog/*.md`** — your posts (delete `hello-world.md`).
+3. **`content/timeline/*.md`** — your timeline, one file per track.
+4. **`content/blog/*.md`** — your posts, one file each; the filename is the url.
 5. **`public/favicon.svg`** — swap the graph mark for your own.
 
 That is the whole setup. When this grep comes back empty, you are done:
@@ -222,8 +222,16 @@ The entry-payload budget in [`scripts/check-bundle.js`](scripts/check-bundle.js)
 is the one worth knowing about. `dist/` is a few megabytes, almost all of it
 mermaid, split into chunks that load only when a post actually contains a
 diagram. The budget covers what the browser fetches before first paint
-(~60 kB gzipped), so turning one dynamic import into a static one fails the
+(~65 kB gzipped), so turning one dynamic import into a static one fails the
 build instead of quietly shipping 3 MB.
+
+Blog posts are split the same way, which is why writing more of them does not
+slow the site down. [`plugins/blogMeta.js`](plugins/blogMeta.js) turns each
+post into two imports: `?meta` is its frontmatter, eager and tiny, and it is
+what the Writing list renders from; the body is a dynamic `import()` that runs
+when someone opens the post. Nine posts of prose are about 40 kB gzipped — an
+eager glob puts all of it in front of every visitor, including the ones who
+only came for the graph.
 
 ## Using it as a submodule
 
