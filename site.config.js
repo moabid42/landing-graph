@@ -166,6 +166,11 @@ export default {
   //   tldr   the finding in a sentence or two, not the abstract
   //   href   where the box opens — the ResearchGate publication url
   research: [
+    {
+      title: 'Recon as a First-Class Planning Action under Partial Observability',
+      tldr: 'Attack-path planners almost all assume they already know the network. Modelling reconnaissance as a planning action with its own OPSEC cost and information gain reaches the goal in 80.3% of randomised Active Directory graphs against 52.3% for a two-phase baseline — but only once the pursuit is directed and multi-step.',
+      href: 'https://www.researchgate.net/publication/405230754_Recon_as_a_First-Class_Planning_Action_under_Partial_Observability',
+    },
     // {
     //   title: 'Paper title, as published',
     //   tldr: 'What it found, in a sentence or two.',
@@ -183,7 +188,6 @@ export default {
   { name: 'Python', color: '#3572A5' },
   { name: 'C', color: '#555555' },
   { name: 'C++', color: '#f34b7d' },
-  { name: 'Rust', color: '#dea584' },
   { name: 'TypeScript', color: '#3178c6' },
   { name: 'Assembly', color: '#6E4C13' },
   ],
@@ -194,11 +198,11 @@ export default {
   {
     cat: 'security',
     items:
-      'threat modeling · code review · red teaming · binary exploitation · cryptography · web security',
+      'red teaming · detection engineering · cloud security · threat modeling · code review · rev ·  pwn · crypto',
   },
   {
     cat: 'infrastructure',
-    items: 'AWS · Docker · Terraform · Ansible · GitHub Actions · GitLab CI',
+    items: 'AWS · GCP · Docker · Podman · Terraform · Ansible · GitHub Actions · GitLab CI',
   },
   { cat: 'spoken', items: 'Arabic (native) · English, German, French (C1)' },
   ],
