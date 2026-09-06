@@ -118,9 +118,38 @@ is optional and falls back to `color`.
 npm run build     # -> dist/
 ```
 
-`vite.config.js` sets `base: './'`, so the build works from a subpath —
-GitHub Pages project sites included. Point Netlify, Vercel or Pages at
-`dist/` and you are done.
+`vite.config.js` sets `base: './'` and the router keeps every route in the
+fragment, so one build works unchanged at a project url
+(`you.github.io/repo/`), at a user site, and behind a custom domain. There is
+no base path to configure. Point Netlify, Vercel or Pages at `dist/`.
+
+### GitHub Pages
+
+[`.github/workflows/deploy.yml`](.github/workflows/deploy.yml) does it for
+you. One-time setup in your fork:
+
+1. **Settings → Pages → Source → GitHub Actions.**
+2. Set `seo.url` in `site.config.js` to where the site will live —
+   `https://you.github.io/repo` for a project site. That is what canonical
+   urls, `og:url` and `sitemap.xml` are built from, so a stale value is worse
+   than an empty one.
+3. Push to `main`, or run the workflow by hand from the Actions tab.
+
+The workflow lints, runs both test suites, builds, checks the entry-payload
+budget, and only then packages `dist/` and publishes it. It repeats the
+checks that `ci.yml` already runs on `main` on purpose: a deploy gated on a
+_separate_ workflow having passed is a deploy that can publish an unchecked
+commit. If you would rather save the minutes, drop the verification steps
+from `deploy.yml` and let CI be the gate.
+
+The packaged artifact is attached to every run, so you can also download it
+from the run summary and deploy it somewhere else by hand.
+
+Using a custom domain? Put a `CNAME` file in `public/` — Vite copies it into
+`dist/` — or set the domain in Settings → Pages. If you ever switch Pages
+back to the older "deploy from a branch" mode, add an empty `.nojekyll` to
+`public/` as well; the Actions path here does not run Jekyll, so it is not
+needed today.
 
 ## Search engines and share cards
 
