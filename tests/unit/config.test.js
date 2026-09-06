@@ -96,6 +96,40 @@ describe('tracks', () => {
   })
 })
 
+describe('work', () => {
+  it('is a non-empty list', () => {
+    expect(Array.isArray(config.work)).toBe(true)
+    expect(config.work.length).toBeGreaterThan(0)
+  })
+
+  it('gives every card a title, a description and a visibility badge', () => {
+    for (const w of config.work) {
+      expect(w.title?.trim(), w.title).toBeTruthy()
+      expect(w.text?.trim(), w.title).toBeTruthy()
+      expect(w.visibility?.trim(), w.title).toBeTruthy()
+    }
+  })
+
+  it('has unique titles, since they key the cards', () => {
+    const titles = config.work.map((w) => w.title)
+    expect(new Set(titles).size).toBe(titles.length)
+  })
+
+  it('gives every card topic pills', () => {
+    for (const w of config.work) {
+      expect(Array.isArray(w.topics), w.title).toBe(true)
+      expect(w.topics.length, w.title).toBeGreaterThan(0)
+    }
+  })
+
+  it('links out over http(s), or not at all', () => {
+    for (const w of config.work) {
+      if (w.href !== null && w.href !== undefined)
+        expect(w.href, w.title).toMatch(/^https?:\/\//)
+    }
+  })
+})
+
 describe('seo and footer', () => {
   it('has a description and a theme colour', () => {
     expect(config.seo.description.trim()).not.toBe('')
