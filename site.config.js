@@ -2,27 +2,27 @@
 // site.config.js — everything that makes this site yours.
 //
 // This is the only file you have to edit to put your own name on the site.
-// Your timeline lives in content/*.md, your posts in content/blog/*.md, and
-// the lists that fill the Pinned / Research / Stack sections are in
-// src/data.js. Nothing else needs touching.
+// Your timeline lives in content/timeline/*.md, your posts in
+// content/blog/*.md, and the lists that fill the Pinned / Research / Stack
+// sections are in src/data.js. Nothing else needs touching.
 // ============================================================================
 
 export default {
   // ---------------------------------------------------------------- identity
   identity: {
     // The header crumb reads "handle / repo", like a repository page.
-    handle: 'yourhandle',
-    repo: 'yoursite.dev',
+    handle: 'moabid42',
+    repo: 'moabid.me',
 
     // One letter for the circular avatar next to the crumb.
-    avatar: 'y',
+    avatar: 'm',
 
     // The README hero.
-    name: 'Your Name',
+    name: 'Mouad Abid',
     tagline:
-      'One line about what you do, who you do it for, and the thing you ' +
-      'are working on right now. Keep it short — the graph below does the ' +
-      'rest of the talking.',
+      'Software security engineer. Experienced in building and breaking complex' +
+      ' & highload systems, currently attacking Schwarz Group ' +
+      'from the inside, on purpose.',
 
     // The pull quote under the tagline. Explains the graph to a first-time
     // reader; rewrite it in your own voice or set it to null to hide it.
@@ -32,25 +32,26 @@ export default {
       'at the same time.',
 
     // The green-dot status line. Set status to null to hide the whole row.
-    status: 'now · what you are doing right now',
-    location: 'your city, xx',
+    status: 'now · offensive security @ schwarz digits',
+    location: 'heilbronn, de',
 
-    email: 'you@example.com',
+    email: 'moabid42@proton.me',
   },
 
   // ------------------------------------------------------------------- links
   // Rendered as the `git remote -v` table in the Contact section, in this
   // order. Sections elsewhere look these up by name: "medium" is the Writing
-  // section's link, "researchgate" is the Research section's. Add, remove or
-  // reorder freely — a missing name just hides that link.
+  // section's link, "researchgate" is the Research section's, "github" is the
+  // header crumb. Add, remove or reorder freely — a missing name just hides
+  // whatever renders it.
   links: [
-    { name: 'origin', url: 'mailto:you@example.com', kind: 'email' },
-    { name: 'github', url: 'https://github.com/yourhandle', kind: 'fetch' },
-    { name: 'linkedin', url: 'https://linkedin.com/in/yourhandle', kind: 'fetch' },
-    { name: 'medium', url: 'https://medium.com/@yourhandle', kind: 'fetch' },
+    { name: 'origin', url: 'mailto:moabid42@proton.me', kind: 'email' },
+    { name: 'github', url: 'https://github.com/moabid42', kind: 'fetch' },
+    { name: 'linkedin', url: 'https://linkedin.com/in/moabid42', kind: 'fetch' },
+    { name: 'medium', url: 'https://medium.com/@m0ab1d42', kind: 'fetch' },
     {
       name: 'researchgate',
-      url: 'https://www.researchgate.net/profile/Your-Name',
+      url: 'https://www.researchgate.net/profile/Mouad-Abid',
       kind: 'fetch',
     },
   ],
@@ -62,15 +63,20 @@ export default {
     // Where the site is served from, no trailing slash. Canonical urls, the
     // share image and sitemap.xml are all built from this. Leave it empty
     // and those are simply left out.
-    url: 'https://yoursite.dev',
+    //
+    // This is the GitHub Pages project url. Point a custom domain at the
+    // repo and this becomes 'https://moabid.me' — one line, nothing else
+    // changes, because the build uses relative paths throughout.
+    url: 'https://moabid42.github.io/landing-graph',
 
     description:
-      'Your Name — what you do. Career rendered as git log --graph --all: ' +
-      'every job, degree and project as a branch.',
+      'Mouad Abid — software security engineer. Career rendered as git log ' +
+      '--graph --all: every job, degree and project as a branch.',
 
     // The picture shown when a link is posted to LinkedIn, X or Slack.
     // A path under public/, or a full url. 1200x630 is the safe size.
-    image: '/og.png',
+    // Empty means links share without a picture.
+    image: '',
 
     themeColor: '#0d1117',
   },
@@ -109,7 +115,7 @@ export default {
   // ------------------------------------------------------------------ footer
   footer: {
     // {year} is replaced with the current year.
-    text: '© {year} Your Name · your city',
-    note: 'rendered from `git log --graph --all`',
+    text: '© {year} Mouad Abid · Heilbronn',
+    note: 'rendered from `git log --graph --all` · v2.0',
   },
 }

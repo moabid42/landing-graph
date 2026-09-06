@@ -75,11 +75,22 @@ test.describe('share cards and crawlability', () => {
     request,
   }) => {
     const html = await (await request.get('/')).text()
-    for (const tag of ['og:title', 'og:description', 'og:image', 'og:url']) {
+    for (const tag of ['og:title', 'og:description', 'og:url']) {
       expect(html, tag).toContain(`property="${tag}"`)
     }
     expect(html).toContain('name="twitter:card"')
     expect(html).toContain('rel="canonical"')
+
+    // The static fallback has to say the same thing the runtime does. With
+    // no seo.image configured, that means no image tag at all rather than
+    // one pointing at a file that is not there.
+    if (config.seo.image) {
+      expect(html).toContain('property="og:image"')
+      expect(html).toContain('content="summary_large_image"')
+    } else {
+      expect(html).not.toContain('property="og:image"')
+      expect(html).toContain('content="summary"')
+    }
   })
 
   test('robots.txt points at the sitemap', async ({ request }) => {

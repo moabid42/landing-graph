@@ -3,39 +3,46 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- Static fallback. App.jsx sets the live title from src/data.js. -->
-    <title>yourhandle / yoursite.dev</title>
+    <!-- Static fallback. App.jsx sets the live title from site.config.js. -->
+    <title>moabid42 / moabid.me</title>
     <meta
       name="description"
-      content="Your Name — what you do. Career rendered as git log --graph --all: every job, degree and project as a branch."
+      content="Mouad Abid — software security engineer. Career rendered as git log --graph --all: every job, degree and project as a branch."
     />
     <meta name="color-scheme" content="dark light" />
     <meta name="theme-color" content="#0d1117" />
-    <link rel="canonical" href="https://yoursite.dev/" />
+    <link rel="canonical" href="https://moabid42.github.io/landing-graph/" />
 
-    <!-- Share card. src/seo.js keeps these in step as the router moves
+    <!-- Share card. src/seo/apply.js keeps these in step as the router moves
          between the README and a post; these values are the fallback for
-         crawlers that never run scripts. Edit site.config.js, not here. -->
-    <meta property="og:site_name" content="yoursite.dev" />
+         crawlers that never run scripts. Edit site.config.js, not here.
+         No og:image while seo.image is empty — a card pointing at a missing
+         file shares worse than one with no picture at all. -->
+    <meta property="og:site_name" content="moabid.me" />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="yourhandle / yoursite.dev" />
+    <meta property="og:title" content="moabid42 / moabid.me" />
     <meta
       property="og:description"
-      content="Your Name — what you do. Career rendered as git log --graph --all: every job, degree and project as a branch."
+      content="Mouad Abid — software security engineer. Career rendered as git log --graph --all: every job, degree and project as a branch."
     />
-    <meta property="og:url" content="https://yoursite.dev/" />
-    <meta property="og:image" content="https://yoursite.dev/og.png" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="yourhandle / yoursite.dev" />
+    <meta
+      property="og:url"
+      content="https://moabid42.github.io/landing-graph/"
+    />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="moabid42 / moabid.me" />
     <meta
       name="twitter:description"
-      content="Your Name — what you do. Career rendered as git log --graph --all: every job, degree and project as a branch."
+      content="Mouad Abid — software security engineer. Career rendered as git log --graph --all: every job, degree and project as a branch."
     />
-    <meta name="twitter:image" content="https://yoursite.dev/og.png" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <!-- Optional raster fallbacks — drop your own into public/ and uncomment:
-  <link rel="alternate icon" type="image/png" sizes="64x64" href="/favicon.png" />
-  <link rel="apple-touch-icon" href="/apple-touch-icon.png" /> -->
+    <link rel="icon" type="image/svg+xml" href="/favicon-default.svg" />
+    <link
+      rel="alternate icon"
+      type="image/png"
+      sizes="64x64"
+      href="/favicon.png"
+    />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   </head>
   <body>
     <div id="root"></div>
