@@ -104,8 +104,8 @@ function Card({ e, ended, cardRef, style }) {
           </span>
         )}
         {e.meta &&
-          e.meta.split(' · ').map((t) => (
-            <span key={t} className="topic">
+          e.meta.split(' · ').map((t, i) => (
+            <span key={`${t}-${i}`} className="topic">
               {t}
             </span>
           ))}

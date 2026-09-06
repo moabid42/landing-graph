@@ -82,8 +82,8 @@ function PostPage({ post }) {
             <h1>{post.title}</h1>
             {post.topics.length > 0 && (
               <p className="post-tags">
-                {post.topics.map((t) => (
-                  <span key={t} className="topic">
+                {post.topics.map((t, i) => (
+                  <span key={`${t}-${i}`} className="topic">
                     {t}
                   </span>
                 ))}
@@ -263,8 +263,8 @@ export default function App() {
                 </h3>
                 <p className="pin-desc">{w.text}</p>
                 <div className="pin-topics">
-                  {w.topics.map((t) => (
-                    <span key={t} className="topic">{t}</span>
+                  {w.topics.map((t, i) => (
+                    <span key={`${t}-${i}`} className="topic">{t}</span>
                   ))}
                 </div>
               </article>
@@ -318,8 +318,8 @@ export default function App() {
                       {p.summary && <p className="post-summary">{p.summary}</p>}
                       {p.topics.length > 0 && (
                         <span className="post-topics">
-                          {p.topics.map((t) => (
-                            <span key={t} className="topic">
+                          {p.topics.map((t, i) => (
+                            <span key={`${t}-${i}`} className="topic">
                               {t}
                             </span>
                           ))}
