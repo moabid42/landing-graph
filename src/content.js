@@ -1,25 +1,28 @@
-// Timeline content is authored in content/*.md — one file per track, plus
-// tags.md for point events. This module parses them into the shapes the
-// Timeline template renders. Editing a markdown file is all it takes to
+// Timeline content is authored in content/timeline/*.md — one file per
+// track, plus tags.md for point events. This module parses them into the
+// shapes the Timeline renders. Editing a markdown file is all it takes to
 // add or remove an entry; dates sort and branch lanes assign automatically.
-import workMd from '../content/work.md?raw'
-import educationMd from '../content/education.md?raw'
-import projectsMd from '../content/projects.md?raw'
-import startupsMd from '../content/startups.md?raw'
-import speakingMd from '../content/speaking.md?raw'
-import tagsMd from '../content/tags.md?raw'
+//
+// Which tracks exist, what they are called and what color they run in is
+// site.config.js. Nothing here is hardcoded to a particular track.
+import config from '../site.config.js'
+import {
+  TRACK_SOURCES,
+  TAGS_SOURCE,
+  TAGS_FILE,
+  trackFile,
+} from './loadContent.js'
 
-export const TRACKS = {
-  work: { label: 'work' },
-  education: { label: 'education' },
-  projects: { label: 'projects' },
-  startups: { label: 'startups' },
-  speaking: { label: 'speaking' },
-}
+// Legend shape, in config order: { work: { label: 'work' }, … }
+export const TRACKS = Object.fromEntries(
+  config.tracks.map((t) => [t.key, { label: t.label ?? t.key }])
+)
 
 // Tracks whose entries ride ONE shared branch: a running thread that forks
 // at the first entry and stays open until now (each entry is a commit on it).
-const CONTINUOUS = new Set(['speaking'])
+const CONTINUOUS = new Set(
+  config.tracks.filter((t) => t.continuous).map((t) => t.key)
+)
 
 // Minimum clearance (in years) before a branch lane is reused, so a
 // merge-back curve never blends into the next branch-out in the same lane.
@@ -50,6 +53,15 @@ function parseDate(s, ctx, field) {
   }
   return +m[1] + (mo - 0.5) / 12
 }
+
+// A track configured with no file, or a file with no configured track, is
+// a typo either way — both are silent no-ops otherwise.
+for (const t of config.tracks)
+  if (!(t.key in TRACK_SOURCES))
+    problem(trackFile(t.key), t.key, 'track is configured but the file is missing')
+for (const key of Object.keys(TRACK_SOURCES))
+  if (!config.tracks.some((t) => t.key === key))
+    problem(trackFile(key), key, 'file has no track in site.config.js — not rendered')
 
 const slug = (s) =>
   s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
@@ -192,13 +204,10 @@ function assignLanes(branches) {
   }
 }
 
-const allEntries = [
-  ...parseTrack(workMd, 'work', 'content/work.md'),
-  ...parseTrack(educationMd, 'education', 'content/education.md'),
-  ...parseTrack(projectsMd, 'projects', 'content/projects.md'),
-  ...parseTrack(startupsMd, 'startups', 'content/startups.md'),
-  ...parseTrack(speakingMd, 'speaking', 'content/speaking.md'),
-].sort((a, b) => a.start - b.start)
+const allEntries = config.tracks
+  .filter((t) => t.key in TRACK_SOURCES)
+  .flatMap((t) => parseTrack(TRACK_SOURCES[t.key], t.key, trackFile(t.key)))
+  .sort((a, b) => a.start - b.start)
 
 // One branch per entry, except CONTINUOUS tracks, whose entries share a
 // single branch that forks at the first one and stays open until now.
@@ -240,12 +249,12 @@ export const BRANCHES = []
 
 export const ENTRIES = allEntries
 
-export const POINTS = parseBlocks(tagsMd)
+export const POINTS = parseBlocks(TAGS_SOURCE)
   .map(({ title, fields }) => {
-    const at = parseDate(fields.date, { file: 'content/tags.md', title }, 'date')
+    const at = parseDate(fields.date, { file: TAGS_FILE, title }, 'date')
     if (at === null) {
       if (!fields.date)
-        problem('content/tags.md', title, 'missing "date" — tag skipped')
+        problem(TAGS_FILE, title, 'missing "date" — tag skipped')
       return null
     }
     return { id: slug(title), at, label: title }

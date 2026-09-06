@@ -65,6 +65,37 @@ export default {
     themeColor: '#0d1117',
   },
 
+  // ------------------------------------------------------------------ tracks
+  // One entry per file in content/timeline/. `key` IS the filename:
+  // key 'work' reads content/timeline/work.md.
+  //
+  // Adding a track is one entry here plus one markdown file — no CSS, no
+  // code. Removing one is deleting both. A file with no entry, or an entry
+  // with no file, shows up in the warning banner above the graph instead of
+  // failing silently.
+  //
+  //   key        filename in content/timeline/, and the CSS class
+  //   label      shown in the filter legend and on each card
+  //   color      branch color in dark mode
+  //   colorLight branch color in light mode (optional — falls back to color)
+  //   continuous all entries ride ONE shared branch that forks at the first
+  //              and stays open, each entry a commit on it. Good for
+  //              recurring activity: talks, teaching, writing. Default false,
+  //              which gives every entry its own branch.
+  tracks: [
+    { key: 'work', label: 'work', color: '#3fb950', colorLight: '#1a7f37' },
+    { key: 'education', label: 'education', color: '#58a6ff', colorLight: '#0969da' },
+    { key: 'projects', label: 'projects', color: '#a371f7', colorLight: '#8250df' },
+    { key: 'startups', label: 'startups', color: '#f0883e', colorLight: '#bc4c00' },
+    {
+      key: 'speaking',
+      label: 'speaking',
+      color: '#db61a2',
+      colorLight: '#bf3989',
+      continuous: true,
+    },
+  ],
+
   // ------------------------------------------------------------------ footer
   footer: {
     // {year} is replaced with the current year.

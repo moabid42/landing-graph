@@ -43,9 +43,9 @@ used it — drop `researchgate` and the Research section stops linking out.
 One markdown file per track:
 
 ```
-content/work.md        content/startups.md
-content/education.md   content/speaking.md
-content/projects.md    content/tags.md   (milestones pinned to the trunk)
+content/timeline/work.md        content/timeline/startups.md
+content/timeline/education.md   content/timeline/speaking.md
+content/timeline/projects.md    content/tags.md   (milestones on the trunk)
 ```
 
 Each entry is a `## Title` block with `- key: value` fields and a
@@ -81,26 +81,30 @@ warning banner above the graph, naming the file and the entry.
 
 ## Tracks
 
-Tracks are defined in `src/content.js`:
+Each file in `content/timeline/` is a track, declared in `site.config.js`:
 
 ```js
-export const TRACKS = {
-  work: { label: 'work' },
-  education: { label: 'education' },
-  // …
-}
+tracks: [
+  { key: 'work', label: 'work', color: '#3fb950', colorLight: '#1a7f37' },
+  { key: 'speaking', label: 'speaking', color: '#db61a2',
+    colorLight: '#bf3989', continuous: true },
+]
 ```
 
-A track listed in `CONTINUOUS` rides one shared branch that forks at its
-first entry and stays open, with each entry a commit on it — good for
-recurring activity like talks or teaching. Everything else gets a branch
-per entry.
+The `key` is the filename: `key: 'work'` reads `content/timeline/work.md`.
+Adding a track is one entry here plus one markdown file. Removing one is
+deleting both. Rename a track by renaming both together.
 
-Track colors are the `--c-<track>` variables in `src/styles.css`, defined
-once for dark and once for light.
+A `continuous` track rides one shared branch that forks at its first entry
+and stays open, with each entry a commit on it — good for recurring
+activity like talks or teaching. Everything else gets a branch per entry.
 
-> Adding a track currently means editing `src/content.js` and `src/styles.css`
-> as well. Making it a one-line config change is Phase 2 of [plan.md](plan.md).
+Mistakes are loud: a track with no file, or a file with no track, shows up
+in the warning banner above the graph naming the file.
+
+> Track colors are still the `--c-<track>` variables in `src/styles.css`.
+> Wiring `color` / `colorLight` above straight through is the second half
+> of Phase 2 in [plan.md](plan.md).
 
 ## Deploying
 
