@@ -1,0 +1,4 @@
+# Lint and format only what is staged, then keep the unit suite green.
+# The e2e suite needs a build and a browser, so it runs in CI, not here.
+npx lint-staged
+npm run test
