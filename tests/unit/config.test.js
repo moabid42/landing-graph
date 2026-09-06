@@ -143,6 +143,13 @@ describe('research', () => {
     }
   })
 
+  it('gives every paper topic pills', () => {
+    for (const r of config.research) {
+      expect(Array.isArray(r.topics), r.title).toBe(true)
+      expect(r.topics.length, r.title).toBeGreaterThan(0)
+    }
+  })
+
   it('has unique titles, since they key the boxes', () => {
     const titles = config.research.map((r) => r.title)
     expect(new Set(titles).size).toBe(titles.length)

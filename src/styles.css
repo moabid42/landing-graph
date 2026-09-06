@@ -606,13 +606,25 @@ section { padding: 72px 0 24px; }
 }
 .paper-card:hover { border-color: var(--muted); text-decoration: none; }
 .paper-card h3 {
-  display: flex; align-items: baseline; gap: 10px;
+  display: flex; align-items: baseline; gap: 8px;
   font-size: 14.5px; font-weight: 600; line-height: 1.4;
 }
+/* Sits on the first line of the title, not centred against a wrapped one. */
+.paper-icon { color: var(--muted); flex: none; align-self: flex-start; margin-top: 3px; }
 .paper-title { color: var(--link); }
 .paper-card:hover .paper-title { text-decoration: underline; }
 .paper-arrow { margin-left: auto; color: var(--muted); flex: none; }
-.paper-tldr { font-size: 13px; color: var(--muted); }
+.paper-tldr { font-size: 13px; color: var(--muted); flex: 1; }
+.paper-topics { display: flex; gap: 6px; flex-wrap: wrap; }
+/* The archive the paper lives on, sitting where a repo card puts its stars
+   and last-pushed line. */
+.paper-meta {
+  display: flex; align-items: center; gap: 10px;
+  margin-top: 2px; padding-top: 12px;
+  border-top: 1px solid var(--border-muted);
+  font-family: var(--mono); font-size: 11.5px; color: var(--muted);
+}
+.paper-id { margin-left: auto; }
 
 /* ===================== stack ===================== */
 .lang-bar {

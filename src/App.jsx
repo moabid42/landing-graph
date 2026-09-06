@@ -49,6 +49,19 @@ const ticks = (s) =>
     .split(/`([^`]+)`/g)
     .map((part, i) => (i % 2 ? <code key={i}>{part}</code> : lines(part, i)))
 
+// A paper's url is also its metadata: the host is the archive it lives on and
+// ResearchGate's publication number reads like a commit sha. Anything the url
+// does not carry is simply left off the card.
+const paperMeta = (href) => {
+  let host = null
+  try {
+    host = new URL(href).hostname.replace(/^www\./, '')
+  } catch {
+    /* a malformed url still renders, just without its footer */
+  }
+  return { host, id: href.match(/\/publication\/(\d+)/)?.[1] ?? null }
+}
+
 const MAILTO = `mailto:${identity.email}`
 const MEDIUM_URL = linkTo('medium')
 const RESEARCHGATE_URL = linkTo('researchgate')
@@ -479,12 +492,35 @@ export default function App() {
                       rel="noopener noreferrer"
                     >
                       <h3>
+                        <IconFlask
+                          width={14}
+                          height={14}
+                          className="paper-icon"
+                        />
                         <span className="paper-title">{r.title}</span>
                         <span className="paper-arrow" aria-hidden="true">
                           ↗
                         </span>
                       </h3>
                       <p className="paper-tldr">{r.tldr}</p>
+                      {r.topics?.length > 0 && (
+                        <div className="paper-topics">
+                          {r.topics.map((t, i) => (
+                            <span key={`${t}-${i}`} className="topic">
+                              {t}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                      {(() => {
+                        const { host, id } = paperMeta(r.href)
+                        return host ? (
+                          <div className="paper-meta">
+                            <span>{host}</span>
+                            {id && <span className="paper-id">#{id}</span>}
+                          </div>
+                        ) : null
+                      })()}
                     </a>
                   ))}
                 </div>
