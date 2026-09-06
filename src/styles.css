@@ -58,6 +58,15 @@ a { color: var(--link); text-decoration: none; }
 a:hover { text-decoration: underline; }
 code { font-family: var(--mono); font-size: 0.9em; }
 :focus-visible { outline: 2px solid var(--link); outline-offset: 2px; border-radius: 4px; }
+/* Off-screen until focused, so a keyboard user can jump the whole header
+   and a mouse user never sees it. */
+.skip-link {
+  position: absolute; left: 8px; top: -60px; z-index: 100;
+  padding: 10px 16px; border-radius: 6px;
+  background: var(--bg); border: 1px solid var(--border); color: var(--fg);
+  transition: top 0.15s;
+}
+.skip-link:focus { top: 8px; }
 ::selection { background: color-mix(in srgb, var(--link) 35%, transparent); }
 
 main { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
@@ -474,6 +483,10 @@ section { padding: 72px 0 24px; }
 .post-summary { flex-basis: 100%; font-size: 13px; color: var(--muted); margin: 0; }
 
 .md-body { font-size: 15.5px; line-height: 1.65; max-width: 100%; }
+/* In running prose a link needs a non-colour cue to be distinguishable.
+   Outside prose, links sit in nav, tables and cards where position and
+   surrounding chrome already mark them out. */
+.md-body p a, .md-body li a { text-decoration: underline; text-underline-offset: 2px; }
 .md-body > :first-child { margin-top: 0; }
 .md-body p { margin: 0 0 14px; }
 .md-body h1, .md-body h2, .md-body h3,

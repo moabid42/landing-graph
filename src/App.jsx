@@ -139,6 +139,9 @@ export default function App() {
 
   return (
     <>
+      <a className="skip-link" href="#top">
+        Skip to content
+      </a>
       <header className="gh-header">
         <div className="gh-header-inner">
           <div className="crumb">
@@ -165,6 +168,11 @@ export default function App() {
             </a>
             <button
               className="gh-btn"
+              aria-label={
+                theme === 'dark'
+                  ? 'Switch to light theme'
+                  : 'Switch to dark theme'
+              }
               onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
             >
               {theme === 'dark' ? 'light' : 'dark'}

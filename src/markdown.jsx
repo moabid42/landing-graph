@@ -78,6 +78,16 @@ const MERMAID_DARK = {
   tertiaryColor: '#161b22',
   lineColor: '#8b949e',
   textColor: '#e6edf3',
+  // Without these mermaid derives its own greys for node, edge and note
+  // text, and lands under the 4.5:1 contrast floor. Pinning them keeps
+  // every label at the same contrast as body copy.
+  nodeTextColor: '#e6edf3',
+  secondaryTextColor: '#e6edf3',
+  tertiaryTextColor: '#e6edf3',
+  noteTextColor: '#e6edf3',
+  noteBkgColor: '#21262d',
+  noteBorderColor: '#30363d',
+  edgeLabelBackground: '#161b22',
   fontSize: '14px',
 }
 const MERMAID_LIGHT = {
@@ -89,6 +99,13 @@ const MERMAID_LIGHT = {
   tertiaryColor: '#f6f8fa',
   lineColor: '#59636e',
   textColor: '#1f2328',
+  nodeTextColor: '#1f2328',
+  secondaryTextColor: '#1f2328',
+  tertiaryTextColor: '#1f2328',
+  noteTextColor: '#1f2328',
+  noteBkgColor: '#eaeef2',
+  noteBorderColor: '#d0d7de',
+  edgeLabelBackground: '#f6f8fa',
   fontSize: '14px',
 }
 
@@ -158,6 +175,10 @@ export function Mermaid({ code }) {
     <div
       className="md-mermaid"
       role="img"
+      // A role="img" with no name is announced as an unlabelled graphic.
+      // Mermaid's first line names the diagram type, which is the most
+      // useful thing to say without a human-written caption.
+      aria-label={`${code.trim().split('\n')[0].trim()} diagram`}
       dangerouslySetInnerHTML={{ __html: svg }}
     />
   )
