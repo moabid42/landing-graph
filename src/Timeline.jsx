@@ -579,7 +579,7 @@ function DesktopTimeline({ filter }) {
     const years = []
     for (let Y = startYear; Y <= endYear; Y++) if (active[Y]) years.push(Y)
     return { startYear, y, invY, years, breaks }
-  }, [NOW, density]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [NOW, density])
   const { y, invY } = scale
 
   const H = Math.round(y(NOW + 0.12) + 130)
