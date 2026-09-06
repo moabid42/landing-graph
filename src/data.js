@@ -1,47 +1,65 @@
 // The lists that fill the Pinned, Research and Stack sections.
 //
 // Your name, links and hero copy are NOT here — those live in
-// site.config.js. Timeline entries live in content/*.md, blog posts in
-// content/blog/*.md. Everything below is yours to replace.
+// site.config.js. Timeline entries live in content/timeline/*.md, blog
+// posts in content/blog/*.md.
 
-// ---------- pinned repositories — the Pinned section ----------
-// Template:
-// { title, text, topics: [], href: 'https://…' | null, visibility: 'Public' | 'Internal' }
+// Pinned repositories — the Pinned section.
 export const WORK = [
   {
-    title: 'example-project',
-    text: 'One or two sentences on what this is and why it mattered. Lead with the outcome, not the tech stack.',
-    topics: ['topic', 'topic', 'topic'],
-    href: 'https://github.com/yourhandle',
+    title: 'decnique',
+    text: 'A domain-specific language and SMT-backed coverage engine that models SIEM detection rules and attacker techniques on one shared event schema — surfacing detection gaps in cloud IAM.',
+    topics: ['dsl', 'smt', 'sigma', 'elastic', 'panther'],
+    href: 'https://github.com/moabid42',
     visibility: 'Public',
   },
   {
-    title: 'another-project',
-    text: 'Work you cannot link to still belongs here — mark it Internal and describe the shape of it.',
-    topics: ['topic', 'topic'],
+    title: 'mals3scan',
+    text: 'Serverless AWS security pipeline that scans every file uploaded to S3 with YARA rules for malware and sensitive data, firing real-time alerts for incident response.',
+    topics: ['aws', 'lambda', 'yara', 'terraform'],
+    href: 'https://github.com/moabid42',
+    visibility: 'Public',
+  },
+  {
+    title: 'l3ak-ctf-infra',
+    text: 'Architecture and operations for a high-traffic yearly CTF: 15,000+ concurrent users and millions of requests inside the opening hour.',
+    topics: ['high-load', 'docker', 'monitoring'],
+    href: 'https://ctftime.org/team/220336',
+    visibility: 'Public',
+  },
+  {
+    title: 'redteam-copilot',
+    text: 'First-of-its-kind internal infrastructure and copilot for red-team engagements at Schwarz Digits, accelerating workflows roughly tenfold.',
+    topics: ['llm', 'red-team', 'automation'],
     href: null,
     visibility: 'Internal',
   },
 ]
 
-// ---------- research — the Research section ----------
-// Leave empty to show the blank slate instead.
+// Research. Titles + abstracts live here; each links back to ResearchGate.
 // Template:
-// { title: 'Paper title', abstract: 'One-paragraph abstract…', href: 'https://…' },
+// { title: 'Paper title', abstract: 'One-paragraph abstract…', href: 'https://www.researchgate.net/publication/...' },
 export const RESEARCH = []
 
-// ---------- stack ----------
-// Real GitHub language colors: https://github.com/ozh/github-colors
+// Real GitHub language colors.
 export const LANGUAGES = [
-  { name: 'JavaScript', color: '#f1e05a' },
   { name: 'Python', color: '#3572A5' },
-  { name: 'Go', color: '#00ADD8' },
-  { name: 'Rust', color: '#dea584' },
   { name: 'C', color: '#555555' },
+  { name: 'C++', color: '#f34b7d' },
+  { name: 'Rust', color: '#dea584' },
+  { name: 'TypeScript', color: '#3178c6' },
+  { name: 'Assembly', color: '#6E4C13' },
 ]
 
 export const STACK = [
-  { cat: 'category', items: 'skill · skill · skill · skill' },
-  { cat: 'infrastructure', items: 'tool · tool · tool · tool' },
-  { cat: 'spoken', items: 'Language (native) · Language (C1)' },
+  {
+    cat: 'security',
+    items:
+      'threat modeling · code review · red teaming · binary exploitation · cryptography · web security',
+  },
+  {
+    cat: 'infrastructure',
+    items: 'AWS · Docker · Terraform · Ansible · GitHub Actions · GitLab CI',
+  },
+  { cat: 'spoken', items: 'Arabic (native) · English, German, French (C1)' },
 ]
