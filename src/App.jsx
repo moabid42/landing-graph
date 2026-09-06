@@ -21,8 +21,9 @@ const { identity, links, seo, footer } = config
 // null, and whatever renders it hides itself — deleting a link is enough.
 const linkTo = (name) => links.find((l) => l.name === name)?.url ?? null
 
-// "https://github.com/x" -> "github.com/x"; "mailto:a@b" -> "a@b"
-const linkLabel = (url) => url.replace(/^https?:\/\//, '').replace(/^mailto:/, '')
+// "https://www.example.com/x" -> "example.com/x"; "mailto:a@b" -> "a@b"
+const linkLabel = (url) =>
+  url.replace(/^https?:\/\/(www\.)?/, '').replace(/^mailto:/, '')
 
 // Config strings may use `backticks` for inline code, the way markdown does.
 const ticks = (s) =>
