@@ -122,6 +122,55 @@ npm run build     # -> dist/
 GitHub Pages project sites included. Point Netlify, Vercel or Pages at
 `dist/` and you are done.
 
+## Development
+
+```sh
+npm install          # also installs the git hooks
+npm run dev          # vite dev server
+npm run build        # production bundle into dist/
+```
+
+### Checks
+
+| command                 | what it does                                      |
+| ----------------------- | ------------------------------------------------- |
+| `npm run lint`          | eslint over `src/`, config and tests              |
+| `npm run format`        | prettier over everything not in `.prettierignore` |
+| `npm run format:check`  | the same check CI runs                            |
+| `npm test`              | vitest, the parsing and config suite              |
+| `npm run test:coverage` | the same, with an 85% threshold                   |
+| `npm run e2e`           | playwright against the built site                 |
+| `npm run e2e:ui`        | playwright in watch mode, with a browser          |
+
+Unit tests cover the layer that turns markdown and `site.config.js` into the
+shapes the page renders — dates, entry fields, branch lanes, blog
+frontmatter. They also act as a content lint: a typo in `content/` fails
+`npm test` instead of quietly dropping an entry.
+
+End-to-end tests drive the real bundle in Chromium at desktop and mobile
+widths, covering the graph, the track filter, the theme toggle and the hash
+router.
+
+### Hooks
+
+`npm install` sets up two hooks via husky:
+
+- **pre-commit** — `lint-staged` (eslint + prettier on staged files) then the
+  unit suite.
+- **commit-msg** — [commitlint](commitlint.config.js). Messages are
+  conventional and one line: `type: lower case summary, no full stop`.
+  Allowed types include `content` for markdown edits alongside the usual
+  `feat`, `fix`, `style`, `refactor`, `test`, `docs`, `build`, `ci`, `chore`.
+
+To commit without them once: `git commit --no-verify`.
+
+### CI
+
+[`.github/workflows/ci.yml`](.github/workflows/ci.yml) runs on every push to
+`main` and every pull request: lint and formatting, unit tests with coverage,
+a production build, the end-to-end suite, and commitlint over the commits in
+the pull request.
+
 ## Using it as a submodule
 
 If you would rather keep your content in its own private repo and pull the
