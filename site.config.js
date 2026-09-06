@@ -20,7 +20,7 @@ export default {
     // The README hero.
     name: 'Mouad Abid',
     tagline:
-      'Software security engineer. Experienced in building and breaking complex' +
+      'Software Security Engineer. Experienced in building and breaking complex' +
       ' & highload systems, currently attacking Schwarz Group ' +
       'from the inside, on purpose.',
 
@@ -184,7 +184,7 @@ export default {
     {
       title: 'RCPRNG: Robust Complete PRNG',
       tldr: 'Cryptographic PRNG models assume unlimited compute and clean entropy; embedded systems have neither, and there entropy accumulation and generation share the same scarce resources. RCPRNG folds both into one security model whose completeness property carries guarantees across arbitrary state transitions, and shows the Gaži-Tessaro sponge construction satisfies it.',
-      topics: ['cryptography', 'prng', 'embedded'],
+      topics: ['cryptography', 'prng', 'IoT'],
       href: 'https://www.researchgate.net/publication/396647163_RCPRNG_-_Robust_Complete_Pseudo_Random_Number_Generator',
     },
     // {
