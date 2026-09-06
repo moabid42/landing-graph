@@ -2,7 +2,6 @@ import { Fragment, useEffect, useState } from 'react'
 import Timeline from './timeline/index.jsx'
 import Markdown from './markdown.jsx'
 import { POSTS, loadBody } from './blog/index.js'
-import { RESEARCH } from './data.js'
 import ErrorBoundary from './ErrorBoundary.jsx'
 import { applyMeta } from './seo/apply.js'
 import config from '../site.config.js'
@@ -24,6 +23,7 @@ const {
   work: WORK,
   stack: STACK,
   languages: LANGUAGES,
+  research: RESEARCH,
 } = config
 
 // Look a remote up by name. A name that is not in site.config.js returns

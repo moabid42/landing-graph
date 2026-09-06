@@ -2,9 +2,9 @@
 // site.config.js — everything that makes this site yours.
 //
 // This is the only file you have to edit to put your own name on the site.
-// Your timeline lives in content/timeline/*.md, your posts in
-// content/blog/*.md, and the lists that fill the Pinned / Research / Stack
-// sections are in src/data.js. Nothing else needs touching.
+// Your timeline lives in content/timeline/*.md and your posts in
+// content/blog/*.md; everything else — including the lists behind the
+// Pinned, Research and Stack sections — is right here.
 // ============================================================================
 
 export default {
@@ -155,6 +155,22 @@ export default {
     href: null,
     visibility: 'Internal',
   },
+  ],
+
+  // ---------------------------------------------------------------- research
+  // The Research section: one entry per paper, each linking back to its
+  // ResearchGate page. An empty list shows the "being indexed" panel with a
+  // link to the full profile instead.
+  //
+  //   title     the paper title, as published
+  //   abstract  one paragraph
+  //   href      the ResearchGate publication url
+  research: [
+    // {
+    //   title: 'Paper title, as published',
+    //   abstract: 'One-paragraph abstract…',
+    //   href: 'https://www.researchgate.net/publication/...',
+    // },
   ],
 
   // ------------------------------------------------------------------- stack

@@ -30,11 +30,10 @@ npm run dev
 Then, in order:
 
 1. **`site.config.js`** — your name, handle, hero copy, links, pinned repos,
-   stack, footer.
-2. **`src/data.js`** — research.
-3. **`content/timeline/*.md`** — your timeline, one file per track.
-4. **`content/blog/*.md`** — your posts, one file each; the filename is the url.
-5. **`public/favicon-default.svg`** — swap the graph mark for your own; it
+   research, stack, footer.
+2. **`content/timeline/*.md`** — your timeline, one file per track.
+3. **`content/blog/*.md`** — your posts, one file each; the filename is the url.
+4. **`public/favicon-default.svg`** — swap the graph mark for your own; it
    is the icon `index.html` points at, and what `npm run og` draws the share
    card from.
 
@@ -43,7 +42,7 @@ that none of it survives — when this grep comes back empty, the site is
 yours:
 
 ```sh
-grep -rniE "moabid|mouad" site.config.js src/data.js content/ index.html
+grep -rniE "moabid|mouad" site.config.js content/ index.html
 ```
 
 Then `npm run og` to regenerate the share card with your name on it.
