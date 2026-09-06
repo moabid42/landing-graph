@@ -3,6 +3,7 @@ import Timeline from './Timeline.jsx'
 import Markdown from './markdown.jsx'
 import { POSTS } from './blog.js'
 import { WORK, STACK, LANGUAGES, RESEARCH } from './data.js'
+import ErrorBoundary from './ErrorBoundary.jsx'
 import config from '../site.config.js'
 import { ENTRIES } from './content.js'
 import {
@@ -94,7 +95,9 @@ function PostPage({ post }) {
               </p>
             )}
           </div>
-          <Markdown src={post.body} />
+          <ErrorBoundary label="This post">
+            <Markdown src={post.body} />
+          </ErrorBoundary>
         </div>
       </article>
     </section>
@@ -250,7 +253,9 @@ export default function App() {
                 </h2>
                 <code className="cmd">$ git log --graph --all</code>
               </div>
-              <Timeline />
+              <ErrorBoundary label="The timeline">
+                <Timeline />
+              </ErrorBoundary>
             </section>
 
             {/* ---------- pinned work ---------- */}

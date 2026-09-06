@@ -657,3 +657,13 @@ footer code { color: var(--muted); }
   .tl-item { opacity: 1; translate: 0 0; transition: none; }
   * { transition-duration: 0.01ms !important; animation: none !important; }
 }
+
+/* a subtree that threw during render, swapped in by ErrorBoundary */
+.err-boundary {
+  margin: 16px 0; padding: 14px 16px; border-radius: 6px;
+  border: 1px solid color-mix(in srgb, var(--c-tag) 50%, transparent);
+  background: color-mix(in srgb, var(--c-tag) 8%, transparent);
+}
+.err-boundary strong { display: block; margin-bottom: 6px; color: var(--c-tag); }
+.err-boundary p { color: var(--muted); margin-bottom: 8px; }
+.err-boundary code { font-family: var(--mono); font-size: 12px; color: var(--muted); }
