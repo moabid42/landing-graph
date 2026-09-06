@@ -13,9 +13,17 @@ import {
   trackFile,
 } from './loadContent.js'
 
-// Legend shape, in config order: { work: { label: 'work' }, … }
+// Legend shape, in config order. Carries the colors too, so the renderer
+// can publish them as CSS variables instead of a stylesheet naming tracks.
 export const TRACKS = Object.fromEntries(
-  config.tracks.map((t) => [t.key, { label: t.label ?? t.key }])
+  config.tracks.map((t) => [
+    t.key,
+    {
+      label: t.label ?? t.key,
+      color: t.color,
+      colorLight: t.colorLight ?? t.color,
+    },
+  ])
 )
 
 // Tracks whose entries ride ONE shared branch: a running thread that forks

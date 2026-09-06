@@ -13,11 +13,6 @@
   --btn-border: #363b42;
   --btn-primary: #238636;
   --btn-primary-border: #2ea043;
-  --c-work: #3fb950;
-  --c-education: #58a6ff;
-  --c-projects: #a371f7;
-  --c-startups: #f0883e;
-  --c-speaking: #db61a2;
   --c-tag: #d29922;
   --c-merged: #8957e5;
   --c-open: #238636;
@@ -41,11 +36,6 @@ html[data-theme='light'] {
   --btn-border: #d0d7de;
   --btn-primary: #1f883d;
   --btn-primary-border: #1f883d;
-  --c-work: #1a7f37;
-  --c-education: #0969da;
-  --c-projects: #8250df;
-  --c-startups: #bc4c00;
-  --c-speaking: #bf3989;
   --c-tag: #9a6700;
   --c-merged: #8250df;
   --c-open: #1a7f37;
@@ -226,12 +216,10 @@ section { padding: 72px 0 24px; }
 }
 .tl-filter:hover { border-color: var(--muted); }
 .tl-filter[aria-pressed='true'] { border-color: var(--fg); background: var(--bg-subtle); }
-.swatch { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
-.swatch.work { background: var(--c-work); }
-.swatch.education { background: var(--c-education); }
-.swatch.projects { background: var(--c-projects); }
-.swatch.startups { background: var(--c-startups); }
-.swatch.speaking { background: var(--c-speaking); }
+.swatch {
+  width: 10px; height: 10px; border-radius: 50%; display: inline-block;
+  background: var(--tl-c, var(--muted));
+}
 
 .tl-wrap { position: relative; }
 .tl-list { list-style: none; }
@@ -251,12 +239,7 @@ section { padding: 72px 0 24px; }
   background: var(--fg); z-index: 1;
 }
 .branches { position: absolute; top: 0; left: 0; pointer-events: none; }
-.branch { fill: none; stroke-width: 2; }
-.branch.work { stroke: var(--c-work); }
-.branch.education { stroke: var(--c-education); }
-.branch.projects { stroke: var(--c-projects); }
-.branch.startups { stroke: var(--c-startups); }
-.branch.speaking { stroke: var(--c-speaking); }
+.branch { fill: none; stroke-width: 2; stroke: var(--tl-c, var(--muted)); }
 .branch.done { opacity: 0.5; }
 .branch.ongoing { opacity: 1; }
 
@@ -358,11 +341,7 @@ section { padding: 72px 0 24px; }
 .mbranch circle { fill: currentColor; }
 .mbranch.done { opacity: 0.55; }
 .mbranch.dim { opacity: 0.07; }
-.mbranch.work { color: var(--c-work); }
-.mbranch.education { color: var(--c-education); }
-.mbranch.projects { color: var(--c-projects); }
-.mbranch.startups { color: var(--c-startups); }
-.mbranch.speaking { color: var(--c-speaking); }
+.mbranch { color: var(--tl-c, var(--muted)); }
 
 .mtl-headnode {
   position: relative; z-index: 2; margin-top: 22px; min-height: 24px;
@@ -381,18 +360,9 @@ section { padding: 72px 0 24px; }
 .tl-node {
   position: absolute; width: 9px; height: 9px; border-radius: 50%;
   transform: translate(-50%, -50%); z-index: 2;
-  background: var(--bg); border: 2px solid var(--muted);
+  background: var(--bg); border: 2px solid var(--tl-c, var(--muted));
 }
-.tl-node.work { border-color: var(--c-work); }
-.tl-node.education { border-color: var(--c-education); }
-.tl-node.projects { border-color: var(--c-projects); }
-.tl-node.startups { border-color: var(--c-startups); }
-.tl-node.speaking { border-color: var(--c-speaking); }
-.tl-node.ongoing.work { background: var(--c-work); }
-.tl-node.ongoing.startups { background: var(--c-startups); }
-.tl-node.ongoing.education { background: var(--c-education); }
-.tl-node.ongoing.projects { background: var(--c-projects); }
-.tl-node.ongoing.speaking { background: var(--c-speaking); }
+.tl-node.ongoing { background: var(--tl-c, var(--muted)); }
 
 .tl-card {
   position: absolute;
@@ -427,12 +397,10 @@ section { padding: 72px 0 24px; }
   font-size: 11px; font-weight: 500;
   border-radius: 999px; padding: 1px 9px;
   border: 1px solid transparent;
+  color: var(--tl-c, var(--muted));
+  border-color: color-mix(in srgb, var(--tl-c, var(--muted)) 45%, transparent);
+  background: color-mix(in srgb, var(--tl-c, var(--muted)) 12%, transparent);
 }
-.gh-label.work { color: var(--c-work); border-color: color-mix(in srgb, var(--c-work) 45%, transparent); background: color-mix(in srgb, var(--c-work) 12%, transparent); }
-.gh-label.education { color: var(--c-education); border-color: color-mix(in srgb, var(--c-education) 45%, transparent); background: color-mix(in srgb, var(--c-education) 12%, transparent); }
-.gh-label.projects { color: var(--c-projects); border-color: color-mix(in srgb, var(--c-projects) 45%, transparent); background: color-mix(in srgb, var(--c-projects) 12%, transparent); }
-.gh-label.startups { color: var(--c-startups); border-color: color-mix(in srgb, var(--c-startups) 45%, transparent); background: color-mix(in srgb, var(--c-startups) 12%, transparent); }
-.gh-label.speaking { color: var(--c-speaking); border-color: color-mix(in srgb, var(--c-speaking) 45%, transparent); background: color-mix(in srgb, var(--c-speaking) 12%, transparent); }
 /* employment-type chip: not a branch, just a colored tag on the card */
 .worktime {
   font-size: 11px; font-weight: 500;

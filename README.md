@@ -102,9 +102,9 @@ activity like talks or teaching. Everything else gets a branch per entry.
 Mistakes are loud: a track with no file, or a file with no track, shows up
 in the warning banner above the graph naming the file.
 
-> Track colors are still the `--c-<track>` variables in `src/styles.css`.
-> Wiring `color` / `colorLight` above straight through is the second half
-> of Phase 2 in [plan.md](plan.md).
+Colors are published as CSS variables from the config, so `src/styles.css`
+names no track at all — a new track needs no stylesheet edit. `colorLight`
+is optional and falls back to `color`.
 
 ## Deploying
 

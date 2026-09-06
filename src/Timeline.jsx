@@ -6,6 +6,24 @@ const BRANCH_OF = Object.fromEntries(
 )
 import { IconMerge, IconIssueOpen, IconTag, IconClosed } from './icons.jsx'
 
+// Track colors live in site.config.js, not in a stylesheet. Publishing them
+// as CSS variables is what lets a new track be one config line: the rules in
+// styles.css all read var(--tl-c), and each element points --tl-c at its own
+// track. Both themes are emitted up front so a theme flip is pure CSS.
+const TRACK_CSS =
+  ':root{' +
+  Object.entries(TRACKS)
+    .map(([k, t]) => `--tl-track-${k}:${t.color};`)
+    .join('') +
+  "}html[data-theme='light']{" +
+  Object.entries(TRACKS)
+    .map(([k, t]) => `--tl-track-${k}:${t.colorLight};`)
+    .join('') +
+  '}'
+
+// Every element that carries a track class also carries its color.
+const trackVar = (track) => ({ '--tl-c': `var(--tl-track-${track})` })
+
 const CV = 44 // curve length of a branch-out / merge-in join, px
 const BREAK_PX = 56 // total height a run of empty years collapses to
 
@@ -77,7 +95,9 @@ function Card({ e, ended, cardRef, style }) {
           )}
           {e.dropped ? 'Dropped' : ended ? 'Merged' : 'Open'}
         </span>
-        <span className={`gh-label ${e.track}`}>{e.track}</span>
+        <span className={`gh-label ${e.track}`} style={trackVar(e.track)}>
+          {e.track}
+        </span>
         {e.time && (
           <span className={`worktime ${e.time}`}>
             {e.time === 'part' ? 'part-time' : 'full-time'}
@@ -118,6 +138,7 @@ export default function Timeline() {
 
   return (
     <>
+      <style>{TRACK_CSS}</style>
       {PROBLEMS.length > 0 && (
         <div className="tl-problems" role="alert">
           <strong>⚠ content warnings — some entries may be missing below</strong>
@@ -138,7 +159,11 @@ export default function Timeline() {
             aria-pressed={filter === key}
             onClick={() => setFilter(filter === key ? null : key)}
           >
-            <span className={`swatch ${key}`} aria-hidden="true" />
+            <span
+              className={`swatch ${key}`}
+              style={trackVar(key)}
+              aria-hidden="true"
+            />
             {t.label}
             <span className="counter">{counts[key] || 0}</span>
           </button>
@@ -361,6 +386,7 @@ function MobileTimeline({ filter }) {
               className={`mbranch ${b.track} ${b.done ? 'done' : ''} ${
                 dimmed(b.track) ? 'dim' : ''
               }`}
+              style={trackVar(b.track)}
             >
               <path d={branchPath(b)} />
               <circle cx={M_TRUNK} cy={b.forkY} r="3.5" />
@@ -728,6 +754,7 @@ function DesktopTimeline({ filter }) {
                   className={`branch ${b.track} ${
                     b.end !== null && b.end <= NOW ? 'done' : 'ongoing'
                   } ${dimmed(b.track) ? 'dim' : ''}`}
+                  style={trackVar(b.track)}
                   d={branchPath(b)}
                 />
               ))}
@@ -825,7 +852,7 @@ function DesktopTimeline({ filter }) {
                     <span className="tl-conn" style={connStyle} aria-hidden="true" />
                     <span
                       className={`tl-node ${e.track} ${ended ? '' : 'ongoing'}`}
-                      style={{ left: lx, top: cy }}
+                      style={{ left: lx, top: cy, ...trackVar(e.track) }}
                       aria-hidden="true"
                     />
                     <Card
