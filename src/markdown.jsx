@@ -166,7 +166,10 @@ export function Mermaid({ code }) {
 /* ---------------- block markdown ---------------- */
 const ITEM_RE = /^(\s*)([-*+]|\d+[.)])\s+(.*)$/
 const slugify = (s) =>
-  s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
+  s
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '')
 
 // if a list item parses to a single paragraph, unwrap it (tight list)
 const unwrap = (nodes) =>
@@ -226,7 +229,8 @@ function blocks(src) {
       const lang = fence[1].toLowerCase()
       const buf = []
       i++
-      while (i < lines.length && !/^```\s*$/.test(lines[i])) buf.push(lines[i++])
+      while (i < lines.length && !/^```\s*$/.test(lines[i]))
+        buf.push(lines[i++])
       i++
       const code = buf.join('\n')
       if (lang === 'mermaid') out.push(<Mermaid key={k++} code={code} />)
@@ -273,14 +277,23 @@ function blocks(src) {
       lines[i + 1].includes('-')
     ) {
       const splitRow = (l) =>
-        l.trim().replace(/^\|/, '').replace(/\|$/, '').split('|').map((c) => c.trim())
+        l
+          .trim()
+          .replace(/^\|/, '')
+          .replace(/\|$/, '')
+          .split('|')
+          .map((c) => c.trim())
       const head = splitRow(line)
       const aligns = splitRow(lines[i + 1]).map((c) =>
         /^:-+:$/.test(c) ? 'center' : /^-+:$/.test(c) ? 'right' : undefined
       )
       i += 2
       const rows = []
-      while (i < lines.length && lines[i].includes('|') && !/^\s*$/.test(lines[i]))
+      while (
+        i < lines.length &&
+        lines[i].includes('|') &&
+        !/^\s*$/.test(lines[i])
+      )
         rows.push(splitRow(lines[i++]))
       out.push(
         <div key={k++} className="md-table-wrap">
@@ -317,7 +330,10 @@ function blocks(src) {
         const l = lines[i]
         if (/^\s*$/.test(l)) {
           const nxt = lines[i + 1]
-          if (nxt !== undefined && (ITEM_RE.test(nxt) || /^\s{2,}\S/.test(nxt))) {
+          if (
+            nxt !== undefined &&
+            (ITEM_RE.test(nxt) || /^\s{2,}\S/.test(nxt))
+          ) {
             buf.push('')
             i++
             continue

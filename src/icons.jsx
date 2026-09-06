@@ -15,7 +15,12 @@ export const IconRepo = (p) => (
   <svg {...base} {...p}>
     <path d="M4.75 1.75h7.5v12.5h-6a1.5 1.5 0 0 1 0-3h6" />
     <path d="M4.75 1.75a1.5 1.5 0 0 0-1.5 1.5v9.25" />
-    <path d="M6.5 14.25v-2.5l1.25.9 1.25-.9v2.5" fill="currentColor" stroke="none" opacity=".85" />
+    <path
+      d="M6.5 14.25v-2.5l1.25.9 1.25-.9v2.5"
+      fill="currentColor"
+      stroke="none"
+      opacity=".85"
+    />
   </svg>
 )
 

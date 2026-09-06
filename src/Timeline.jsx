@@ -142,7 +142,9 @@ export default function Timeline() {
       <style>{TRACK_CSS}</style>
       {PROBLEMS.length > 0 && (
         <div className="tl-problems" role="alert">
-          <strong>⚠ content warnings — some entries may be missing below</strong>
+          <strong>
+            ⚠ content warnings — some entries may be missing below
+          </strong>
           <ul>
             {PROBLEMS.map((p, i) => (
               <li key={i}>
@@ -152,7 +154,11 @@ export default function Timeline() {
           </ul>
         </div>
       )}
-      <div className="tl-legend" role="group" aria-label="Filter timeline by track">
+      <div
+        className="tl-legend"
+        role="group"
+        aria-label="Filter timeline by track"
+      >
         {Object.entries(TRACKS).map(([key, t]) => (
           <button
             key={key}
@@ -214,7 +220,12 @@ function MobileTimeline({ filter }) {
       const yr = Math.floor(it.at)
       if (yr !== prevYear) {
         if (prevYear !== null && yr > prevYear + 1)
-          out.push({ kind: 'skip', key: 'skip' + yr, from: prevYear + 1, to: yr - 1 })
+          out.push({
+            kind: 'skip',
+            key: 'skip' + yr,
+            from: prevYear + 1,
+            to: yr - 1,
+          })
         out.push({ kind: 'year', key: 'year' + yr, yr })
         prevYear = yr
       }
@@ -266,9 +277,7 @@ function MobileTimeline({ filter }) {
       }
       const branches = []
       for (const b of BRANCHES) {
-        const els = b.entries
-          .map((e) => rowRefs.current[e.id])
-          .filter(Boolean)
+        const els = b.entries.map((e) => rowRefs.current[e.id]).filter(Boolean)
         if (!els.length) continue
         const forkY = els[0].offsetTop + 24
         let mergeY = b.end === null ? headY : Math.min(dateToY(b.end), headY)
@@ -290,8 +299,7 @@ function MobileTimeline({ filter }) {
       let maxLane = 0
       for (const b of branches) {
         let lane = 0
-        while (laneEnds[lane] !== undefined && laneEnds[lane] > b.forkY)
-          lane++
+        while (laneEnds[lane] !== undefined && laneEnds[lane] > b.forkY) lane++
         laneEnds[lane] = b.mergeY
         b.lx = M_LANE0 + lane * M_LANE_W
         maxLane = Math.max(maxLane, lane)
@@ -406,7 +414,12 @@ function MobileTimeline({ filter }) {
           const ref = (n) => (rowRefs.current[row.key] = n)
           if (row.kind === 'year')
             return (
-              <li key={row.key} ref={ref} className="mtl-year" aria-hidden="true">
+              <li
+                key={row.key}
+                ref={ref}
+                className="mtl-year"
+                aria-hidden="true"
+              >
                 <span className="pill">{row.yr}</span>
               </li>
             )
@@ -696,9 +709,7 @@ function DesktopTimeline({ filter }) {
         es.forEach((x) => {
           if (x.isIntersecting) {
             const id = x.target.closest('[data-id]').dataset.id
-            setRevealed((prev) =>
-              prev.has(id) ? prev : new Set(prev).add(id)
-            )
+            setRevealed((prev) => (prev.has(id) ? prev : new Set(prev).add(id)))
             io.unobserve(x.target)
           }
         }),
@@ -859,7 +870,11 @@ function DesktopTimeline({ filter }) {
                       }
                 const connStyle =
                   side === 'left'
-                    ? { top: cy, left: trunkX - GAP, width: GAP - (trunkX - lx) }
+                    ? {
+                        top: cy,
+                        left: trunkX - GAP,
+                        width: GAP - (trunkX - lx),
+                      }
                     : { top: cy, left: lx, width: trunkX + GAP - lx }
                 return (
                   <li
@@ -867,7 +882,11 @@ function DesktopTimeline({ filter }) {
                     data-id={e.id}
                     className={`tl-item tl-entry ${dimmed(e.track) ? 'dim' : ''} ${shown(e.id)}`}
                   >
-                    <span className="tl-conn" style={connStyle} aria-hidden="true" />
+                    <span
+                      className="tl-conn"
+                      style={connStyle}
+                      aria-hidden="true"
+                    />
                     <span
                       className={`tl-node ${e.track} ${ended ? '' : 'ongoing'}`}
                       style={{ left: lx, top: cy, ...trackVar(e.track) }}

@@ -51,7 +51,12 @@ function parseDate(s, ctx, field) {
   if (!s || s.trim().toLowerCase() === 'now') return null
   const m = s.trim().match(/^(\d{4})(?:-(\d{1,2}))?$/)
   if (!m) {
-    if (ctx) problem(ctx.file, ctx.title, `unreadable ${field} "${s}" — use YYYY-MM or "now"`)
+    if (ctx)
+      problem(
+        ctx.file,
+        ctx.title,
+        `unreadable ${field} "${s}" — use YYYY-MM or "now"`
+      )
     return null
   }
   const mo = m[2] ? +m[2] : 6
@@ -66,13 +71,24 @@ function parseDate(s, ctx, field) {
 // a typo either way — both are silent no-ops otherwise.
 for (const t of config.tracks)
   if (!(t.key in TRACK_SOURCES))
-    problem(trackFile(t.key), t.key, 'track is configured but the file is missing')
+    problem(
+      trackFile(t.key),
+      t.key,
+      'track is configured but the file is missing'
+    )
 for (const key of Object.keys(TRACK_SOURCES))
   if (!config.tracks.some((t) => t.key === key))
-    problem(trackFile(key), key, 'file has no track in site.config.js — not rendered')
+    problem(
+      trackFile(key),
+      key,
+      'file has no track in site.config.js — not rendered'
+    )
 
 const slug = (s) =>
-  s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
+  s
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '')
 
 // Split a markdown file into "## Title" blocks with `- key: value` fields
 // and a free-text body.
@@ -111,7 +127,11 @@ function parseTrack(md, track, file) {
         if (!rawStart)
           problem(file, title, 'missing "start" (or "date") — entry skipped')
         else if (rawStart.trim().toLowerCase() === 'now')
-          problem(file, title, `"${single ? 'date' : 'start'}: now" is not a date — entry skipped`)
+          problem(
+            file,
+            title,
+            `"${single ? 'date' : 'start'}: now" is not a date — entry skipped`
+          )
         else problem(file, title, 'entry skipped')
         return null
       }
@@ -127,7 +147,11 @@ function parseTrack(md, track, file) {
         dropped = /\(dropped\)/i.test(endRaw)
         end = parseDate(endRaw.replace(/\(dropped\)/i, '').trim(), ctx, 'end')
         if (end !== null && end < start) {
-          problem(file, title, `"end" (${fields.end}) is before "start" (${fields.start}) — entry skipped`)
+          problem(
+            file,
+            title,
+            `"end" (${fields.end}) is before "start" (${fields.start}) — entry skipped`
+          )
           return null
         }
         // a range of a month or less reads as one moment: show a single
@@ -145,7 +169,11 @@ function parseTrack(md, track, file) {
           ? 'full'
           : null
       if (fields.time && !time)
-        problem(file, title, `unknown time "${fields.time}" — use part-time or full-time`)
+        problem(
+          file,
+          title,
+          `unknown time "${fields.time}" — use part-time or full-time`
+        )
       // optional "link: https://…" -> Learn more button on the card
       const link = fields.link || null
       if (link && !/^https?:\/\//.test(link))
@@ -163,7 +191,10 @@ function parseTrack(md, track, file) {
         link: link && /^https?:\/\//.test(link) ? link : null,
         text: body,
         meta: fields.topics
-          ? fields.topics.split(',').map((t) => t.trim()).join(' · ')
+          ? fields.topics
+              .split(',')
+              .map((t) => t.trim())
+              .join(' · ')
           : '',
       }
     })

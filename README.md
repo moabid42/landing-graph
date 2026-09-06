@@ -53,6 +53,7 @@ description paragraph:
 
 ```markdown
 ## Cloud security engineer
+
 - org: Company · City
 - start: 2023-03
 - end: 2023-08
@@ -63,14 +64,14 @@ description paragraph:
 What you did, and what changed because you did it.
 ```
 
-| Field | Meaning |
-| ----- | ------- |
-| `start` / `end` | a range. `end: now` stays open and merges into HEAD. |
-| `end: YYYY-MM (dropped)` | closed without merging — a chapter you left. |
-| `date` | a single moment (a talk, a competition). Replaces `start`/`end`. |
-| `topics` | comma-separated labels shown under the title. |
-| `time` | `part-time` or `full-time` — an optional colored chip. |
-| `link` | optional "Learn more" button. |
+| Field                    | Meaning                                                          |
+| ------------------------ | ---------------------------------------------------------------- |
+| `start` / `end`          | a range. `end: now` stays open and merges into HEAD.             |
+| `end: YYYY-MM (dropped)` | closed without merging — a chapter you left.                     |
+| `date`                   | a single moment (a talk, a competition). Replaces `start`/`end`. |
+| `topics`                 | comma-separated labels shown under the title.                    |
+| `time`                   | `part-time` or `full-time` — an optional colored chip.           |
+| `link`                   | optional "Learn more" button.                                    |
 
 Add a block to add an entry, delete one to remove it. Order does not
 matter — the graph sorts by date and assigns branch lanes automatically.
@@ -86,8 +87,13 @@ Each file in `content/timeline/` is a track, declared in `site.config.js`:
 ```js
 tracks: [
   { key: 'work', label: 'work', color: '#3fb950', colorLight: '#1a7f37' },
-  { key: 'speaking', label: 'speaking', color: '#db61a2',
-    colorLight: '#bf3989', continuous: true },
+  {
+    key: 'speaking',
+    label: 'speaking',
+    color: '#db61a2',
+    colorLight: '#bf3989',
+    continuous: true,
+  },
 ]
 ```
 
