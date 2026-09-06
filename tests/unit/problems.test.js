@@ -56,20 +56,32 @@ describe('reported problems', () => {
   })
 
   it('flags an entry carrying both start and date, and keeps start', () => {
-    const [e] = parseTrack('## T\n- start: 2020-01\n- date: 2022-01\n', 'work', 'f.md')
+    const [e] = parseTrack(
+      '## T\n- start: 2020-01\n- date: 2022-01\n',
+      'work',
+      'f.md'
+    )
     expect(msgs()[0]).toMatch(/has both "start" and "date" — using "start"/)
     expect(e.start).toBeCloseTo(parseDate('2020-01'), 6)
     expect(e.single).toBe(false)
   })
 
   it('flags an "end" on a single-date entry and ignores it', () => {
-    const [e] = parseTrack('## T\n- date: 2020-01\n- end: 2021-01\n', 'work', 'f.md')
+    const [e] = parseTrack(
+      '## T\n- date: 2020-01\n- end: 2021-01\n',
+      'work',
+      'f.md'
+    )
     expect(msgs()[0]).toMatch(/"date" entries take no "end"/)
     expect(e.end - e.start).toBeCloseTo(0.2, 6)
   })
 
   it('flags an end before the start and drops the entry', () => {
-    const out = parseTrack('## T\n- start: 2024-01\n- end: 2020-01\n', 'work', 'f.md')
+    const out = parseTrack(
+      '## T\n- start: 2024-01\n- end: 2020-01\n',
+      'work',
+      'f.md'
+    )
     expect(out).toEqual([])
     expect(msgs().join(' ')).toMatch(/is before "start"/)
   })
@@ -85,7 +97,11 @@ describe('reported problems', () => {
   })
 
   it('flags an unreadable end date but keeps the entry open', () => {
-    const [e] = parseTrack('## T\n- start: 2020-01\n- end: whenever\n', 'work', 'f.md')
+    const [e] = parseTrack(
+      '## T\n- start: 2020-01\n- end: whenever\n',
+      'work',
+      'f.md'
+    )
     expect(msgs()[0]).toMatch(/unreadable end/)
     expect(e.end).toBeNull()
   })

@@ -1,8 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import { POSTS, parsePost } from '../../src/blog.js'
 
-const withFm = (fm, body = 'Body text.\n') =>
-  `---\n${fm}\n---\n${body}`
+const withFm = (fm, body = 'Body text.\n') => `---\n${fm}\n---\n${body}`
 
 describe('parsePost', () => {
   it('takes the slug from the filename, not the frontmatter', () => {
@@ -13,7 +12,9 @@ describe('parsePost', () => {
   it('reads the frontmatter fields', () => {
     const p = parsePost(
       'x/a.md',
-      withFm('title: Hello\ndate: 2024-05-01\nsummary: A line\ntopics: one, two')
+      withFm(
+        'title: Hello\ndate: 2024-05-01\nsummary: A line\ntopics: one, two'
+      )
     )
     expect(p.title).toBe('Hello')
     expect(p.date).toBe('2024-05-01')
@@ -22,7 +23,10 @@ describe('parsePost', () => {
   })
 
   it('lowercases field names and trims values', () => {
-    const p = parsePost('x/a.md', withFm('Title:   Spaced   \nDATE: 2024-01-01'))
+    const p = parsePost(
+      'x/a.md',
+      withFm('Title:   Spaced   \nDATE: 2024-01-01')
+    )
     expect(p.title).toBe('Spaced')
     expect(p.date).toBe('2024-01-01')
   })
@@ -34,12 +38,17 @@ describe('parsePost', () => {
   })
 
   it('drops leading authoring comments from the body', () => {
-    const p = parsePost('x/a.md', withFm('title: T', '<!-- note to self -->\n\nReal text.\n'))
+    const p = parsePost(
+      'x/a.md',
+      withFm('title: T', '<!-- note to self -->\n\nReal text.\n')
+    )
     expect(p.body.trimStart()).toBe('Real text.\n')
   })
 
   it('falls back to the slug when there is no title', () => {
-    expect(parsePost('x/untitled-post.md', 'Just a body.').title).toBe('untitled-post')
+    expect(parsePost('x/untitled-post.md', 'Just a body.').title).toBe(
+      'untitled-post'
+    )
   })
 
   it('survives a file with no frontmatter at all', () => {
@@ -58,7 +67,10 @@ describe('parsePost', () => {
   })
 
   it('ignores empty topics and stray separators', () => {
-    expect(parsePost('x/a.md', withFm('topics: a, , b,')).topics).toEqual(['a', 'b'])
+    expect(parsePost('x/a.md', withFm('topics: a, , b,')).topics).toEqual([
+      'a',
+      'b',
+    ])
   })
 })
 

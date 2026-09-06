@@ -1,6 +1,12 @@
 import { describe, it, expect } from 'vitest'
 import config from '../../site.config.js'
-import { TRACKS, ENTRIES, BRANCHES, POINTS, PROBLEMS } from '../../src/content.js'
+import {
+  TRACKS,
+  ENTRIES,
+  BRANCHES,
+  POINTS,
+  PROBLEMS,
+} from '../../src/content.js'
 
 // These run against whatever is actually in content/, so they double as a
 // content lint: a typo in a markdown file fails the build here, not silently
@@ -63,7 +69,9 @@ describe('ENTRIES', () => {
 
 describe('BRANCHES', () => {
   it('account for every entry exactly once', () => {
-    const onBranches = BRANCHES.flatMap((b) => b.entries.map((e) => e.id)).sort()
+    const onBranches = BRANCHES.flatMap((b) =>
+      b.entries.map((e) => e.id)
+    ).sort()
     expect(onBranches).toEqual(ENTRIES.map((e) => e.id).sort())
   })
 

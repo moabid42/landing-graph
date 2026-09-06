@@ -88,7 +88,10 @@ describe('tracks', () => {
 
   it('has a track declared for every markdown file', () => {
     for (const key of Object.keys(TRACK_SOURCES)) {
-      expect(config.tracks.map((t) => t.key), key).toContain(key)
+      expect(
+        config.tracks.map((t) => t.key),
+        key
+      ).toContain(key)
     }
   })
 })

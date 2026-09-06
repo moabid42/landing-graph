@@ -79,7 +79,9 @@ Only a body.
   })
 
   it('ignores html comments', () => {
-    const blocks = parseBlocks(`<!-- ## Commented\n- start: 1999-01\n-->\n## Real\n- start: 2020-01\n`)
+    const blocks = parseBlocks(
+      `<!-- ## Commented\n- start: 1999-01\n-->\n## Real\n- start: 2020-01\n`
+    )
     expect(blocks.map((b) => b.title)).toEqual(['Real'])
   })
 
@@ -97,7 +99,9 @@ describe('parseTrack', () => {
   const one = (md) => parseTrack(md, 'work', 'test.md')[0]
 
   it('builds an entry with an id derived from track and title', () => {
-    const e = one('## My Job\n- org: ACME\n- start: 2020-01\n- end: 2021-01\nDid things.\n')
+    const e = one(
+      '## My Job\n- org: ACME\n- start: 2020-01\n- end: 2021-01\nDid things.\n'
+    )
     expect(e.id).toBe('work-my-job')
     expect(e.track).toBe('work')
     expect(e.org).toBe('ACME')
@@ -134,7 +138,9 @@ describe('parseTrack', () => {
   })
 
   it('skips an entry whose end precedes its start', () => {
-    expect(parseTrack('## T\n- start: 2024-05\n- end: 2020-01\n', 'work', 'f.md')).toEqual([])
+    expect(
+      parseTrack('## T\n- start: 2024-05\n- end: 2020-01\n', 'work', 'f.md')
+    ).toEqual([])
   })
 
   it('skips an entry with no start at all', () => {
@@ -149,12 +155,16 @@ describe('parseTrack', () => {
   })
 
   it('keeps only http(s) links', () => {
-    expect(one('## T\n- start: 2020-01\n- link: https://x.dev\n').link).toBe('https://x.dev')
+    expect(one('## T\n- start: 2020-01\n- link: https://x.dev\n').link).toBe(
+      'https://x.dev'
+    )
     expect(one('## T\n- start: 2020-01\n- link: not a url\n').link).toBeNull()
   })
 
   it('renders topics as a middot-separated string', () => {
-    expect(one('## T\n- start: 2020-01\n- topics: a, b ,c\n').meta).toBe('a · b · c')
+    expect(one('## T\n- start: 2020-01\n- topics: a, b ,c\n').meta).toBe(
+      'a · b · c'
+    )
     expect(one('## T\n- start: 2020-01\n').meta).toBe('')
   })
 })
@@ -167,7 +177,11 @@ describe('assignSides', () => {
   })
 
   it('puts every branch on one side or the other', () => {
-    const branches = [branch(2020, 2021), branch(2020.5, 2022), branch(2023, null)]
+    const branches = [
+      branch(2020, 2021),
+      branch(2020.5, 2022),
+      branch(2023, null),
+    ]
     assignSides(branches)
     for (const b of branches) expect([-1, 1]).toContain(b.side)
   })
@@ -182,7 +196,9 @@ describe('assignSides', () => {
     const branches = Array.from({ length: 8 }, (_, i) => branch(2010 + i, 2030))
     assignSides(branches)
     const load = (s) =>
-      branches.filter((b) => b.side === s).reduce((n, b) => n + b.entries.length, 0)
+      branches
+        .filter((b) => b.side === s)
+        .reduce((n, b) => n + b.entries.length, 0)
     expect(Math.abs(load(-1) - load(1))).toBeLessThanOrEqual(1)
   })
 })
