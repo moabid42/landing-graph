@@ -592,19 +592,27 @@ section { padding: 72px 0 24px; }
 .pager button:disabled { color: var(--muted); opacity: 0.5; cursor: default; }
 .pager button.active { background: var(--link); color: #ffffff; }
 
-.paper-list { display: flex; flex-direction: column; gap: 16px; }
-.paper {
+/* One box per paper. The whole box is the link, so the title underlines on
+   hover but the tl;dr under it does not. */
+.paper-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;
+}
+@media (max-width: 760px) { .paper-grid { grid-template-columns: 1fr; } }
+.paper-card {
   border: 1px solid var(--border); border-radius: 6px;
-  background: var(--bg); padding: 18px 20px;
-  transition: border-color 0.15s;
+  background: var(--bg); padding: 16px;
+  display: flex; flex-direction: column; gap: 8px;
+  color: var(--fg); transition: border-color 0.15s;
 }
-.paper:hover { border-color: var(--muted); }
-.paper h3 { font-size: 15.5px; font-weight: 600; line-height: 1.35; }
-.paper-abstract { font-size: 13.5px; color: var(--muted); margin-top: 8px; max-width: 62em; }
-.paper-link {
-  display: inline-block; margin-top: 10px;
-  font-family: var(--mono); font-size: 12px;
+.paper-card:hover { border-color: var(--muted); text-decoration: none; }
+.paper-card h3 {
+  display: flex; align-items: baseline; gap: 10px;
+  font-size: 14.5px; font-weight: 600; line-height: 1.4;
 }
+.paper-title { color: var(--link); }
+.paper-card:hover .paper-title { text-decoration: underline; }
+.paper-arrow { margin-left: auto; color: var(--muted); flex: none; }
+.paper-tldr { font-size: 13px; color: var(--muted); }
 
 /* ===================== stack ===================== */
 .lang-bar {

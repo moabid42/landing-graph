@@ -135,15 +135,15 @@ describe('research', () => {
     expect(Array.isArray(config.research)).toBe(true)
   })
 
-  it('gives every paper a title, an abstract and a link', () => {
+  it('gives every paper a title, a tl;dr and a link', () => {
     for (const r of config.research) {
       expect(r.title?.trim(), r.title).toBeTruthy()
-      expect(r.abstract?.trim(), r.title).toBeTruthy()
+      expect(r.tldr?.trim(), r.title).toBeTruthy()
       expect(r.href, r.title).toMatch(/^https?:\/\//)
     }
   })
 
-  it('has unique titles, since they key the entries', () => {
+  it('has unique titles, since they key the boxes', () => {
     const titles = config.research.map((r) => r.title)
     expect(new Set(titles).size).toBe(titles.length)
   })

@@ -454,7 +454,7 @@ export default function App() {
                   <IconFlask width={22} height={22} />
                   <p className="bs-title">Papers are being indexed</p>
                   <p className="bs-text">
-                    Titles and abstracts will be listed here, each linking to
+                    Titles and a short tl;dr will be listed here, each opening
                     the full text on ResearchGate.
                   </p>
                   {RESEARCHGATE_URL && (
@@ -469,28 +469,23 @@ export default function App() {
                   )}
                 </div>
               ) : (
-                <div className="paper-list">
+                <div className="paper-grid">
                   {RESEARCH.map((r) => (
-                    <article key={r.title} className="paper">
+                    <a
+                      key={r.title}
+                      className="paper-card"
+                      href={r.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
                       <h3>
-                        <a
-                          href={r.href}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          {r.title}
-                        </a>
+                        <span className="paper-title">{r.title}</span>
+                        <span className="paper-arrow" aria-hidden="true">
+                          ↗
+                        </span>
                       </h3>
-                      <p className="paper-abstract">{r.abstract}</p>
-                      <a
-                        className="paper-link"
-                        href={r.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        Read on ResearchGate <span aria-hidden="true">↗</span>
-                      </a>
-                    </article>
+                      <p className="paper-tldr">{r.tldr}</p>
+                    </a>
                   ))}
                 </div>
               )}

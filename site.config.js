@@ -158,17 +158,17 @@ export default {
   ],
 
   // ---------------------------------------------------------------- research
-  // The Research section: one entry per paper, each linking back to its
+  // The Research section: one clickable box per paper, opening its
   // ResearchGate page. An empty list shows the "being indexed" panel with a
   // link to the full profile instead.
   //
-  //   title     the paper title, as published
-  //   abstract  one paragraph
-  //   href      the ResearchGate publication url
+  //   title  the paper title, as published
+  //   tldr   the finding in a sentence or two, not the abstract
+  //   href   where the box opens — the ResearchGate publication url
   research: [
     // {
     //   title: 'Paper title, as published',
-    //   abstract: 'One-paragraph abstract…',
+    //   tldr: 'What it found, in a sentence or two.',
     //   href: 'https://www.researchgate.net/publication/...',
     // },
   ],
