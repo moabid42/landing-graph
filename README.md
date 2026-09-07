@@ -254,6 +254,11 @@ the budgets run through `treosh/lighthouse-ci-action` instead — same
 lighthouse` still works locally; it fetches lhci with `npx` on demand. See
 [SECURITY.md](SECURITY.md).
 
+It budgets two pages, taken from the sitemap the build just wrote: the README
+and the newest post. They get the same scores and the same layout-shift
+ceiling, and different payload budgets — a post carries its pictures and the
+README does not.
+
 The entry-payload budget in [`scripts/check-bundle.js`](scripts/check-bundle.js)
 is the one worth knowing about. `dist/` is a few megabytes, almost all of it
 mermaid, split into chunks that load only when a post actually contains a
