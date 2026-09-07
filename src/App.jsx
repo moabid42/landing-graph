@@ -171,9 +171,14 @@ export default function App() {
     page * POSTS_PER_PAGE
   )
 
-  // Section tabs are ordinary in-page anchors on the README. From a post the
-  // section is not on the page at all, so there they carry the full path home
-  // and are hijacked the same way a post link is.
+  // The README tab and the crumb go to the bare site root, the way a logo
+  // does: no fragment left in the address bar afterwards.
+  const home = () => link(homePath(), () => window.scrollTo(0, 0))
+
+  // The other tabs are ordinary in-page anchors on the README — a fragment is
+  // exactly what "this spot on this page" means. From a post the section is
+  // not on the page at all, so there they carry the full path home and are
+  // hijacked the same way a post link is.
   const section = (id) =>
     post ? link(`${homePath()}#${id}`) : { href: `#${id}` }
 
@@ -203,7 +208,7 @@ export default function App() {
               {identity.handle}
             </a>
             <span className="slash">/</span>
-            <a {...section('top')} className="repo-name">
+            <a {...home()} className="repo-name">
               {identity.repo}
             </a>
             <span className="vis-badge">Public</span>
@@ -233,7 +238,7 @@ export default function App() {
           </div>
         </div>
         <nav className="gh-tabs" aria-label="Sections">
-          <a className={`tab ${post ? '' : 'active'}`} {...section('top')}>
+          <a className={`tab ${post ? '' : 'active'}`} {...home()}>
             <IconBook width={14} height={14} /> README
           </a>
           <a className="tab" {...section('timeline')}>

@@ -16,6 +16,8 @@ export function upgradeLegacyUrl() {
 
 /** Move to a route without a reload, and tell the app it happened. */
 export function go(path) {
+  // Clicking the tab you are already on should not pile up history entries.
+  if (path === window.location.pathname + window.location.hash) return
   window.history.pushState(null, '', path)
   window.dispatchEvent(new PopStateEvent('popstate'))
 }
@@ -23,8 +25,12 @@ export function go(path) {
 // A real href is what makes the link work for middle click, cmd-click, "copy
 // link address" and every crawler; the handler is only there to skip the
 // reload on an ordinary left click.
-/** Props for an in-site link. Spread onto an <a>. */
-export function link(path) {
+/**
+ * Props for an in-site link. Spread onto an <a>. `after` runs once the click
+ * is handled, whether or not the route actually moved — a link back to a page
+ * you are already on still has somewhere to put you.
+ */
+export function link(path, after) {
   return {
     href: path,
     onClick: (e) => {
@@ -32,6 +38,7 @@ export function link(path) {
       if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return
       e.preventDefault()
       go(path)
+      after?.()
     },
   }
 }
