@@ -58,17 +58,21 @@ export default {
   ],
 
   // --------------------------------------------------------------------- seo
-  // Applied to the document at runtime. index.html carries the same values
-  // as a static fallback for crawlers that do not run scripts.
+  // The build writes these into the html of every page it emits, and the app
+  // keeps them in step as the router moves. Nothing here is duplicated by
+  // hand anywhere else.
   seo: {
-    // Where the site is served from, no trailing slash. Canonical urls, the
-    // share image and sitemap.xml are all built from this. Leave it empty
-    // and those are simply left out.
+    // Where the site is served from, no trailing slash.
     //
-    // This is the GitHub Pages project url. Point a custom domain at the
-    // repo and this becomes 'https://moabid.me' — one line, nothing else
-    // changes, because the build uses relative paths throughout.
-    url: 'https://moabid42.github.io/landing-graph',
+    // This is the one line the rest of the site hangs off: its path is the
+    // base every link and asset is built against, and its origin is what
+    // canonical urls, og:url, the share image and sitemap.xml are made
+    // absolute with.
+    //
+    // The custom domain the repo's Pages site answers on. On a fork with no
+    // domain this is the project url instead — 'https://you.github.io/repo'
+    // — and the base path follows it; nothing else changes.
+    url: 'https://moabid.me',
 
     description:
       'Mouad Abid — software security engineer. Career rendered as git log ' +
