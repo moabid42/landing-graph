@@ -8,7 +8,7 @@ source: https://medium.com/@m0ab1d42/did-someone-say-memory-1a8cc5bbe1c1
 
 Did someone mention memory 🧐 ? I got you, don’t worry.
 
-![](./blog/did-someone-say-memory/01.jpeg)
+![A DDR3 memory slot on a blue circuit board, with a paper label reading MEMORY laid across it](./blog/did-someone-say-memory/01.jpeg)
 
 With this article, I will try to tackle an important concept in computer science in general. This topic can be found in multiple subjects, but the core of it is the same. So with that being said, how exactly does the memory work?
 
@@ -26,7 +26,7 @@ First, we have to start with the question “*what goes where?*“, C has three 
 
 – **static**: global variable storage, permanent for the entire run of the program. (Not gonna be tackled in this article, Google it 😜).
 
-![](./blog/did-someone-say-memory/02.png)
+![A process memory layout: command line arguments and the stack growing down, the heap growing up to meet it, and below them the uninitialised, initialised and text segments](./blog/did-someone-say-memory/02.png)
 
 Pools are basically places where we can store our beautiful variables. First of all, we have to understand that any memory used in general, should be freed after use (freeing is referring to telling the CPU that you don’t need this particular memory anymore) this kind of freeing is divided into 2 types, the compiler free based,(which is what are we gonna discover soon with “stack” and “static’) and the heap is when the actual C fun starts, where you, **YES YOU**, the developer will have the power to free this kind of memory.
 
@@ -76,7 +76,7 @@ Note that there is generally a limit on the size of the stack — which can 
 The *heap* is the diametrical opposite of the stack. The *heap* is a large pool, (your RAM is the limit) of memory that can be used dynamically — it is also known as the “**free store**”.  
 And this is where the fun starts, yes there is where most people complain, about how C is unsafe (usw). It’s an order-based restaurant, where you order your pizza with memory (I feel hungry now: /)in the compile time, and take it on delivery, on the run time. (The compile time is when your binary is getting compiled, and the run time is when your binary is being run or executed). This is the memory that is not automatically managed — you have to explicitly allocate (using functions such as malloc, which is the ordering process that I talked about), and deallocate the memory (using free), which is picking up your leftover and throwing it into the trash (It will stink your memory if it stays there 🤧). And here is where the pain starts.
 
-![](./blog/did-someone-say-memory/03.jpeg)
+![The woman yelling at a confused cat meme](./blog/did-someone-say-memory/03.jpeg)
 
 Keeping track of every allocation in big a\*\* projects can be challenging especially if you are writing code with your own feet (I mean hands but it kinda sometimes looks like, some people are using something else). If you don’t keep track of your allocations correctly you will end up with a bunch of leaks all over your code, now congratulations, you have to spend another week looking for those leaks and cleaning them. Seems like a hassle right?
 

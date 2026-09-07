@@ -6,7 +6,7 @@ summary: AWS pentesting from an attacker's seat — IAM, credentials, enumeratio
 source: https://medium.com/@m0ab1d42/awsome-security-shhhhhh-part-1-936f8daaf20b
 ---
 
-![](./blog/awsome-security-shhhhhh-part-1/01.png)
+![The AWS logo on a dark blue background, flanked by orange and grey isometric cubes](./blog/awsome-security-shhhhhh-part-1/01.png)
 
 Picture yourself as a mischievous ninja🃏, tiptoeing through the vast expanse of AWS cloud, leaving security teams scratching their heads and wondering if their code is haunted. Your mission: to expose vulnerabilities, outsmart the mighty firewalls, and rewrite the rules of engagement with a mischievous grin on your face. Oh, the hilarity!
 
@@ -16,7 +16,7 @@ But hold on, my stealthy companion, let’s take a moment to appreciate the intr
 
 Jokes aside, let’s get serious and dive into some tips that I personally use when doing a Blackbox Pentest, where my goal is to remain undetected by **GuardDuty**. (Or when doing Shady stuff 🤫 Shhhhh!!! That’s our little secret 😉)
 
-![](./blog/awsome-security-shhhhhh-part-1/02.jpg)
+![Futurama's Fry squinting suspiciously, captioned "U doing some shady stuff"](./blog/awsome-security-shhhhhh-part-1/02.jpg)
 
 ## Evading GuardDuty Penetration Test Findings
 
@@ -24,7 +24,7 @@ When performing AWS API requests using common penetration testing operating syst
 
 This detection is caused by the **user agent** name included in the API request. By making modifications to this **user agent**, we can prevent GuardDuty from identifying our activities as originating from a “pentest” Linux distribution.
 
-![](./blog/awsome-security-shhhhhh-part-1/03.png)
+![A laptop sending a User-Agent string to a server, over a list of request headers ending in a Chrome on macOS user agent](./blog/awsome-security-shhhhhh-part-1/03.png)
 
 > **Caution**!!!!  
 > If your assessment requires remaining undetected, it is recommended to use a “safe” operating system such as Ubuntu, macOS, or Windows.
@@ -35,12 +35,12 @@ To accomplish this, follow these steps:
     **/usr/local/lib/python3.7/dist-packages/botocore/session.py**
 2.  Open the **session.py** file and navigate to line [**45**](https://github.com/boto/botocore/blob/7de36c07ecec503f588ac27658b1795e83b67b75/botocore/session.py#L457C61-L457C61)**7** (at the time of writing). You will find the following code snippet:
 
-![](./blog/awsome-security-shhhhhh-part-1/04.png)
+![botocore's session.py on GitHub: the user_agent method builds its string from platform.python_version(), platform.system() and platform.release()](./blog/awsome-security-shhhhhh-part-1/04.png)
 
 1.  The functions **platform.system()** and **platform.release()** are similar to the commands “**uname -o**” and “**uname -r**”, respectively.
 2.  To bypass detection, modify the code by replacing the existing values with legitimate user agent strings, such as those found in [**Pacu**](https://github.com/RhinoSecurityLabs/pacu/blob/master/pacu/user_agents.txt). This allows you to disguise your user agent to appear as anything you desire, including arbitrary values like the example below:
 
-![](./blog/awsome-security-shhhhhh-part-1/05.png)
+![pacu's user_agents.txt on GitHub, listing real aws-cli user agent strings for Windows, Linux and Darwin](./blog/awsome-security-shhhhhh-part-1/05.png)
 
 ## Evading GuardDuty Tor Client Findings
 

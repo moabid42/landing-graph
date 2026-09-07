@@ -6,7 +6,7 @@ summary: How the glibc heap really works — chunks, bins, malloc/free — and h
 source: https://medium.com/@m0ab1d42/heap-the-witchcraft-dungeon-ac08e782fb49
 ---
 
-![](./blog/heap-the-witchcraft-dungeon/01.png)
+![The words "the Heap." set large in a serif typeface](./blog/heap-the-witchcraft-dungeon/01.png)
 
 As we ventured through the captivating realm of binaries, a treacherous dungeon named “The Heap” loomed before us. Bruh what is that ? He said, just a few moments later, and Hero named “GDB” pooped before us and said : “Fear not, my dear comrades, I am your trump card, follow me and I will lead you to the Boss Room”. We looked at him in confusion for a moment and then he said again: “Our ultimate triumph shall come in the form of conquering the Boss room and acquiring the glorious reverse shell!”. “Reverse shell, you say?” .“Indeed” he did say!
 
@@ -14,7 +14,7 @@ Hold on tight, folks, because this article is strictly for the daredevils out th
 
 So, here’s the deal, folks. In this article, I’ll spill the beans about my triumph in the notorious Angstrom CTF 2023. Oh yes, the stakes were high, and my trusty partner-in-crime, [L3ak](https://ctftime.org/team/220336) (My CTF Team), was by my side as we tackled the mind-bending challenges. Brace yourselves as I walk you through my solution and unravel the secrets of this epic conquest.
 
-![](./blog/heap-the-witchcraft-dungeon/02.jpeg)
+![A wide-eyed woman clutching her fists, captioned "Oh my gosh... I'm so FREAKING excited!!!"](./blog/heap-the-witchcraft-dungeon/02.jpeg)
 
 It was all about exploiting a sneaky heap overflow vulnerability.  
 **Picture this:** two heap buffers, namely **buf1** and **buf2**, are allocated using malloc(). Now, here's the catch: while examining the decompiled code, we discovered that the first buffer, **buf1**, allowed us to input more data than its allocated size. **Lesson learned**, folks—never trust user input; always add those crucial checks and protections!
@@ -145,11 +145,11 @@ This input() function, my fellow adventurers, is where our daring exploit takes 
 
 But wait, there’s more! Before we proceed, let me share a glimpse of the state of things, as witnessed through the eyes of GDB, just before the call to input(), but after **buf2** has been infused with those unpredictable random bytes:
 
-![](./blog/heap-the-witchcraft-dungeon/03.png)
+![A gdb dump of the heap before the overflow, with buf1 and buf2 boxed and the top of the wilderness marked below them](./blog/heap-the-witchcraft-dungeon/03.png)
 
 When malloc() is called, it allocates not only the requested size but also some additional space for metadata. This ensures proper management of future allocations and the overall maintenance of the heap.
 
-![](./blog/heap-the-witchcraft-dungeon/04.png)
+![Two allocated heap chunks, each a band of metadata around a user data block, with malloc's returned pointer landing on the user data](./blog/heap-the-witchcraft-dungeon/04.png)
 
 For our adventure in the land of 64-bit systems, the metadata size amounts to a noble 16 bytes. Additionally, each allocated block must align on a 16 or 32-byte boundary, known as the **alignment_prefix**. (I know I am getting a little be advanced here, but bear in mind, heap exploitation is considered an advanced topic even among the professionals)
 
@@ -159,7 +159,7 @@ But what is our grand objective, you ask? It is to overflow buf1 and gracefully 
 
 So, heed my words and imagine the scene. Our brave **buf1**, filled to the brim with 64 A’s (16 for **buf1** and 48 for **buf2**), overflows with power and purpose. And as we peer into the heap through the eyes of GDB, a glimpse of its transformed state unfolds before us. Prepare yourselves for a sight both captivating and enlightening!
 
-![](./blog/heap-the-witchcraft-dungeon/05.png)
+![The same heap dump after the overflow, with buf1 and buf2 both filled with 0x41 bytes](./blog/heap-the-witchcraft-dungeon/05.png)
 
 Ah, the moment of triumph! **Buf2** stands adorned with a magnificent array of A’s, courtesy of our overflow. With this newfound power, we shall now conquer the check in line 38, allowing us to wield the full force of our input within **buf1** through the gets() function.
 
@@ -185,7 +185,7 @@ Fear not, for a solution awaits! We shall wield the power of gets() once again, 
 
 **TADAAAA:**
 
-![](./blog/heap-the-witchcraft-dungeon/06.png)
+![The heap dump with buf1 filled with 0x42 bytes and a forged size field of 0x31 written into buf2's metadata](./blog/heap-the-witchcraft-dungeon/06.png)
 
 And so, the ritual continues, unfolding 100 times with unwavering determination. Free() gracefully executes, releasing the imprisoned warriors buf1 and buf2, allowing us to embark on yet another round of this intricate dance. The cycle repeats, each iteration bringing us closer to our ultimate goal.
 

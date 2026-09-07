@@ -8,7 +8,7 @@ source: https://medium.com/@m0ab1d42/makefile-or-make-me-a-file-fca04a7bfcc2
 
 Yep, today’s topic is Makefile—a taxi car that everyone uses, but only a few know how to use. But no worries, I got you! In this article, I will try to tackle the essence and bullet points of Makefiles and the absolute must thing you should know. Just get yourself a Coffee, relax and let's get started.
 
-![](./blog/makefile-or-make-me-a-file/01.png)
+![The GNU Make logo: the head of a gnu above the words GNU Make](./blog/makefile-or-make-me-a-file/01.png)
 
 Sooooo, in this article, I am going to tackle the following :
 
