@@ -13,6 +13,23 @@ const scan = (page) =>
     'wcag21aa',
   ])
 
+// Timeline entries fade in over 0.45s as they scroll into view. Scanning
+// mid-fade makes axe composite a half-faded colour — #58a6ff read as
+// #3d70ab — and report a contrast failure for a colour nobody ever sees.
+// Which entries are mid-fade depends on where the layout drops them, so
+// this passes locally and fails on a runner whose fonts pack the timeline
+// slightly tighter. Wait for the page to stop moving before scanning.
+const settled = (page) =>
+  page.waitForFunction(() =>
+    document
+      .getAnimations()
+      .every(
+        (a) =>
+          a.playState !== 'running' ||
+          a.effect?.getComputedTiming().iterations === Infinity
+      )
+  )
+
 const report = (violations) =>
   violations
     .map(
@@ -28,6 +45,7 @@ test.describe('accessibility', () => {
   test('the README page has no violations', async ({ page }) => {
     await page.goto('/')
     await page.locator('.tl-card').first().waitFor()
+    await settled(page)
     const { violations } = await scan(page).analyze()
     expect(report(violations)).toBe('')
   })
@@ -36,6 +54,7 @@ test.describe('accessibility', () => {
     await page.goto('/')
     await page.locator('.gh-header button.gh-btn').click()
     await page.locator('.tl-card').first().waitFor()
+    await settled(page)
     const { violations } = await scan(page).analyze()
     expect(report(violations)).toBe('')
   })
@@ -81,6 +100,7 @@ test.describe('accessibility', () => {
   test('a filtered timeline has no violations', async ({ page }) => {
     await page.goto('/')
     await page.locator('.tl-legend .tl-filter').first().click()
+    await settled(page)
     const { violations } = await scan(page).analyze()
     expect(report(violations)).toBe('')
   })
