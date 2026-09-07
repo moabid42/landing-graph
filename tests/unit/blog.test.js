@@ -119,6 +119,17 @@ describe('shipped posts', () => {
   it('rejects for a slug that is not a post', async () => {
     await expect(loadBody('no-such-post')).rejects.toThrow(/no-such-post/)
   })
+
+  // An image with no alt is invisible to a screen reader and to image
+  // search, and nothing else in the build would ever complain about it.
+  it('describes every image it embeds', async () => {
+    for (const p of POSTS) {
+      const body = await loadBody(p.slug)
+      for (const [, alt, src] of body.matchAll(/!\[([^\]\n]*)\]\(([^)\s]+)/g)) {
+        expect(alt.trim(), `${p.slug} -> ${src}`).not.toBe('')
+      }
+    }
+  })
 })
 
 describe('postMeta', () => {
