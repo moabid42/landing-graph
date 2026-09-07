@@ -54,6 +54,42 @@ test.describe('the writing section', () => {
     await expect(page.locator('body')).not.toBeEmpty()
   })
 
+  // A post page is short until its body chunk lands: title, date, topics,
+  // then the footer. If it is shorter than the window at that point, the
+  // arriving body pushes the footer down — and on Linux and Windows it also
+  // brings the scrollbar in, which takes real width and shifts every element
+  // on screen at once. CI measured 0.83 CLS for that; macOS, whose scrollbars
+  // float above the content, measured 0.065 and never showed it. So assert
+  // the page already fills the window while the body is still in flight.
+  test('a post fills the window before its body arrives', async ({ page }) => {
+    const slug = slugOf(
+      await page.locator(POST_LINK).first().getAttribute('href')
+    )
+
+    // Hold the body chunk open so the loading state is a place we can stand.
+    let release
+    const held = new Promise((r) => (release = r))
+    await page.route(`**/assets/${slug}-*.js`, async (route) => {
+      await held
+      await route.continue()
+    })
+
+    await page.locator(POST_LINK).first().click()
+    await expect(page.locator('.post-status.loading')).toBeVisible()
+
+    const { scrollHeight, viewport } = await page.evaluate(() => ({
+      scrollHeight: document.documentElement.scrollHeight,
+      viewport: window.innerHeight,
+    }))
+    expect(
+      scrollHeight,
+      'the page must not grow once the body lands'
+    ).toBeGreaterThan(viewport)
+
+    release()
+    await expect(page.locator('.post-status')).toHaveCount(0)
+  })
+
   // The site routed on '#/blog/<slug>' before it routed on paths, and those
   // links are published where they cannot be edited.
   test('still opens a post from an old hash link', async ({ page }) => {
