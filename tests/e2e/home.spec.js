@@ -19,6 +19,40 @@ test.describe('the README page', () => {
     await expect(page).toHaveTitle(seo.title)
   })
 
+  // A fragment means "this spot on this page", which is exactly what a
+  // section tab is. Losing them would cost every section its shareable link.
+  test('the section tabs stay in-page anchors', async ({ page }) => {
+    for (const [tab, id] of [
+      ['Timeline', 'timeline'],
+      ['Pinned', 'work'],
+      ['Writing', 'blog'],
+      ['Research', 'research'],
+      ['Stack', 'stack'],
+      ['Contact', 'contact'],
+    ]) {
+      await page.locator('.gh-tabs a', { hasText: tab }).click()
+      await expect(page).toHaveURL(url(`/#${id}`))
+      await expect(page.locator(`#${id}`)).toBeVisible()
+    }
+  })
+
+  // The README is the page itself, not a spot on it, so it goes to the root
+  // the way a logo does — and leaves no fragment behind.
+  test('the README tab and the crumb land on the bare site root', async ({
+    page,
+  }) => {
+    for (const home of [
+      page.locator('.gh-tabs a', { hasText: 'README' }),
+      page.locator('.crumb .repo-name'),
+    ]) {
+      await page.goto(url('/#contact'))
+      await home.click()
+      await expect(page).toHaveURL(url())
+      // scroll-behavior is smooth, so this arrives a moment after the url
+      await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0)
+    }
+  })
+
   test('renders the header crumb from the config', async ({ page }) => {
     await expect(page.locator('.crumb .avatar')).toHaveText(identity.avatar)
     await expect(page.locator('.crumb a').first()).toHaveText(identity.handle)
