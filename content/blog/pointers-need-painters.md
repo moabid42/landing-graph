@@ -62,7 +62,7 @@ Ah, but as with any powerful magic, the power of pointers comes with great respo
 
 ***Okay now enough from our Fairy tails, let's get a little bit serious:^(***
 
-#### Pointers concept as a piece of cake
+## Pointers concept as a piece of cake
 
 People don’t understand what is the meaning of a 2-dimensional array, and that’s why they confuse triples or n times pointers with black magic. As long as you understand how it actually works you will never have a problem even when your pointer looks like this :
 
@@ -113,7 +113,7 @@ Again here, let's address a few things:
 - The address 8000, 8008, and 8016 are linear, which means they are under each other.
 - The transparent box is an abstraction to visualize that we can access all that space from that pointer, not only the first address, cuz in C, as long as we know the offset of the address we can access everything.
 
-#### IMPORTANT NOTE:
+## IMPORTANT NOTE:
 
 The reason why we can’t access linked lists by index is that we don’t know how big is the memory of every node, you define it yourself that’s why they are not linear under each other.
 
@@ -133,7 +133,7 @@ In the end, I wanna say, that all of this without practice, is like pouring wate
 
 In the end, I wanna thank you for reading and reaching the end. It means a lot and I hope you like it! Peace ❤️.
 
-#### Resources :
+## Resources :
 
 - ***“Left blank on purpose”***
 

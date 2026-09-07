@@ -18,7 +18,7 @@ Jokes aside, let’s get serious and dive into some tips that I personally use w
 
 ![](./blog/awsome-security-shhhhhh-part-1/02.jpg)
 
-#### Evading GuardDuty Penetration Test Findings
+## Evading GuardDuty Penetration Test Findings
 
 When performing AWS API requests using common penetration testing operating systems, GuardDuty can detect and trigger a PenTest Finding.
 
@@ -42,7 +42,7 @@ To accomplish this, follow these steps:
 
 ![](./blog/awsome-security-shhhhhh-part-1/05.png)
 
-#### Evading GuardDuty Tor Client Findings
+## Evading GuardDuty Tor Client Findings
 
 GuardDuty often triggers the high severity finding [**“UnauthorizedAccess:EC2/TorClient”**](https://docs.aws.amazon.com/guardduty/latest/ug/guardduty_finding-types-ec2.html#unauthorizedaccess-ec2-torclient) when an EC2 instance is detected establishing connections with [**Tor Guard**](https://community.torproject.org/relay/types-of-relays/#Guard%20and%20middle%20relay) or Authority nodes. According to the documentation, this finding suggests potential unauthorized access to your AWS resources, aimed at concealing the attacker’s true identity.
 
@@ -72,7 +72,7 @@ tor -f torrc
 
 The Socks5 proxy will be available on port 9050 by default, allowing you to establish connections.
 
-#### Bypassing Detection of Credential Exfiltration
+## Bypassing Detection of Credential Exfiltration
 
 This paragraph was inspired by this tool : [**SneakyEndpoints**](https://github.com/Frichetten/SneakyEndpoints)
 
@@ -99,7 +99,7 @@ To facilitate the setup process for Penetration Testers and Red Teamers, **Sneak
 > **Note:  **
 > I recently found that there is another bypass option available, but its usefulness is limited to specific scenarios. The **InstanceCredentialExfiltration** finding is tied to the AWS account rather than the EC2 instance. As a result, if an attacker compromises an EC2 instance in the target account and subsequently compromises other EC2 instances within the same account or steals their IAM credentials, they can safely use those credentials from the initially compromised instance without triggering GuardDuty.
 
-#### **For More**
+## **For More**
 
 See the talk **“Evading AWS GuardDuty and Network Firewall using Privacy Enhancing tech”** which includes how to use DNS over HTTPS (DoH) and customized VPC & DNS settings to evade network level detection in GuardDuty.
 

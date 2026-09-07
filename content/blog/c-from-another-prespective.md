@@ -6,7 +6,7 @@ summary: How I actually write C — the conventions, habits, and safety rules th
 source: https://medium.com/@m0ab1d42/c-from-another-prespective-dc33462be53b
 ---
 
-### C from another Perspective
+## C from another Perspective
 
 With this I am starting an/series of articale/s, where I am gonna be explaining my own C perspective, and what I mean by that, how I write actually C code (which was inspired by my friend **enijakow,** he should take the credit for that ngl**: D)**.  
 In this article, I am going to discuss the following :
@@ -15,7 +15,7 @@ In this article, I am going to discuss the following :
 - C details that beginners mostly miss.
 - C limitations and how to overcome them.
 
-#### **C conventions, and how they can help you write safer code**
+### **C conventions, and how they can help you write safer code**
 
 Okay, okay if you did spend enough time writing C code, you would have come across many people complaining about how C is unsafe and how you should switch to Rust.  
 Well to answer that I would step in and say that’s bullshit!  
@@ -271,7 +271,7 @@ Using static can be tricky, I will let you discover how static variables work yo
 
 - **Check for errors**: Always check the return value of functions that can fail, and handle errors appropriately (Use exit only if it’s extremely needed, not everywhere, it’s a bad practice). This can help avoid crashes and security vulnerabilities.
 
-#### C details that beginners mostly miss
+### C details that beginners mostly miss
 
 There are some details in C that beginners often miss, which can lead to errors and frustration. Here are some important details to keep in mind:
 
@@ -312,7 +312,7 @@ My advice here experiment with them a little bit and try to edit the char index 
 
 > We learn by doing, that how we escape the tutorial hell.
 
-#### C limitations and how to overcome them
+### C limitations and how to overcome them
 
 C is a powerful language, but it does have some limitations. Here are some common limitations and how to overcome them:
 
@@ -330,7 +330,7 @@ C is a powerful language, but it does have some limitations. Here are some commo
 
 Overall, C is a powerful language that gives you a lot of control over the machine, but it requires careful coding practices to avoid errors and security vulnerabilities. By following conventions, understanding important details, and overcoming limitations, you can write safe and effective C code.
 
-#### Resources :
+### Resources :
 
 This Youtube Channel is Gold: https://www.youtube.com/watch?v=4OGMB4Fhh50&list=PLBlnK6fEyqRhX6r2uhhlubuF5QextdCSM  
 I recommend watching as much as you can, but if you are looking for a specific topic, you can search for: name of the topic + neso academy (e.g pointers neso academy).  

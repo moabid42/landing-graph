@@ -16,7 +16,7 @@ Sooooo, in this article, I am going to tackle the following :
 2.  Small tips and tricks, that you probably didn’t know about it.
 3.  Makefile Samples.
 
-#### Makefile, what is this thing actually?
+## Makefile, what is this thing actually?
 
 Well, I asked chatGPT and this is what it says :
 
@@ -77,7 +77,7 @@ re : fclean all
 If you have no idea what is going on there, no worries, we are just warming up, while getting to know first the structure of a makefile.  
 The first thing you have to know, a makefile has its own special syntax called the makefile syntax (damn, I didn’t know that! Hehe what were you expecting, I am the only good one at choosing names 😌) which is in some sense similar to bash syntax, but yeah not entirely (even tho you can run bash commands inside a Makefile using: **\*\*\*\*\***, hehe why spoiling? I might dive into that later in this article, who knows? ). Anyways that was a small introduction, and now let's dive into these parts that make a Makefile:
 
-#### Variables:
+## Variables:
 
 Variables are just variables, yeah as simple as that! You initialize them using the equal operator =there is also another one :=but we are not going to tackle that in this article as it requires a good understanding of how bash handles variables expanding (I might write about bash later :^) ), if you are curious **Google is your friend** 😉.  
 Anyways a simple way to declare a var is the following :
@@ -100,7 +100,7 @@ ${NAME_OF_THE_VAR}
 Also easy right? Damn, why am I saying “right” so many times? It’s annoying, right? Haha, just kidding : D  
 Okay, I am gonna stop, let's get serious now.
 
-#### Rules
+## Rules
 
 It’s a monster for most people somehow, even tho it’s super straightforward, in Englisch you define a rule, which means if you satisfy some conditions we are gonna run the following, as simple as that, you didn’t get it yet? It’s fine, let's dig a bit deeper into the structure of how to build a rule:
 
@@ -197,7 +197,7 @@ and tries to run again this is cool. Now after having OBJS we are allowed to run
 
 And we are done 🥳 !!! That was a quick life cycle of simple rule execution.
 
-#### Tips or tricks, or probably both
+## Tips or tricks, or probably both
 
 - ***First tip***: Did you know that this thing is actually a predefined Makefile variable:
 

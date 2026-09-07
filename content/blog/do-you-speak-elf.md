@@ -12,7 +12,7 @@ Ahoy, folks! Welcome to the mystical land of Linux Kernel, where the quest for t
 
 ![](./blog/do-you-speak-elf/02.jpg)
 
-### Agenda :
+## Agenda :
 
 1.  ELF Architecture
 2.  Processing ELF binaries  
@@ -21,7 +21,7 @@ Ahoy, folks! Welcome to the mystical land of Linux Kernel, where the quest for t
 3.  Start? What’s next
 4.  Summary
 
-### ELF Architecture
+## ELF Architecture
 
 Let’s get the technical specs straight. The ELF format is like that one friend who’s super chill, not tied down to any specific group or clique — doesn’t care if you’re ARM, x86_64, 32-bit, or 64-bit. It’s a format with no biases. Once it’s compiled, it’s all about that CPU architecture life — no time for mingling with other architectures, very loyal indeed. Now, the real star of the show is its anatomy. Let’s dive into that banner once more, shall we?
 
@@ -59,7 +59,7 @@ readelf -s your_binary
 readelf -S your_binary
 ```
 
-### Processing ELF binaries
+## Processing ELF binaries
 
 All the processing of ELF binaries is done by the Kernel, and thro this section I will try to explain and provide links to the source code for reference. If you are reading this, I assume you are already familiar with the kernel source code, if not this is your chance, get yourself comfortable reading the Kernel source code (Every explained later can be allocated starting from [fs/binfmt_elf.c](https://elixir.bootlin.com/linux/v3.18/source/fs/binfmt_elf.c) in the Linux source code). The starting point is exactly [load_elf_binary()](https://elixir.bootlin.com/linux/v3.18/source/fs/binfmt_elf.c#L571).
 
@@ -67,7 +67,7 @@ The Kernel is responsible for all the intricacies involved in handling ELF binar
 
 > Again diving into the kernel source code should become a habit, especially if you are keen on unraveling the inner workings of the system.
 
-#### Preparation phase:
+### Preparation phase:
 
 > **Note:** Just to be clear, thro these explanation I am assuming we have a statically compiled binary.
 
@@ -108,7 +108,7 @@ Focuses on three critical aspects:
 - A setup via a call to [install_exec_creds()](https://elixir.bootlin.com/linux/v3.18/source/fs/exec.c#L1187).
 - This function lets any active Linux Security Module (LSM) know about the change in credentials.
 
-#### Stack Populating
+### Stack Populating
 
 - Adding more information to the new program’s stack, when calling [create_elf_tables()](https://elixir.bootlin.com/linux/v3.18/source/fs/binfmt_elf.c#L149) .
 - A [call](https://elixir.bootlin.com/linux/v3.18/source/fs/binfmt_elf.c#L176) to arch_align_stack() [rounds down](https://elixir.bootlin.com/linux/v3.18/source/arch/x86/kernel/process.c#L459) the existing stack position to a specific binary boundary.
@@ -123,16 +123,16 @@ For further clarity, check the picture below :
 
 ![](./blog/do-you-speak-elf/04.png)
 
-### **Start? What’s next**
+## **Start? What’s next**
 
 When dealing with a statically linked ELF binary that does not involve any dynamic loading, the [ELF interpreter](https://elixir.bootlin.com/linux/v3.18/source/fs/binfmt_elf.c#L890) isn’t required during the execution process. Instead, the operating system’s loader directly starts the execution of the program which eventually means passing control to the entry point specified by the AT_ENTRY .
 
-### Summary
+## Summary
 
 Every program that runs on a Linux system passes through the portal of execve(); as such it’s a key piece of kernel functionality that’s worth understanding in detail. ELF is a complicated format, but fortunately, the kernel can ignore most of that complexity — it only needs to understand just enough ELF to load segments into memory, and to invoke a user space run-time linker program to finish the job of assembling a complete running program.  
 Okay Folks! Last but not least, I just wanna thank you for reading and sticking around til the end ❤️
 
-#### Reference
+### Reference
 
 - [Linux Kernel](https://elixir.bootlin.com/linux/v3.18/source/fs)
 - [ELF Anatomy](https://github.com/corkami/pics/tree/master/binary/elf101) (also architecture of all knows formats).

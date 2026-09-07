@@ -16,7 +16,7 @@ I will try to explain how it works on an abstract level. I mean by that, I am no
 
 So, sooo, soooooooooo, first we have to know that C is a high-level language with close-to-the-metal features that make it seem, at times, more like a portable assembly language than a sibling of Java or Python. Among these features is memory management (or better say the main key), which covers an executing program’s safe and efficient use of memory. However, to overcome being cut by this sharp sword (The memory), we have to understand ***how does it work*** first? then understand ***how to write safe and efficient code?*** This article is mostly beginner friendly, I will write later, an advanced article about memory where we are going one layer down, to talk about it on the assembly level, (virtual memory, sys call, and so on …)
 
-### How does this sh.., I mean “thing” work?
+## How does this sh.., I mean “thing” work?
 
 First, we have to start with the question “*what goes where?*“, C has three different pools of memory.
 
@@ -30,7 +30,7 @@ First, we have to start with the question “*what goes where?*“, C has three 
 
 Pools are basically places where we can store our beautiful variables. First of all, we have to understand that any memory used in general, should be freed after use (freeing is referring to telling the CPU that you don’t need this particular memory anymore) this kind of freeing is divided into 2 types, the compiler free based,(which is what are we gonna discover soon with “stack” and “static’) and the heap is when the actual C fun starts, where you, **YES YOU**, the developer will have the power to free this kind of memory.
 
-#### The stack
+### The stack
 
 The *stack* is used to store variables used inside a specific scope(IT’S NOT BY DEFAULT A FUNCTION), it can be a function or simply a block(including the **main()** function).
 
@@ -71,7 +71,7 @@ Note that there is generally a limit on the size of the stack — which can 
 - the stack grows and shrinks as variables are created and destroyed
 - stack variables only live inside their function, which means they exist only while the function that created them exist
 
-#### The Heap
+### The Heap
 
 The *heap* is the diametrical opposite of the stack. The *heap* is a large pool, (your RAM is the limit) of memory that can be used dynamically — it is also known as the “**free store**”.  
 And this is where the fun starts, yes there is where most people complain, about how C is unsafe (usw). It’s an order-based restaurant, where you order your pizza with memory (I feel hungry now: /)in the compile time, and take it on delivery, on the run time. (The compile time is when your binary is getting compiled, and the run time is when your binary is being run or executed). This is the memory that is not automatically managed — you have to explicitly allocate (using functions such as malloc, which is the ordering process that I talked about), and deallocate the memory (using free), which is picking up your leftover and throwing it into the trash (It will stink your memory if it stays there 🤧). And here is where the pain starts.
@@ -116,7 +116,7 @@ As you can see, I write my code with the discipline of destroying everything all
 
 Thanks for reading ❤️.
 
-#### Resources:
+### Resources:
 
 https://www.scaler.com/topics/c/memory-layout-in-c/  
 https://www.embedded.com/memory-safety-in-c/  

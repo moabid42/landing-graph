@@ -16,11 +16,11 @@ Well, at least I tried to get something working, and I don’t regret the journe
 
 There are many simpler and more effective methods, like adding a new section at the end of the file or code caving if you can find a suitable space.
 
-### Architecture Preview
+## Architecture Preview
 
 Before diving into the nightmares I encountered, let’s establish an understanding of PE file architecture from both macro and micro perspectives.
 
-### Macro View
+## Macro View
 
 ![](./blog/pe-hell/01.png)
 
@@ -34,7 +34,7 @@ From a high-level perspective, Portable Executable files are essentially, like a
 
 The beauty (and curse for me) of PE files lies in their flexibility. Unlike simpler executable formats, PE files support dynamic linking, resource embedding, digital signatures, and complex memory layouts that can be optimized (scrambled) for different scenarios.
 
-### Micro View
+## Micro View
 
 ![](./blog/pe-hell/02.png)
 
@@ -59,7 +59,7 @@ Now let's go one step deeper. Let’s examine the critical headers and their con
 - Raw size and raw offset (where it lives in the file)
 - Characteristics flags (executable, writable, readable, etc.)
 
-### The Binding
+## The Binding
 
 Here’s where things get complicated. The relationship between headers and sections isn’t just informational; I mean, they are so dependent to the point any small modification results in a full update of the whole thing. It’s a web of interdependencies that must remain consistent, or your binary becomes corrupted.
 
@@ -71,7 +71,7 @@ So basically, from this prescriptive, code caves are essentially just alignment 
 
 **Characteristics Synchronization:** Section characteristics must match their intended use. A section marked as executable but containing only read data will trigger DEP violations.
 
-### Virtual Memory Mapping and Reference Resolution
+## Virtual Memory Mapping and Reference Resolution
 
 ![](./blog/pe-hell/03.jpg)
 
@@ -85,11 +85,11 @@ When Windows loads a PE file, it doesn’t just copy it byte-for-byte into memor
 
 **Section Characteristics Enforcement:** Windows applies the appropriate memory protections based on section characteristics. Code sections become executable, data sections become writable, and constant sections become read-only.
 
-### Bruh Moment
+## Bruh Moment
 
 After spending countless hours debugging broken PE modifications, I discovered some truly bizarre compiler behaviors that can drive you insane if you’re not aware of them.
 
-### The idata Section might randomly disappear
+## The idata Section might randomly disappear
 
 One of the most confusing discoveries was finding out that import data within .idata might be split across multiple sections. Modern compilers, especially when optimizing for size or performance, will split import-related data between .data and .rdata sections.
 
@@ -99,7 +99,7 @@ One of the most confusing discoveries was finding out that import data within .i
 
 **Also,** Different compiler versions and optimization levels handle this split differently. MSVC’s behavior changed significantly between versions, and GCC’s MinGW implementation does it yet another way. There’s no reliable pattern (at least based on my tests), so you have to parse the actual Import Directory to understand how each binary organizes its import data before your modifications.
 
-### Canary What ?!
+## Canary What ?!
 
 ![](./blog/pe-hell/04.jpg)
 
@@ -115,7 +115,7 @@ This discovery absolutely floored me. Despite having a couple of years of experi
 
 **Even** standard canary detection tools miss these complement values because they look for the typical \_\_security_cookie patterns. These complements use different naming conventions and are often optimized into seemingly unrelated constants \*sigh\*.
 
-### Thread Local Storage
+## Thread Local Storage
 
 Another rabbit hole involves Thread Local Storage (TLS) callbacks that execute before the main entry point. Some binaries use TLS callbacks for critical initialization, like:
 
@@ -125,7 +125,7 @@ Another rabbit hole involves Thread Local Storage (TLS) callbacks that execute b
 
 **Self-modification setup:** Encrypted or packed sections might be decrypted during TLS callback execution, meaning your static analysis is examining meaningless encrypted data.
 
-### Exception Handlers
+## Exception Handlers
 
 ![](./blog/pe-hell/05.jpg)
 
@@ -137,7 +137,7 @@ Modern PE files can contain interesting exception handling structures that creat
 
 **Vectored Exception Handlers:** Registered dynamically and stored in tables that might not be obvious from static analysis. These handlers can intercept and modify program execution in ways that break assumptions about linear code flow.
 
-### The String vs Virtual Address Nightmare
+## The String vs Virtual Address Nightmare
 
 ![](./blog/pe-hell/06.jpg)
 
@@ -158,11 +158,11 @@ Modern applications store all sorts of data in .rdata, configuration strings, er
 
 This preprocessing step worked in most cases, but sometimes, just sometimes, we happen to have a random pointer within the range of strings, and then you will have the other way around, a not updated pointer : (
 
-#### Lesson learned
+### Lesson learned
 
 > Devil is within the details …
 
-### Resource Section is NOT static
+## Resource Section is NOT static
 
 The .rsrc section isn't just static data, it can contain executable resources. YES, it can! and as an example :
 
@@ -170,7 +170,7 @@ The .rsrc section isn't just static data, it can contain executable resources. Y
 
 **Custom resource types:** Applications can define arbitrary resource types that get processed by custom handlers, creating hidden functionality that’s invisible to standard PE analysis tools.
 
-### Nothing Is Consistent
+## Nothing Is Consistent
 
 Perhaps the most frustrating aspect of PE modification is the inconsistency between different toolchains:
 
@@ -180,7 +180,7 @@ Perhaps the most frustrating aspect of PE modification is the inconsistency betw
 
 **Optimization:** Compiler optimization levels can completely restructure the binary layout. Link-time optimization, in particular, can merge sections, eliminate dead code, and reorder functions in ways that break static analysis assumptions.
 
-### Conclusion
+## Conclusion
 
 PE file modification is a fascinating and annoying project. Every binary is a unique puzzle with its own quirks, optimizations, and hidden surprises. Modifying them does indeed give you a deep knowledge of how they work. While frustrating, this complexity is also what makes the field interesting for reverse engineers and maldevs.
 
