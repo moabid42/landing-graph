@@ -156,4 +156,21 @@ test.describe('accessibility', () => {
     await button.click()
     await expect(button).toHaveAttribute('aria-pressed', 'true')
   })
+
+  // A screen reader's outline is the heading levels, in order. The post
+  // title is the page's h1, so a body that opens at h3 leaves a hole in it.
+  test('a post never skips a heading level', async ({ page }) => {
+    await page.goto(url())
+    await page.locator(POST_LINK).first().click()
+    await expect(page.locator('.post-status')).toHaveCount(0)
+
+    const levels = await page
+      .locator('main :is(h1, h2, h3, h4, h5, h6)')
+      .evaluateAll((hs) => hs.map((h) => Number(h.tagName[1])))
+
+    expect(levels[0]).toBe(1)
+    for (let i = 1; i < levels.length; i++) {
+      expect(levels[i] - levels[i - 1], levels.join(' ')).toBeLessThanOrEqual(1)
+    }
+  })
 })
