@@ -557,7 +557,10 @@ section { padding: 72px 0 24px; }
 .md-body tbody tr:nth-child(2n) td {
   background: color-mix(in srgb, var(--bg-subtle) 55%, transparent);
 }
-.md-body img { max-width: 100%; border-radius: 6px; }
+/* height:auto keeps the intrinsic width/height attributes from squashing a
+   picture once max-width kicks in — the attributes are there to reserve the
+   right box, not to size it. */
+.md-body img { max-width: 100%; height: auto; border-radius: 6px; }
 .md-body hr { border: 0; border-top: 2px solid var(--border-muted); margin: 24px 0; }
 .md-mermaid {
   display: flex; justify-content: center;

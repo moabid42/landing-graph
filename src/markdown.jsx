@@ -4,6 +4,7 @@
 // library only when a post actually contains one.
 import { createElement, useEffect, useId, useState } from 'react'
 import { BASE } from './paths.js'
+import IMAGE_SIZES from 'virtual:image-sizes'
 
 /* ---------------- inline markdown ---------------- */
 const INLINE_RE = new RegExp(
@@ -25,10 +26,21 @@ const INLINE_RE = new RegExp(
 // "./blog/<slug>/01.png". A post is served from its own path, so resolving
 // those against the document would look for them inside that path; they
 // belong to the site root instead.
-const asset = (href) =>
-  /^([a-z][a-z0-9+.-]*:|\/|#)/i.test(href)
-    ? href
-    : BASE + href.replace(/^\.\//, '')
+const local = (href) =>
+  /^([a-z][a-z0-9+.-]*:|\/|#)/i.test(href) ? null : href.replace(/^\.\//, '')
+
+const asset = (href) => {
+  const path = local(href)
+  return path === null ? href : BASE + path
+}
+
+// Reserve the box before the bytes arrive, and only fetch a picture the
+// reader has scrolled to. plugins/imageSizes.js measures public/ at build
+// time; an image it could not measure just renders without the attributes.
+const imgProps = (href) => {
+  const [width, height] = IMAGE_SIZES[local(href)] || []
+  return { loading: 'lazy', decoding: 'async', width, height }
+}
 
 const extProps = (href) =>
   /^[a-z]+:\/\//.test(href)
@@ -52,7 +64,15 @@ function inline(text) {
     else if (m[3]) {
       const im = t.match(/^!\[([^\]]*)\]\(([^)\s]+)(?:\s+"([^"]*)")?\)$/)
       if (im)
-        out.push(<img key={k} src={asset(im[2])} alt={im[1]} title={im[3]} />)
+        out.push(
+          <img
+            key={k}
+            src={asset(im[2])}
+            alt={im[1]}
+            title={im[3]}
+            {...imgProps(im[2])}
+          />
+        )
       else out.push(t)
     } else if (m[4]) {
       const lm = t.match(/^\[([^\]]+)\]\(([^)\s]+)(?:\s+"([^"]*)")?\)$/)
