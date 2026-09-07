@@ -19,9 +19,7 @@ test.describe('share cards and crawlability', () => {
   test('the README route carries a full share card', async ({ page }) => {
     await page.goto(url())
     expect(await meta(page, 'og:type')).toBe('website')
-    expect(await meta(page, 'og:title')).toBe(
-      `${config.identity.handle} / ${config.identity.repo}`
-    )
+    expect(await meta(page, 'og:title')).toBe(config.seo.title)
     expect(await meta(page, 'og:description')).toBe(config.seo.description)
     expect(await meta(page, 'og:url')).toBe(`${origin}/`)
     expect(await meta(page, 'og:site_name')).toBe(config.identity.repo)
@@ -38,9 +36,7 @@ test.describe('share cards and crawlability', () => {
 
     await expect.poll(() => meta(page, 'og:type')).toBe('article')
     expect(await meta(page, 'og:url')).toBe(`${origin}/blog/${slug}/`)
-    expect(await meta(page, 'og:title')).not.toBe(
-      `${config.identity.handle} / ${config.identity.repo}`
-    )
+    expect(await meta(page, 'og:title')).not.toBe(config.seo.title)
     // a shared post must not describe itself with the site blurb
     expect(await meta(page, 'og:description')).not.toBe(config.seo.description)
     expect(await meta(page, 'article:published_time')).toMatch(/^\d{4}-\d{2}/)

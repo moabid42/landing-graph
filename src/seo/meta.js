@@ -25,7 +25,7 @@ export function shareImage() {
 export function metaFor(post) {
   const title = post
     ? `${post.title} · ${identity.repo}`
-    : `${identity.handle} / ${identity.repo}`
+    : seo.title || `${identity.handle} / ${identity.repo}`
   const description = (post && (post.summary || post.title)) || seo.description
   return {
     title,

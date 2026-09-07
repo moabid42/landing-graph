@@ -74,6 +74,13 @@ export default {
     // — and the base path follows it; nothing else changes.
     url: 'https://moabid.me',
 
+    // The <title> of the README, and the headline on every share card for
+    // it. The header crumb is not this: that is identity.handle / repo, and
+    // it stays a repository breadcrumb. This is what a search result says,
+    // so write the words someone would actually type to find you — a handle
+    // and a domain are not among them. Leave it out and the crumb is used.
+    title: 'Mouad Abid | Software Security Engineer',
+
     description:
       'Mouad Abid — software security engineer. Career rendered as git log ' +
       '--graph --all: every job, degree and project as a branch.',

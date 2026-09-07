@@ -48,8 +48,9 @@ describe('shareImage', () => {
 })
 
 describe('metaFor', () => {
-  it('titles the home route with the crumb', () => {
-    expect(metaFor(null).title).toBe(
+  it('titles the home route with the searchable name, not the crumb', () => {
+    expect(metaFor(null).title).toBe(config.seo.title)
+    expect(metaFor(null).title).not.toBe(
       `${config.identity.handle} / ${config.identity.repo}`
     )
   })

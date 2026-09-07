@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test'
 import { url } from './site.js'
 import config from '../../site.config.js'
 
-const { identity, links, footer } = config
+const { identity, links, footer, seo } = config
 const label = (url) =>
   url.replace(/^https?:\/\/(www\.)?/, '').replace(/^mailto:/, '')
 
@@ -11,8 +11,12 @@ test.describe('the README page', () => {
     await page.goto(url())
   })
 
-  test('titles the tab from the config crumb', async ({ page }) => {
-    await expect(page).toHaveTitle(`${identity.handle} / ${identity.repo}`)
+  // The crumb and the title are deliberately different: one is a repository
+  // breadcrumb, the other is what a search result says.
+  test('titles the tab from seo.title, not from the crumb', async ({
+    page,
+  }) => {
+    await expect(page).toHaveTitle(seo.title)
   })
 
   test('renders the header crumb from the config', async ({ page }) => {
