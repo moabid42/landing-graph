@@ -10,6 +10,7 @@
 import { gzipSync } from 'node:zlib'
 import { readFileSync, existsSync } from 'node:fs'
 import { join, dirname } from 'node:path'
+import { BASE } from '../src/paths.js'
 
 const DIST = 'dist'
 
@@ -39,7 +40,9 @@ const eager = [
   ...[
     ...html.matchAll(/<link[^>]+rel="modulepreload"[^>]+href="([^"]+)"/g),
   ].map((m) => m[1]),
-].map((href) => href.replace(/^\.?\//, ''))
+  // Hrefs in the html are absolute and base-prefixed; on disk the base IS
+  // the dist directory.
+].map((href) => href.replace(BASE, '').replace(/^\.?\//, ''))
 
 if (eager.length === 0) fail('found no entry script in index.html')
 

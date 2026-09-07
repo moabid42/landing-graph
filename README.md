@@ -131,10 +131,16 @@ is optional and falls back to `color`.
 npm run build     # -> dist/
 ```
 
-`vite.config.js` sets `base: './'` and the router keeps every route in the
-fragment, so one build works unchanged at a project url
-(`you.github.io/repo/`), at a user site, and behind a custom domain. There is
-no base path to configure. Point Netlify, Vercel or Pages at `dist/`.
+Point Netlify, Vercel or Pages at `dist/`.
+
+Routes are real paths — `/blog/<slug>/` — so the build has to know where the
+site is served from. It reads that off `seo.url` in `site.config.js`: a
+custom domain makes the base `/`, a project url (`you.github.io/repo`) makes
+it `/repo/`. That one line is the whole configuration; set it before you
+deploy. The build writes `blog/<slug>/index.html` for every post and a
+`404.html` for everything else, so each post is a url a host answers with
+`200` and its own `<title>`, and old `#/blog/<slug>` links still land on the
+post.
 
 ### GitHub Pages
 
@@ -172,13 +178,18 @@ needed today.
 
 ## Search engines and share cards
 
-`seo.url` in `site.config.js` is the origin the site is served from. It drives
-the canonical url on every route, the `og:url`, and a `sitemap.xml` +
-`robots.txt` generated at build time. `seo.image` is the picture shown when
-someone posts a link — put a 1200x630 png in `public/` and point at it.
+`seo.url` in `site.config.js` is where the site is served from. It drives the
+base path, the canonical url on every route, the `og:url`, the schema.org
+block, and a `sitemap.xml` + `robots.txt` generated at build time.
+`seo.image` is the picture shown when someone posts a link — put a 1200x630
+png in `public/` and point at it.
 
-Each blog post overrides the title and description with its own, so a shared
-post link reads as that post rather than as the site.
+There is no second copy of any of that to keep in step: `index.html` carries
+a `<!--seo-->` placeholder, and `plugins/prerender.js` fills it from
+`site.config.js` at build time — then writes one small html file per post
+with the same block swapped for that post's own title, description, canonical
+url, share card and `BlogPosting` schema. A crawler or a link unfurler gets
+the right answer from the html itself, without running a line of javascript.
 
 ## Development
 
@@ -210,8 +221,8 @@ frontmatter. They also act as a content lint: a typo in `content/` fails
 `npm test` instead of quietly dropping an entry.
 
 End-to-end tests drive the real bundle in Chromium at desktop and mobile
-widths, covering the graph, the track filter, the theme toggle and the hash
-router.
+widths, covering the graph, the track filter, the theme toggle, the router
+and the head each route serves.
 
 ### Hooks
 

@@ -1,5 +1,5 @@
-import { readdirSync, readFileSync } from 'node:fs'
-import { join } from 'node:path'
+import { ORIGIN, absolute, homePath, postPath } from '../src/paths.js'
+import { readPosts } from './posts.js'
 
 // Emits robots.txt and sitemap.xml at build time from site.config.js and the
 // files in content/blog. Both are static facts about the site, so generating
@@ -8,56 +8,31 @@ import { join } from 'node:path'
 const escape = (s) =>
   s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
 
-// Enough frontmatter parsing to find the date and skip drafts. src/blog.js
-// cannot be imported here: it runs import.meta.glob, which only exists once
-// Vite has transformed it.
-function posts(dir) {
-  let files = []
-  try {
-    files = readdirSync(dir).filter((f) => f.endsWith('.md'))
-  } catch {
-    return []
-  }
-  return files
-    .map((file) => {
-      const raw = readFileSync(join(dir, file), 'utf8')
-      const fm = raw.match(/^---\s*\n([\s\S]*?)\n---/)
-      const meta = {}
-      if (fm) {
-        for (const line of fm[1].split('\n')) {
-          const kv = line.match(/^([A-Za-z]+)\s*:\s*(.*?)\s*$/)
-          if (kv) meta[kv[1].toLowerCase()] = kv[2]
-        }
-      }
-      return {
-        slug: file.replace(/\.md$/, ''),
-        date: meta.date || '',
-        draft: (meta.draft || '').toLowerCase() === 'true',
-      }
-    })
-    .filter((p) => !p.draft)
-}
-
-export default function seoFiles({ config, blogDir = 'content/blog' }) {
-  const origin = (config.seo?.url || '').replace(/\/+$/, '')
-
+export default function seoFiles({ blogDir = 'content/blog' } = {}) {
   return {
     name: 'landing-graph:seo-files',
     apply: 'build',
     generateBundle() {
       // With no site url there is nothing absolute to point at, and a
       // sitemap of relative urls is worse than none.
-      if (!origin) {
+      if (!ORIGIN) {
         this.warn(
           'site.config.js has no seo.url — skipping sitemap.xml and robots.txt'
         )
         return
       }
 
+      const posts = readPosts(blogDir)
+
       const urls = [
-        { loc: `${origin}/`, priority: '1.0' },
-        ...posts(blogDir).map((p) => ({
-          loc: `${origin}/#/blog/${p.slug}`,
+        // The README changes whenever a post does; the newest date says so.
+        {
+          loc: absolute(homePath()),
+          lastmod: posts[0]?.date || null,
+          priority: '1.0',
+        },
+        ...posts.map((p) => ({
+          loc: absolute(postPath(p.slug)),
           lastmod: p.date || null,
           priority: '0.7',
         })),
@@ -84,7 +59,7 @@ export default function seoFiles({ config, blogDir = 'content/blog' }) {
       this.emitFile({
         type: 'asset',
         fileName: 'robots.txt',
-        source: `User-agent: *\nAllow: /\n\nSitemap: ${origin}/sitemap.xml\n`,
+        source: `User-agent: *\nAllow: /\n\nSitemap: ${ORIGIN}/sitemap.xml\n`,
       })
     },
   }

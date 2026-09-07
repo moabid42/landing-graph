@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test'
+import { url } from './site.js'
 import config from '../../site.config.js'
 
 const toggle = (page) => page.locator('.gh-header button.gh-btn')
@@ -15,7 +16,7 @@ const trackVar = (page, key) =>
 
 test.describe('the theme toggle', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('/')
+    await page.goto(url())
   })
 
   test('switches between dark and light', async ({ page }) => {

@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test'
+import { url } from './site.js'
 import config from '../../site.config.js'
 
 const { identity, links, footer } = config
@@ -7,7 +8,7 @@ const label = (url) =>
 
 test.describe('the README page', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('/')
+    await page.goto(url())
   })
 
   test('titles the tab from the config crumb', async ({ page }) => {

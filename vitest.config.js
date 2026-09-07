@@ -19,6 +19,7 @@ export default mergeConfig(
         // unit test is meant to move.
         include: [
           'src/content.js',
+          'src/paths.js',
           'src/blog/parse.js',
           'src/loadContent.js',
           'src/seo/meta.js',

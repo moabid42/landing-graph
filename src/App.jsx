@@ -4,6 +4,8 @@ import Markdown from './markdown.jsx'
 import { POSTS, loadBody } from './blog/index.js'
 import ErrorBoundary from './ErrorBoundary.jsx'
 import { applyMeta } from './seo/apply.js'
+import { homePath, postPath } from './paths.js'
+import { link, useRoute } from './router.js'
 import config from '../site.config.js'
 import { ENTRIES } from './content.js'
 import {
@@ -92,18 +94,6 @@ function useTheme() {
   return [theme, setTheme]
 }
 
-// tiny hash router: "#/blog/<slug>" opens a post, anything else is home
-function useRoute() {
-  const [hash, setHash] = useState(() => window.location.hash)
-  useEffect(() => {
-    const on = () => setHash(window.location.hash)
-    window.addEventListener('hashchange', on)
-    return () => window.removeEventListener('hashchange', on)
-  }, [])
-  const m = hash.match(/^#\/blog\/([A-Za-z0-9._-]+)/)
-  return m ? m[1] : null
-}
-
 // The body is a dynamic import (see src/blog/index.js), so it arrives a beat
 // after the heading. Everything above the fold — title, date, topics — comes
 // from the eager index and renders immediately.
@@ -128,7 +118,7 @@ function PostPage({ post }) {
   return (
     <section className="post-page" aria-label="Blog post">
       <p className="post-back">
-        <a href="#blog">← all writing</a>
+        <a {...link(`${homePath()}#blog`)}>← all writing</a>
       </p>
       <article className="readme">
         <div className="readme-head">
@@ -181,13 +171,21 @@ export default function App() {
     page * POSTS_PER_PAGE
   )
 
+  // Section tabs are ordinary in-page anchors on the README. From a post the
+  // section is not on the page at all, so there they carry the full path home
+  // and are hijacked the same way a post link is.
+  const section = (id) =>
+    post ? link(`${homePath()}#${id}`) : { href: `#${id}` }
+
   // Title, description, canonical and the share card, per route. index.html
   // carries the same values statically for crawlers that never run scripts.
   useEffect(() => {
     applyMeta(post)
+    // A post opens at the top; the README opens wherever the url points,
+    // which is how a section tab gets you back from a post to that section.
     if (post) window.scrollTo(0, 0)
-    else if (window.location.hash === '#blog')
-      document.getElementById('blog')?.scrollIntoView()
+    else if (window.location.hash)
+      document.getElementById(window.location.hash.slice(1))?.scrollIntoView()
   }, [post])
 
   return (
@@ -205,7 +203,7 @@ export default function App() {
               {identity.handle}
             </a>
             <span className="slash">/</span>
-            <a href="#top" className="repo-name">
+            <a {...section('top')} className="repo-name">
               {identity.repo}
             </a>
             <span className="vis-badge">Public</span>
@@ -235,33 +233,33 @@ export default function App() {
           </div>
         </div>
         <nav className="gh-tabs" aria-label="Sections">
-          <a className={`tab ${post ? '' : 'active'}`} href="#top">
+          <a className={`tab ${post ? '' : 'active'}`} {...section('top')}>
             <IconBook width={14} height={14} /> README
           </a>
-          <a className="tab" href="#timeline">
+          <a className="tab" {...section('timeline')}>
             <IconBranch width={14} height={14} /> Timeline
             <span className="counter">{ENTRIES.length}</span>
           </a>
-          <a className="tab" href="#work">
+          <a className="tab" {...section('work')}>
             <IconRepo width={14} height={14} /> Pinned
             <span className="counter">{WORK.length}</span>
           </a>
-          <a className={`tab ${post ? 'active' : ''}`} href="#blog">
+          <a className={`tab ${post ? 'active' : ''}`} {...section('blog')}>
             <IconPencil width={14} height={14} /> Writing
             {POSTS.length > 0 && (
               <span className="counter">{POSTS.length}</span>
             )}
           </a>
-          <a className="tab" href="#research">
+          <a className="tab" {...section('research')}>
             <IconFlask width={14} height={14} /> Research
             {RESEARCH.length > 0 && (
               <span className="counter">{RESEARCH.length}</span>
             )}
           </a>
-          <a className="tab" href="#stack">
+          <a className="tab" {...section('stack')}>
             <IconTag width={14} height={14} /> Stack
           </a>
-          <a className="tab" href="#contact">
+          <a className="tab" {...section('contact')}>
             <IconMail width={14} height={14} /> Contact
           </a>
         </nav>
@@ -419,7 +417,7 @@ export default function App() {
                       <li key={p.slug} className="post-row">
                         <span className="post-date">{p.date}</span>
                         <div className="post-main">
-                          <a href={`#/blog/${p.slug}`}>{p.title}</a>
+                          <a {...link(postPath(p.slug))}>{p.title}</a>
                           {p.summary && (
                             <p className="post-summary">{p.summary}</p>
                           )}

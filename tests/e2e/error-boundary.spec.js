@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test'
+import { url } from './site.js'
 
 // The boundary is only reachable by making something throw during render, so
 // these tests break the page on purpose and check that the damage is
@@ -6,7 +7,7 @@ import { test, expect } from '@playwright/test'
 
 test.describe('the error boundary', () => {
   test('is not shown when nothing is wrong', async ({ page }) => {
-    await page.goto('/')
+    await page.goto(url())
     await expect(page.locator('.err-boundary')).toHaveCount(0)
   })
 
@@ -22,7 +23,7 @@ test.describe('the error boundary', () => {
     })
     page.on('console', () => {}) // the boundary logs, which is expected
 
-    await page.goto('/')
+    await page.goto(url())
 
     const boundary = page.locator('.err-boundary')
     await expect(boundary).toHaveCount(1)
@@ -42,7 +43,7 @@ test.describe('the error boundary', () => {
       }
     })
     page.on('console', () => {})
-    await page.goto('/')
+    await page.goto(url())
     await expect(page.locator('.err-boundary')).toHaveAttribute('role', 'alert')
   })
 })

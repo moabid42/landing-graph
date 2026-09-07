@@ -1,7 +1,11 @@
 import { defineConfig, devices } from '@playwright/test'
+import { BASE } from './src/paths.js'
 
 const PORT = 4173
 const BASE_URL = `http://localhost:${PORT}`
+// The preview server serves the site under seo.url's path, the same way the
+// deployed site does. tests/e2e/site.js builds paths against it.
+const SITE_URL = new URL(BASE, BASE_URL).href
 
 export default defineConfig({
   testDir: './tests/e2e',
@@ -42,7 +46,7 @@ export default defineConfig({
   // is what actually ships.
   webServer: {
     command: `npm run build && npm run preview -- --port ${PORT} --strictPort`,
-    url: BASE_URL,
+    url: SITE_URL,
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,
   },

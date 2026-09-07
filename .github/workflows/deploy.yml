@@ -11,9 +11,10 @@ name: Deploy
 # input needs a personal access token and GITHUB_TOKEN is not allowed to use
 # it, so a step here would only look like it helped.
 #
-# `base: './'` in vite.config.js plus the hash router mean the build works
-# unchanged at a project url (user.github.io/repo/), at a user site, and
-# behind a custom domain — there is no base path to configure.
+# Routes are real paths, so the build needs a base path. It comes from
+# seo.url in site.config.js (see src/paths.js): '/' behind a custom domain,
+# '/<repo>/' at a project url. Set that one line correctly and a project
+# site, a user site and a custom domain all build unchanged.
 #
 # The package job also uploads the artifact on a manual run, so you can grab
 # the tarball from the run summary and deploy it somewhere else by hand.

@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test'
+import { url } from './site.js'
 import config from '../../site.config.js'
 
 // Scroll so that `el` sits in the middle of the viewport, in one jump and
@@ -34,7 +35,7 @@ function cardsInViewport(page) {
 
 test.describe('the timeline graph', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('/')
+    await page.goto(url())
     await page.locator('.tl-wrap .tl-card').first().waitFor()
   })
 

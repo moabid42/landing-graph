@@ -1,14 +1,7 @@
-// Writes the computed meta onto the document. Kept apart from meta.js so
-// the decisions stay testable without a DOM; this half is covered by the
-// end-to-end suite, which reads the tags back out of a real browser.
-import config from '../../site.config.js'
-import { metaFor } from './meta.js'
-
-const { identity, seo } = config
-
-// Open Graph keys (og:*, article:*) are addressed by `property`; everything
-// else, including the twitter:* card tags, by `name`.
-const isOpenGraph = (key) => key.startsWith('og:') || key.startsWith('article:')
+// Writes the tags meta.js computed onto the live document. Kept apart from
+// meta.js so the decisions stay testable without a DOM; this half is covered
+// by the end-to-end suite, which reads the tags back out of a real browser.
+import { isOpenGraph, jsonLd, tagsFor } from './meta.js'
 
 function setMeta(key, value) {
   const attr = isOpenGraph(key) ? 'property' : 'name'
@@ -39,26 +32,29 @@ function setLink(rel, href) {
   el.setAttribute('href', href)
 }
 
+// The build already put this route's schema in the html it served. Replacing
+// it in place keeps one block on the page after the router moves, rather than
+// a growing pile of stale ones.
+function setJsonLd(data) {
+  let el = document.head.querySelector('script[type="application/ld+json"]')
+  if (!data) {
+    el?.remove()
+    return
+  }
+  if (!el) {
+    el = document.createElement('script')
+    el.setAttribute('type', 'application/ld+json')
+    document.head.appendChild(el)
+  }
+  el.textContent = JSON.stringify(data)
+}
+
 /** Point the document at one route. Called on every navigation. */
 export function applyMeta(post) {
-  const m = metaFor(post)
-
-  document.title = m.title
-  setMeta('description', m.description)
-  setMeta('theme-color', seo.themeColor)
-  setLink('canonical', m.canonical)
-
-  setMeta('og:site_name', identity.repo)
-  setMeta('og:type', m.type)
-  setMeta('og:title', m.title)
-  setMeta('og:description', m.description)
-  setMeta('og:url', m.canonical)
-  setMeta('og:image', m.image)
-  setMeta('article:published_time', m.publishedTime)
-
-  // Without a card type X and LinkedIn fall back to a bare link.
-  setMeta('twitter:card', m.image ? 'summary_large_image' : 'summary')
-  setMeta('twitter:title', m.title)
-  setMeta('twitter:description', m.description)
-  setMeta('twitter:image', m.image)
+  for (const [kind, key, value] of tagsFor(post)) {
+    if (kind === 'title') document.title = value
+    else if (kind === 'link') setLink(key, value)
+    else setMeta(key, value)
+  }
+  setJsonLd(jsonLd(post))
 }

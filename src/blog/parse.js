@@ -1,6 +1,6 @@
 // Blog posts are content/blog/*.md files. Drop a file in, it shows up in
 // Writing; delete it, it's gone. The filename is the URL slug
-// (#/blog/<filename>). Each post starts with a small frontmatter header:
+// (/blog/<filename>/). Each post starts with a small frontmatter header:
 //
 //   ---
 //   title: Human-readable title

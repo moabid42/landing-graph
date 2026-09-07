@@ -130,8 +130,9 @@ jobs:
 
       - run: npm ci
 
-      # lighthouserc.cjs collects from staticDistDir, so there has to be a
-      # dist/ to serve.
+      # lighthouserc.cjs serves dist/ with `vite preview` — under the site's
+      # own base path, which is the only place its absolute asset urls
+      # resolve — so there has to be a dist/ first.
       - run: npm run build
 
       # The action brings its own Lighthouse and its own Chrome. That is the

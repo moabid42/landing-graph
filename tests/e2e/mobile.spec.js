@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test'
+import { url } from './site.js'
 
 // Under 700px the timeline swaps to the git-log layout: one column, a trunk
 // in the gutter, and branch lines routed between rows. Different renderer,
@@ -6,7 +7,7 @@ import { test, expect } from '@playwright/test'
 
 test.describe('the mobile timeline', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('/')
+    await page.goto(url())
     await page.locator('.mtl-entry').first().waitFor()
   })
 

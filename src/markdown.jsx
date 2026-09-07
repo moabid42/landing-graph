@@ -3,6 +3,7 @@
 // and treats ```mermaid fences as live diagrams, lazy-loading the mermaid
 // library only when a post actually contains one.
 import { createElement, useEffect, useId, useState } from 'react'
+import { BASE } from './paths.js'
 
 /* ---------------- inline markdown ---------------- */
 const INLINE_RE = new RegExp(
@@ -19,6 +20,15 @@ const INLINE_RE = new RegExp(
     .map((s) => `(${s})`)
     .join('|')
 )
+
+// Post bodies point at files under public/ the way they sit on disk —
+// "./blog/<slug>/01.png". A post is served from its own path, so resolving
+// those against the document would look for them inside that path; they
+// belong to the site root instead.
+const asset = (href) =>
+  /^([a-z][a-z0-9+.-]*:|\/|#)/i.test(href)
+    ? href
+    : BASE + href.replace(/^\.\//, '')
 
 const extProps = (href) =>
   /^[a-z]+:\/\//.test(href)
@@ -41,13 +51,14 @@ function inline(text) {
     else if (m[2]) out.push(<code key={k}>{t.slice(1, -1)}</code>)
     else if (m[3]) {
       const im = t.match(/^!\[([^\]]*)\]\(([^)\s]+)(?:\s+"([^"]*)")?\)$/)
-      if (im) out.push(<img key={k} src={im[2]} alt={im[1]} title={im[3]} />)
+      if (im)
+        out.push(<img key={k} src={asset(im[2])} alt={im[1]} title={im[3]} />)
       else out.push(t)
     } else if (m[4]) {
       const lm = t.match(/^\[([^\]]+)\]\(([^)\s]+)(?:\s+"([^"]*)")?\)$/)
       if (lm)
         out.push(
-          <a key={k} href={lm[2]} title={lm[3]} {...extProps(lm[2])}>
+          <a key={k} href={asset(lm[2])} title={lm[3]} {...extProps(lm[2])}>
             {inline(lm[1])}
           </a>
         )
