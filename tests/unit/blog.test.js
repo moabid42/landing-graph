@@ -1,6 +1,8 @@
 import { describe, it, expect } from 'vitest'
+import { existsSync, readFileSync } from 'node:fs'
 import { parsePost, postMeta } from '../../src/blog/parse.js'
 import { POSTS, loadBody } from '../../src/blog/index.js'
+import { imageSize } from '../../plugins/imageSizes.js'
 
 const withFm = (fm, body = 'Body text.\n') => `---\n${fm}\n---\n${body}`
 
@@ -75,6 +77,18 @@ describe('parsePost', () => {
   })
 })
 
+// [slug, alt, src] for every image embedded in a shipped post.
+async function images() {
+  const out = []
+  for (const p of POSTS) {
+    const body = await loadBody(p.slug)
+    for (const [, alt, src] of body.matchAll(/!\[([^\]\n]*)\]\(([^)\s]+)/g)) {
+      out.push([p.slug, alt, src])
+    }
+  }
+  return out
+}
+
 describe('shipped posts', () => {
   it('has at least one', () => {
     expect(POSTS.length).toBeGreaterThan(0)
@@ -123,11 +137,20 @@ describe('shipped posts', () => {
   // An image with no alt is invisible to a screen reader and to image
   // search, and nothing else in the build would ever complain about it.
   it('describes every image it embeds', async () => {
-    for (const p of POSTS) {
-      const body = await loadBody(p.slug)
-      for (const [, alt, src] of body.matchAll(/!\[([^\]\n]*)\]\(([^)\s]+)/g)) {
-        expect(alt.trim(), `${p.slug} -> ${src}`).not.toBe('')
-      }
+    for (const [slug, alt, src] of await images()) {
+      expect(alt.trim(), `${slug} -> ${src}`).not.toBe('')
+    }
+  })
+
+  // Post bodies are markdown, so a path that points at nothing is a broken
+  // picture on the live site and silence everywhere else.
+  it('embeds only images that are really in public/', async () => {
+    for (const [slug, , src] of await images()) {
+      const file = `public/${src.replace(/^\.\//, '')}`
+      expect(existsSync(file), `${slug} -> ${src}`).toBe(true)
+      // A size the header parser cannot read means no reserved box, and the
+      // page reflows around the picture as it lands.
+      expect(imageSize(readFileSync(file)), `${slug} -> ${src}`).not.toBeNull()
     }
   })
 })
