@@ -148,4 +148,25 @@ test.describe('share cards and crawlability', () => {
     expect(html).toContain('"@type":"Person"')
     expect(html).toContain(config.identity.name)
   })
+
+  test('publishes a feed, announced in the head and listing every post', async ({
+    request,
+    page,
+  }) => {
+    const xml = await (await request.get(url('/feed.xml'))).text()
+    expect(xml).toContain('<rss version="2.0"')
+    expect(xml).toContain(`<link>${origin}/</link>`)
+
+    await page.goto(url())
+    await expect(
+      page.locator('head link[rel="alternate"][type="application/rss+xml"]')
+    ).toHaveCount(1)
+
+    const hrefs = await page
+      .locator(POST_LINK)
+      .evaluateAll((as) => as.map((a) => a.getAttribute('href')))
+    for (const href of hrefs) {
+      expect(xml, href).toContain(`<link>${absolute(href)}</link>`)
+    }
+  })
 })

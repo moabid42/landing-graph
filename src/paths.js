@@ -32,6 +32,9 @@ export const homePath = () => BASE
 /** One post's route. */
 export const postPath = (slug) => `${BASE}blog/${slug}/`
 
+/** The RSS feed. */
+export const feedPath = () => `${BASE}feed.xml`
+
 /** The slug a pathname names, or null when it names anything else. */
 export function slugFromPath(pathname) {
   const rest = pathname.startsWith(BASE)

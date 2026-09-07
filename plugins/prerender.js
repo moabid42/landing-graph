@@ -13,7 +13,7 @@
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { isOpenGraph, jsonLd, tagsFor } from '../src/seo/meta.js'
-import { BASE, postPath } from '../src/paths.js'
+import { BASE, absolute, feedPath, postPath } from '../src/paths.js'
 import { readPosts } from './posts.js'
 
 // The placeholder in index.html, and the fence the post pages cut along.
@@ -39,6 +39,16 @@ function head(post, indent = '    ') {
       const attr = isOpenGraph(key) ? 'property' : 'name'
       return `<meta ${attr}="${key}" content="${esc(value)}" />`
     })
+
+  // Feed autodiscovery: what a reader looks for when someone pastes the site
+  // url into it. The same on every route, so it is written here rather than
+  // kept in step by the runtime.
+  const feed = absolute(feedPath())
+  if (feed) {
+    rows.push(
+      `<link rel="alternate" type="application/rss+xml" href="${esc(feed)}" />`
+    )
+  }
 
   const ld = jsonLd(post)
   if (ld) {
