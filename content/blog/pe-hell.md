@@ -22,7 +22,7 @@ Before diving into the nightmares I encountered, let’s establish an understand
 
 ## Macro View
 
-![The layout of a PE file, top to bottom: DOS header, DOS stub, NT headers, the section table, then sections 1 to n](./blog/pe-hell/01.png)
+![The layout of a PE file, top to bottom: DOS header, DOS stub, NT headers, the section table, then sections 1 to n](./blog/pe-hell/01.webp)
 
 *Taken from A dive into PE file format (0xRick)*
 
@@ -36,7 +36,7 @@ The beauty (and curse for me) of PE files lies in their flexibility. Unlike simp
 
 ## Micro View
 
-![Ange Albertini's Dissected PE poster, mapping simple64.exe from its headers and sections down to the hex dump, the x86 assembly and the import structures](./blog/pe-hell/02.png)
+![Ange Albertini's Dissected PE poster, mapping simple64.exe from its headers and sections down to the hex dump, the x86 assembly and the import structures](./blog/pe-hell/02.webp)
 
 *PE visualization by Ange Albertini*
 
@@ -73,7 +73,7 @@ So basically, from this prescriptive, code caves are essentially just alignment 
 
 ## Virtual Memory Mapping and Reference Resolution
 
-![A hand-drawn Memory Mapping diagram, converting a section's raw offset on disk into its virtual address in memory](./blog/pe-hell/03.jpg)
+![A hand-drawn Memory Mapping diagram, converting a section's raw offset on disk into its virtual address in memory](./blog/pe-hell/03.webp)
 
 *Malware Theory — Memory Mapping of PE File on Youtube*
 
@@ -101,7 +101,7 @@ One of the most confusing discoveries was finding out that import data within .i
 
 ## Canary What ?!
 
-![A man holding his head, mouth open in shock](./blog/pe-hell/04.jpg)
+![A man holding his head, mouth open in shock](./blog/pe-hell/04.webp)
 
 *Random meme from the internet*
 
@@ -127,7 +127,7 @@ Another rabbit hole involves Thread Local Storage (TLS) callbacks that execute b
 
 ## Exception Handlers
 
-![The roll safe meme: a man tapping his temple with one finger](./blog/pe-hell/05.jpg)
+![The roll safe meme: a man tapping his temple with one finger](./blog/pe-hell/05.webp)
 
 *Another meme from the internet*
 
@@ -139,7 +139,7 @@ Modern PE files can contain interesting exception handling structures that creat
 
 ## The String vs Virtual Address Nightmare
 
-![A cartoon figure glaring furiously at a computer monitor](./blog/pe-hell/06.jpg)
+![A cartoon figure glaring furiously at a computer monitor](./blog/pe-hell/06.webp)
 
 *Yet another meme*
 

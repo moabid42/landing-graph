@@ -6,7 +6,7 @@ summary: Pointers in C explained with pictures — addresses, dereferencing, arr
 source: https://medium.com/@m0ab1d42/pointers-need-painters-354edc8fe6f2
 ---
 
-![A banner reading "All about pointer in C language" beside a large mouse cursor](./blog/pointers-need-painters/01.jpeg)
+![A banner reading "All about pointer in C language" beside a large mouse cursor](./blog/pointers-need-painters/01.webp)
 
 Once upon a time in the land of C programming, there was a magical concept known as pointers. These were not ordinary variables, but rather they held special powers that allowed programmers to manipulate memory and access data in a way that was previously impossible. (I am such a good storyteller, right? Probably I should switch my articles lmao)
 
@@ -48,11 +48,11 @@ For instance, imagine a diagram with a variable named “x” that holds the val
 
 If you didn’t understand check this picture :
 
-![C code passing the addresses of x and y into a function, with boxes showing ptr1 and ptr2 holding 1000 and 2000 and arrows pointing back at the variables](./blog/pointers-need-painters/02.png)
+![C code passing the addresses of x and y into a function, with boxes showing ptr1 and ptr2 holding 1000 and 2000 and arrows pointing back at the variables](./blog/pointers-need-painters/02.webp)
 
 As you can see from this picture, I always try to visualize, what are these pointers storing and where are they pointing. In the previous image we assume that 1000 and 2000 are magical addresses where our beautiful variables are living happily, while on the other hand the ptr1 and ptr2 are 2 Police officers holding, their cards and knowing where they live (Don’t be like these variables kids, don’t get caught by the cops 🤓).
 
-![Dr. Evil, captioned "It's only illegal if you get caught"](./blog/pointers-need-painters/03.jpeg)
+![Dr. Evil, captioned "It's only illegal if you get caught"](./blog/pointers-need-painters/03.webp)
 
 Now, let’s say the programmer wants to change the value of “x” using the pointer. They can do this by using the dereference operator “\*”, which tells the computer to retrieve the value stored at the memory address pointed to by “ptr”. The painter can show this operation in their diagram by erasing the value 10 in the box and replacing it with the new value assigned to the pointer which is 20.
 
@@ -76,7 +76,7 @@ This is a one-dimensional array:
 char *str = "Hii";
 ```
 
-![The string "Hii" laid out one character per byte at addresses 1000 to 1003, ending in a null terminator](./blog/pointers-need-painters/04.png)
+![The string "Hii" laid out one character per byte at addresses 1000 to 1003, ending in a null terminator](./blog/pointers-need-painters/04.webp)
 
 The offset between every address is 1, cuz the type of our pointer is : char , yes this char int double … defines the type of the pointer (or better say the size of each chunk of the memory, in the memory context, if you don’t understand the memory, go check “Did someone say memory”, I dove into that).
 
@@ -86,7 +86,7 @@ Next, let’s explain double dimensional pointer :
 char **array_of_strings;
 ```
 
-![An array of char pointers at 1000, 1008 and 1016, each pointing at its own string, with the list closed by a NULL](./blog/pointers-need-painters/05.png)
+![An array of char pointers at 1000, 1008 and 1016, each pointing at its own string, with the list closed by a NULL](./blog/pointers-need-painters/05.webp)
 
 We have to address a few things here:
 
@@ -106,7 +106,7 @@ We have to address a few things here:
 
 Now that we have an understanding of double-dimensional pointers, let's check a triple-dimensional array, and project the rule, to work with any number of pointers: ^)
 
-![Two pointers at 8000 and 8008 pointing at arrays of char pointers, which in turn point at the strings, every list closed by a NULL](./blog/pointers-need-painters/06.png)
+![Two pointers at 8000 and 8008 pointing at arrays of char pointers, which in turn point at the strings, every list closed by a NULL](./blog/pointers-need-painters/06.webp)
 
 Again here, let's address a few things:
 

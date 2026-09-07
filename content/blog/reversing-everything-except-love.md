@@ -6,7 +6,7 @@ summary: A fairy-tale style intro to reverse engineering: from source to assembl
 source: https://medium.com/@m0ab1d42/reversing-everything-except-love-27fe7a3d9e76
 ---
 
-![A banner reading "The Art of Reversing"](./blog/reversing-everything-except-love/01.png)
+![A banner reading "The Art of Reversing"](./blog/reversing-everything-except-love/01.webp)
 
 Ah, **the wonders of the internet**! The vast digital playground where we’ve all innocently searched for those “totally legal” (Ehm) cracked software versions at least once, right? I mean, who wouldn’t want to save a few bucks while using these forbidden digital goodies? But did you know that behind our curious searches lies a fascinating technological sorcery known as reversing.
 
@@ -19,7 +19,7 @@ So, your mischievous friend **Foo** thought he could outsmart you by handing you
 
 Now, imagine you have this binary file sitting innocently on your computer, teasing you with its enigmatic presence. You load it up, feeling the thrill of the unknown course through your veins. And voila! The program starts running, and asking you for secret code.
 
-![A terminal running ./a.out, which asks who you are and demands the secret before it hands over its present](./blog/reversing-everything-except-love/02.png)
+![A terminal running ./a.out, which asks who you are and demands the secret before it hands over its present](./blog/reversing-everything-except-love/02.webp)
 
 But fear not, you possess the mystical power of reversing! 😌 You scrutinize the output, analyzing it like a cryptographer examining an ancient scroll. Each line holds a clue, a piece of the puzzle that will unravel the program’s hidden secrets.
 
@@ -27,7 +27,7 @@ You might encounter strange function calls and memory addresses that appear as g
 
 We are gonna see how in a minute, but first, we have to understand the lifecycle of a C program:
 
-![A flow chart of the C build pipeline: source, preprocessing, compiler, assembler, linker with libraries, loader, and finally RAM](./blog/reversing-everything-except-love/03.png)
+![A flow chart of the C build pipeline: source, preprocessing, compiler, assembler, linker with libraries, loader, and finally RAM](./blog/reversing-everything-except-love/03.webp)
 
 Ah, the fascinating journey of a C program! It goes through multiple phases, like a metamorphosis, until it finally emerges as an a.out file that your computer (or, as I like to call it, your obedient operating system) can comprehend. This a.out file is a special program containing something called machine code. Now, let me let you a little secret: machine code is not meant for human consumption. It’s like an alien language that only your computer understands. But fear not, my dear Watson, possess the extraordinary ability to crack this code!
 
@@ -37,7 +37,7 @@ Once we’ve waltzed through the intricate dance of assembly, a magical revelati
 
 Ah, behold the treasures in our reverse engineering inventory! Let me introduce you to **Ghidra**, the chosen tool for today’s demonstration (though **IDA** or any decompiler can suffice if you fancy them). This magical contraption effortlessly reversed Foo’s beloved a.out binary, and voila! We have the source code back. Cool, huh?
 
-![Ghidra showing the disassembly of a.out beside the decompiled C, where the input is compared against a hard-coded secret](./blog/reversing-everything-except-love/04.png)
+![Ghidra showing the disassembly of a.out beside the decompiled C, where the input is compared against a hard-coded secret](./blog/reversing-everything-except-love/04.webp)
 
 But hold your excitement, my dear friend, for this is just a tiny pebble on our path. A basic program with a single function? Child’s play! Imagine the horror of reversing a desktop application with a thousand functions. That’s the ugly side of reversing, my friend. But fear not, we’re not ones to give up so easily!
 
@@ -45,11 +45,11 @@ Now, let’s switch gears and explore another perspective. Decompilers aren’t 
 
 Our trusty first slash, “info functions,” reveals the enigmatic functions hidden within our binary. Now, let’s put our thinking caps on and ponder this profound question: which function shall we deem worthy of our reversing efforts? Ah, yes, the answer is clear! Let’s set our sights on that magnificent creature called “main” and bring it under our scrutinizing scope. Brace yourself, dear friend, for the unraveling of its secrets shall begin!
 
-![pwndbg's info functions output, listing the symbols of the binary from _init to _fini with main at 0x11c9](./blog/reversing-everything-except-love/05.png)
+![pwndbg's info functions output, listing the symbols of the binary from _init to _fini with main at 0x11c9](./blog/reversing-everything-except-love/05.webp)
 
 Ladies and gentlemen, please take your seats, fasten your seat belts, and prepare for a mind-boggling disassembly extravaganza! We’re about to dive headfirst into the abyss of the “main” function, where the true mysteries lie. Hold on tight as we “**disass main”** and embark on an epic journey of unraveling the secrets that have eluded us thus far.
 
-![pwndbg's disassembly of main, from the stack canary setup through scanf and strcmp to the two printf branches](./blog/reversing-everything-except-love/06.png)
+![pwndbg's disassembly of main, from the stack canary setup through scanf and strcmp to the two printf branches](./blog/reversing-everything-except-love/06.webp)
 
 behold the magnificent machine instructions that bring our humble a.out to life! Admit it, you’re utterly perplexed by this enigmatic language of aliens known as assembly. It looks scary, doesn’t it? But fear not, for the secrets it holds are worth uncovering. Now, I won’t dive too deep into the intricacies of assembly, but let me assure you, my friend, it’s really worth it.
 
@@ -59,7 +59,7 @@ But heed my warning, dear friend. This journey is not meant to be a walk in the 
 
 So let us peer into this captivating realm and see what mysteries lie before us.
 
-![Browser devtools open on a CTF page, showing a heavily obfuscated JavaScript file](./blog/reversing-everything-except-love/07.png)
+![Browser devtools open on a CTF page, showing a heavily obfuscated JavaScript file](./blog/reversing-everything-except-love/07.webp)
 
 (One of the challenges we solved in PWNME 2023)
 

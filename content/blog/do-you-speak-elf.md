@@ -6,11 +6,11 @@ summary: The ELF binary format from the inside: headers, sections vs segments, a
 source: https://medium.com/@m0ab1d42/do-you-speak-elf-82600820772d
 ---
 
-![A hexdump of the first bytes of an ELF binary, with the magic, class, machine type and entry point each boxed in a different colour](./blog/do-you-speak-elf/01.png)
+![A hexdump of the first bytes of an ELF binary, with the magic, class, machine type and entry point each boxed in a different colour](./blog/do-you-speak-elf/01.webp)
 
 Ahoy, folks! Welcome to the mystical land of Linux Kernel, where the quest for the holy grail, also known as the ‘**one piece**’ 🤠, is reserved for only the bravest out there, yee-haw! But hold your horses, ’cause in this wild universe, we’re diving deep into the realm of ELF. Nope, not the magical creatures 🧝, but the ELF file format, the fancy schmancy standard for running things in the Linux world. So saddle up, ’cause today, we’re playing Kernel, trying to manually make this ELF file go vroom-vroom!
 
-![Jackie Chan holding his head in disbelief, captioned "MIND = BLOWN"](./blog/do-you-speak-elf/02.jpg)
+![Jackie Chan holding his head in disbelief, captioned "MIND = BLOWN"](./blog/do-you-speak-elf/02.webp)
 
 ## Agenda :
 
@@ -25,7 +25,7 @@ Ahoy, folks! Welcome to the mystical land of Linux Kernel, where the quest for t
 
 Let’s get the technical specs straight. The ELF format is like that one friend who’s super chill, not tied down to any specific group or clique — doesn’t care if you’re ARM, x86_64, 32-bit, or 64-bit. It’s a format with no biases. Once it’s compiled, it’s all about that CPU architecture life — no time for mingling with other architectures, very loyal indeed. Now, the real star of the show is its anatomy. Let’s dive into that banner once more, shall we?
 
-![Ange Albertini's ELF101 poster, dissecting simple64.elf into its ELF header, program header table, sections and section header table](./blog/do-you-speak-elf/03.png)
+![Ange Albertini's ELF101 poster, dissecting simple64.elf into its ELF header, program header table, sections and section header table](./blog/do-you-speak-elf/03.webp)
 
 Take this little 64-bit binary on an x86_64 architecture as an example. When we crack it open, we find it’s made up of three crucial components, the ELF Header, the Sections, and the Segments. Each of these has its own gig in the grand linking/loading show of the ELF lifecycle.
 
@@ -121,7 +121,7 @@ Focuses on three critical aspects:
 
 For further clarity, check the picture below :
 
-![A stack dump at process start: environment strings, arguments, the ELF auxiliary vector, then environ, argv and argc](./blog/do-you-speak-elf/04.png)
+![A stack dump at process start: environment strings, arguments, the ELF auxiliary vector, then environ, argv and argc](./blog/do-you-speak-elf/04.webp)
 
 ## **Start? What’s next**
 
