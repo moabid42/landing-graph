@@ -593,6 +593,14 @@ section { padding: 72px 0 24px; }
   color: var(--fg); font-family: var(--mono); font-size: 12px;
   padding: 10px 0;
 }
+/* Hold a screenful open for the body that is on its way. Without it the page
+   is shorter than the window until the chunk lands, and then everything below
+   the title jumps down at once — the footer visibly, and on Linux and Windows
+   every element on screen, because that is also the frame the scrollbar
+   appears in. Reserving the space costs nothing and the arrival is silent.
+   The failure message above keeps its natural height; there is nothing left
+   to make room for. */
+.post-status.loading { min-height: 70vh; }
 
 .post-list { list-style: none; border-top: 1px solid var(--border-muted); }
 .post-row {

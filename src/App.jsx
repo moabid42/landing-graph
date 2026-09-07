@@ -145,7 +145,7 @@ function PostPage({ post }) {
                 This post failed to load. Reloading the page usually fixes it.
               </p>
             ) : body === null ? (
-              <p className="post-status" aria-live="polite">
+              <p className="post-status loading" aria-live="polite">
                 Loading…
               </p>
             ) : (
