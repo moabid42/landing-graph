@@ -45,7 +45,16 @@ html[data-theme='light'] {
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+  /* Keep the scrollbar's width reserved even before the page is long enough
+     to need one. Where scrollbars take real layout width — Linux, Windows —
+     a page that grows past the viewport otherwise narrows by 15px in one
+     frame, and every element on screen shifts at once. That is invisible on
+     macOS, whose scrollbars float above the content, so it only shows up on
+     CI: a post scored 0.83 CLS there against 0.065 here. */
+  scrollbar-gutter: stable;
+}
 body {
   background: var(--bg);
   color: var(--fg);
