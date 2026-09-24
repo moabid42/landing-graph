@@ -71,12 +71,16 @@ export default function seoFiles({ blogDir = 'content/blog' } = {}) {
         // The README changes whenever a post does; the newest date says so.
         {
           loc: absolute(homePath()),
-          lastmod: posts[0]?.date || null,
+          lastmod:
+            posts
+              .map((p) => p.updated || p.date)
+              .sort()
+              .pop() || null,
           priority: '1.0',
         },
         ...posts.map((p) => ({
           loc: absolute(postPath(p.slug)),
-          lastmod: p.date || null,
+          lastmod: p.updated || p.date || null,
           priority: '0.7',
         })),
       ]

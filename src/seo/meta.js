@@ -101,6 +101,7 @@ export function jsonLd(post) {
       headline: post.title,
       description: post.summary || post.title,
       datePublished: post.date || undefined,
+      dateModified: post.updated || post.date || undefined,
       keywords: post.topics?.length ? post.topics.join(', ') : undefined,
       // Search results show the post's own picture; the share card, which
       // needs a fixed 1200x630, stays the site's.

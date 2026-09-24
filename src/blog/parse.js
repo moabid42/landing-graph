@@ -7,6 +7,7 @@
 //   date: YYYY-MM-DD
 //   topics: comma, separated
 //   summary: one line shown in the post list
+//   updated: YYYY-MM-DD    (optional — the last real edit, for search engines)
 //   draft: true            (optional — keeps the post off the site)
 //   ---
 //
@@ -39,6 +40,7 @@ export function parsePost(path, raw) {
     slug,
     title: meta.title || slug,
     date: meta.date || '',
+    updated: meta.updated || '',
     summary: meta.summary || '',
     draft: (meta.draft || '').toLowerCase() === 'true',
     topics: (meta.topics || '')

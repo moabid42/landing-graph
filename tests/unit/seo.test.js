@@ -171,6 +171,13 @@ describe('jsonLd', () => {
     expect(ld.author.name).toBe(config.identity.name)
   })
 
+  it('dates the last edit, or the publish date when there was none', () => {
+    expect(jsonLd(post).dateModified).toBe(post.date)
+    expect(jsonLd({ ...post, updated: '2025-01-02' }).dateModified).toBe(
+      '2025-01-02'
+    )
+  })
+
   it("leads with the post's own picture, then the share card", () => {
     const ld = jsonLd({ ...post, image: './blog/a-post/01.webp' })
     expect(ld.image[0]).toBe(`${origin}/blog/a-post/01.webp`)
@@ -185,6 +192,7 @@ describe('jsonLd', () => {
   it('survives a post with no date and no topics', () => {
     const ld = jsonLd({ ...post, date: '', topics: [] })
     expect(ld.datePublished).toBeUndefined()
+    expect(ld.dateModified).toBeUndefined()
     expect(ld.keywords).toBeUndefined()
   })
 })

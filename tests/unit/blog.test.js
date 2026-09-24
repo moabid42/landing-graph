@@ -155,6 +155,17 @@ describe('shipped posts', () => {
   })
 })
 
+describe('updated', () => {
+  it('reads the last edit from the frontmatter', () => {
+    const p = parsePost('x/a.md', withFm('title: T\nupdated: 2025-01-02'))
+    expect(p.updated).toBe('2025-01-02')
+  })
+
+  it('is empty for a post never edited since it went out', () => {
+    expect(parsePost('x/a.md', withFm('title: T')).updated).toBe('')
+  })
+})
+
 describe('image', () => {
   it('is the first picture in the body', () => {
     const p = parsePost(
