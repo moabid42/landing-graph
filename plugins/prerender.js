@@ -14,7 +14,7 @@ import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { isOpenGraph, jsonLd, tagsFor } from '../src/seo/meta.js'
 import { BASE, absolute, feedPath, postPath } from '../src/paths.js'
-import { readPosts } from './posts.js'
+import { postMarkdown, readPosts } from './posts.js'
 
 // The placeholder in index.html, and the fence the post pages cut along.
 const MARKER = '<!--seo-->'
@@ -36,6 +36,8 @@ function head(post, indent = '    ') {
     .map(([kind, key, value]) => {
       if (kind === 'title') return `<title>${esc(value)}</title>`
       if (kind === 'link') return `<link rel="${key}" href="${esc(value)}" />`
+      if (kind === 'alternate')
+        return `<link rel="alternate" type="${key}" href="${esc(value)}" />`
       const attr = isOpenGraph(key) ? 'property' : 'name'
       return `<meta ${attr}="${key}" content="${esc(value)}" />`
     })
@@ -88,7 +90,7 @@ export default function prerender({ blogDir = 'content/blog' } = {}) {
         )
       }
 
-      for (const post of readPosts(blogDir)) {
+      for (const post of readPosts(blogDir, { body: true })) {
         // postPath is base-prefixed ('/landing-graph/blog/x/'); on disk the
         // base IS the output directory, so only what follows it is a path.
         const file = join(
@@ -98,6 +100,9 @@ export default function prerender({ blogDir = 'content/blog' } = {}) {
         )
         mkdirSync(dirname(file), { recursive: true })
         writeFileSync(file, html.replace(BLOCK, head(post)))
+        // Beside it, the post as plain markdown: the text itself, for AI
+        // tools and readers that never run the script that draws the page.
+        writeFileSync(join(dirname(file), 'index.md'), postMarkdown(post))
       }
 
       // GitHub Pages serves this for anything that is not a file. Every real

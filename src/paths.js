@@ -32,6 +32,9 @@ export const homePath = () => BASE
 /** One post's route. */
 export const postPath = (slug) => `${BASE}blog/${slug}/`
 
+/** One post as plain markdown, next to its page. */
+export const postMarkdownPath = (slug) => `${postPath(slug)}index.md`
+
 /** The RSS feed. */
 export const feedPath = () => `${BASE}feed.xml`
 

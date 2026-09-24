@@ -5,7 +5,14 @@
 // so a crawler that never runs scripts and a visitor who does are told the
 // same thing.
 import config from '../../site.config.js'
-import { BASE, ORIGIN, absolute, homePath, postPath } from '../paths.js'
+import {
+  BASE,
+  ORIGIN,
+  absolute,
+  homePath,
+  postMarkdownPath,
+  postPath,
+} from '../paths.js'
 
 const { identity, seo, links } = config
 
@@ -72,6 +79,12 @@ export function tagsFor(post) {
     ['meta', 'description', m.description],
     ['meta', 'theme-color', seo.themeColor],
     ['link', 'canonical', m.canonical],
+    // The same post as plain markdown, for readers that do not run scripts.
+    [
+      'alternate',
+      'text/markdown',
+      post && absolute(postMarkdownPath(post.slug)),
+    ],
     ['meta', 'og:site_name', identity.repo],
     ['meta', 'og:type', m.type],
     ['meta', 'og:title', m.title],

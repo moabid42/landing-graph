@@ -1,8 +1,8 @@
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import config from '../site.config.js'
-import { BASE, ORIGIN, absolute, postPath } from '../src/paths.js'
-import { readPosts } from './posts.js'
+import { ORIGIN, absolute, postPath } from '../src/paths.js'
+import { postMarkdown, readPosts } from './posts.js'
 
 // Emits llms.txt and llms-full.txt at build time (https://llmstxt.org).
 //
@@ -14,14 +14,6 @@ import { readPosts } from './posts.js'
 // cannot drift from it.
 
 const { identity, seo, links, research = [], work = [], stack = [] } = config
-
-// Post bodies point at pictures the way they sit under public/; outside the
-// page those relative paths lead nowhere.
-const absoluteImages = (md) =>
-  md.replace(
-    /(!\[[^\]\n]*\]\()\.?\/?(blog\/[^)\s]+)\)/g,
-    (_, head, path) => `${head}${absolute(BASE + path)})`
-  )
 
 // A timeline file is already readable markdown once its editing notes and
 // its "# Work — timeline entries" heading are gone.
@@ -107,12 +99,10 @@ export default function llmsFiles({
         (career ? `\n# Career\n\n${career}` : '') +
         posts
           .map(
-            (p) =>
-              `\n---\n\n# ${p.title}\n\n` +
-              `Source: ${absolute(postPath(p.slug))}\n` +
-              (p.date ? `Published: ${p.date}\n` : '') +
-              (p.topics.length ? `Topics: ${p.topics.join(', ')}\n` : '') +
-              `\n${absoluteImages(p.body).trim()}\n`
+            (p) => `
+---
+
+${postMarkdown(p)}`
           )
           .join('')
 

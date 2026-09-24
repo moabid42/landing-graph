@@ -5,6 +5,7 @@
 import { readdirSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { parsePost, postMeta } from '../src/blog/parse.js'
+import { BASE, absolute, postPath } from '../src/paths.js'
 
 /**
  * Every publishable post in a directory, newest first. The bodies stay behind
@@ -23,4 +24,23 @@ export function readPosts(dir, { body = false } = {}) {
     .map((f) => read(f, readFileSync(join(dir, f), 'utf8')))
     .filter((p) => !p.draft)
     .sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0))
+}
+
+// Post bodies point at pictures the way they sit under public/; outside the
+// page those relative paths lead nowhere.
+const absoluteImages = (md) =>
+  md.replace(
+    /(!\[[^\]\n]*\]\()\.?\/?(blog\/[^)\s]+)\)/g,
+    (_, head, path) => `${head}${absolute(BASE + path)})`
+  )
+
+/** One post (read with its body) as a standalone markdown document. */
+export function postMarkdown(p) {
+  return (
+    `# ${p.title}\n\n` +
+    `Source: ${absolute(postPath(p.slug))}\n` +
+    (p.date ? `Published: ${p.date}\n` : '') +
+    (p.topics.length ? `Topics: ${p.topics.join(', ')}\n` : '') +
+    `\n${absoluteImages(p.body).trim()}\n`
+  )
 }

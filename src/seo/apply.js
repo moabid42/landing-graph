@@ -49,6 +49,23 @@ function setJsonLd(data) {
   el.textContent = JSON.stringify(data)
 }
 
+// rel="alternate" is shared by the feed and the markdown copy; the type is
+// what tells them apart.
+function setAlternate(type, href) {
+  let el = document.head.querySelector(`link[rel="alternate"][type="${type}"]`)
+  if (!href) {
+    el?.remove()
+    return
+  }
+  if (!el) {
+    el = document.createElement('link')
+    el.setAttribute('rel', 'alternate')
+    el.setAttribute('type', type)
+    document.head.appendChild(el)
+  }
+  el.setAttribute('href', href)
+}
+
 // A repeated key cannot be updated in place — the last route may have had
 // more of them, or fewer — so the old ones go and this route's are added.
 function setRepeated(key, values) {
@@ -70,6 +87,7 @@ export function applyMeta(post) {
     if (REPEATED.has(key)) continue
     if (kind === 'title') document.title = value
     else if (kind === 'link') setLink(key, value)
+    else if (kind === 'alternate') setAlternate(key, value)
     else setMeta(key, value)
   }
   for (const key of REPEATED) {

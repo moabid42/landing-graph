@@ -157,6 +157,11 @@ describe('tagsFor', () => {
     if (t['og:image']) expect(t['og:image:alt']).toBeTruthy()
   })
 
+  it('points a post at its markdown copy, and the README at none', () => {
+    expect(tags(post)['text/markdown']).toBe(`${origin}/blog/a-post/index.md`)
+    expect(tags(null)['text/markdown']).toBeUndefined()
+  })
+
   it('emits no empty tag, whatever the route', () => {
     for (const p of [null, post])
       for (const [, key, value] of tagsFor(p))
