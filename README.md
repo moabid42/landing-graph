@@ -193,6 +193,30 @@ with the same block swapped for that post's own title, description, canonical
 url, share card and `BlogPosting` schema. A crawler or a link unfurler gets
 the right answer from the html itself, without running a line of javascript.
 
+A post's own picture is the first image in its body: search results and the
+sitemap show it, while the share card stays `seo.image`. Add
+`updated: YYYY-MM-DD` to a post's frontmatter after a real edit and the
+schema and sitemap say so.
+
+### AI assistants
+
+Most AI crawlers do not run javascript, so the build also gives them the
+text directly:
+
+- `robots.txt` names GPTBot, ClaudeBot, PerplexityBot and the rest and lets
+  them in.
+- `llms.txt` is a map of the site — who you are, posts, research, projects,
+  profiles — and `llms-full.txt` is all of it plus the timeline and every post
+  in full (`plugins/llmsFiles.js`).
+- Every post has a plain markdown copy at `/blog/<slug>/index.md`, linked
+  from its head.
+- Every page's html carries a hidden text copy inside `#root`
+  (`plugins/snapshot.js`). React replaces it on load, so visitors never see
+  it.
+
+`identity.jobTitle` in `site.config.js` is the title search engines and
+assistants read for you.
+
 ## Development
 
 ```sh
