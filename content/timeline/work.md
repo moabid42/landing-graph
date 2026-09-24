@@ -29,7 +29,7 @@ matter — the graph sorts by date and assigns branch lanes automatically.
 - topics: math, english, french
 - time: part-time
 
-Prepared with Bac students for the national exam, and helped children between the ages of 4 and 10 with their homework.
+Tutored +10 students (ages 4-18) in math, physics and english, by grounding each concept in its history and reasoning driving understanding over memorization, resulting in a minimum of 40% grade improvement.
 
 ## Cloud Security Engineer, internship
 - org: Haufe Group · Freiburg
@@ -39,7 +39,7 @@ Prepared with Bac students for the national exam, and helped children between th
 - time: full-time
 - link: https://www.haufegroup.com/en
 
-Built MalS3Scan, a serverless AWS pipeline that YARA-scans every S3 upload and alerts incident response in real time.
+Designed MalS3Scan, a serverless AWS malware-detection pipeline processing ~10k files/day across thousands buckets, batch-dispatching to parallel Lambda scanners against a centralized YARA rule DB, with automated alerting for incidend response.
 
 ## System Engineer, POS systems
 - org: Schwarz Digits · Weinsberg
@@ -49,7 +49,7 @@ Built MalS3Scan, a serverless AWS pipeline that YARA-scans every S3 upload and a
 - time: full-time
 - link: https://schwarz-digits.de/en
 
-Owned integration and security for 150,000+ point-of-sale systems; yearly pentests against production with zero downtime.
+Owned integration and security for 150,000+ point-of-sale systems with zero downtime.
 
 ## Software Security Engineering tutor & speaker
 - org: 42 Heilbronn & Arkadia
@@ -59,7 +59,7 @@ Owned integration and security for 150,000+ point-of-sale systems; yearly pentes
 - time: part-time
 - link: https://www.42heilbronn.de/en/
 
-Live advanced classes on C, data structures, reverse engineering and binary exploitation. Hosted Cybersecurity Day for 100+ onsite people.
+Taught thousands of students advanced classes on C, data structures, reverse engineering and binary exploitation live. Hosted Cybersecurity Day for 100+ onsite people.
 
 ## Offensive Security Engineer
 - org: Schwarz Digits · Berlin, remote
@@ -69,14 +69,17 @@ Live advanced classes on C, data structures, reverse engineering and binary expl
 - time: full-time
 - https://schwarz-digits.de/en
 
-Internal red teaming across the group's global infrastructure and EDR bypass developement. Built the company's first AI-powered red-teaming copilot.
+Owned and Designed our first AI-powered red-teaming harness for GCP IAM (OPSEC safe) red teaming.
+Conducted various security review and code assessment accross STACKIT cloud global infra and various multi-million users applications.
+Egnineered EDR evasion techniques by reverse-engineering Windows kernel telemetry and building custom payload delivery tooling in C and assembly.
 
 ## Software Security Engineer
-- org: Mingabyte · Munich
+- org: Mingabyte · Munich, remote
 - start: 2025-12
 - end: now
 - topics: rust, threat modeling, TISAX
 - time: part-time
 - link: https://mingabyte.de/en/
 
-Architected a secure high-load AI inference system in Rust. Lead execution and delivery of the company's TISAX certification
+Designed a secure high-load AI inference system in Rust & Python.
+Lead execution and delivery of the company's TISAX certification in less than 350 hours.
