@@ -23,7 +23,7 @@ HOW TO EDIT — same format everywhere:
 - topics: ctf, red team, community
 - link: https://ctftime.org/team/220336
 
-Founded and Lead +100 security research across 20 countries from scratch into a consistent top 10 worldwide CTFtime ranking, with results at DEF CON CTF and Google CTF.
+Founded and Lead +100 security researchers across 20 countries from scratch into a consistent top 10 worldwide CTFtime ranking, with results at DEF CON CTF and Google CTF.
 
 ## CTO
 - org: xTID

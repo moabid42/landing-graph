@@ -71,7 +71,7 @@ Taught thousands of students advanced classes on C, data structures, reverse eng
 
 Owned and Designed our first AI-powered red-teaming harness for GCP IAM (OPSEC safe) red teaming.
 Conducted various security review and code assessment accross STACKIT cloud global infra and various multi-million users applications.
-Egnineered EDR evasion techniques by reverse-engineering Windows kernel telemetry and building custom payload delivery tooling in C and assembly.
+Engineered EDR evasion techniques by reverse-engineering Windows kernel telemetry and building custom payload delivery tooling in C and assembly.
 
 ## Software Security Engineer
 - org: Mingabyte · Munich, remote
