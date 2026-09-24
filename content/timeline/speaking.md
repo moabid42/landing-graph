@@ -32,7 +32,7 @@ Presented my research on advanced linux anti-debugging mechanisms, titeled "Hook
 - topics: reversing, pwn
 - link: https://lnkd.in/p/edeUMhFC
 
-Created high quality challenges in reverse engineering and pwn, and assisted in the infra development.
+Hosted HackerOne meetup Morocco, delivering high quality challenges and talks.
 
 ## Cyber Odyssey
 - org: 1337 · AkaSec
