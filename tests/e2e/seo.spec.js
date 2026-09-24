@@ -169,4 +169,68 @@ test.describe('share cards and crawlability', () => {
       expect(xml, href).toContain(`<link>${absolute(href)}</link>`)
     }
   })
+
+  test('robots.txt names the ai crawlers and lets them in', async ({
+    request,
+  }) => {
+    const txt = await (await request.get(url('/robots.txt'))).text()
+    for (const bot of ['GPTBot', 'ClaudeBot', 'PerplexityBot']) {
+      expect(txt).toContain(`User-agent: ${bot}`)
+    }
+    expect(txt).not.toContain('Disallow: /\n')
+  })
+
+  test('llms.txt maps every post, and llms-full.txt carries them in full', async ({
+    request,
+    page,
+  }) => {
+    const index = await request.get(url('/llms.txt'))
+    expect(index.ok()).toBe(true)
+    const txt = await index.text()
+    expect(txt).toContain(`# ${config.identity.name}`)
+
+    const full = await (await request.get(url('/llms-full.txt'))).text()
+
+    await page.goto(url())
+    const hrefs = await page
+      .locator(POST_LINK)
+      .evaluateAll((as) => as.map((a) => a.getAttribute('href')))
+    for (const href of hrefs) {
+      expect(txt, href).toContain(`](${absolute(href)})`)
+      expect(full, href).toContain(`Source: ${absolute(href)}`)
+    }
+  })
+
+  test('a post answers with its text and its picture before any script runs', async ({
+    request,
+    page,
+  }) => {
+    await page.goto(url())
+    const link = page.locator(POST_LINK).first()
+    const title = (await link.innerText()).trim()
+    const href = await link.getAttribute('href')
+
+    const html = await (await request.get(href)).text()
+    expect(html).toContain('<div class="prerendered">')
+    expect(html).toContain(`<h1>${title}</h1>`)
+    expect(html).toMatch(/"image":\["https?:\/\//)
+    expect(html).toContain('type="text/markdown"')
+
+    const md = await request.get(`${href}index.md`)
+    expect(md.ok(), `${href}index.md`).toBe(true)
+    expect(await md.text()).toContain(`# ${title}`)
+  })
+
+  test('the hidden text copy never shows once the app is up', async ({
+    page,
+  }) => {
+    await page.goto(url())
+    await expect(page.locator('.prerendered')).toHaveCount(0)
+  })
+
+  test('the sitemap lists each post picture', async ({ request }) => {
+    const xml = await (await request.get(url('/sitemap.xml'))).text()
+    expect(xml).toContain('xmlns:image=')
+    expect(xml).toMatch(/<image:loc>https?:\/\/[^<]+<\/image:loc>/)
+  })
 })
