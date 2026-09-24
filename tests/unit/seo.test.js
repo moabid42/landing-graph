@@ -5,6 +5,7 @@ import {
   isOpenGraph,
   jsonLd,
   metaFor,
+  postImage,
   shareImage,
   tagsFor,
 } from '../../src/seo/meta.js'
@@ -44,6 +45,25 @@ describe('shareImage', () => {
   it('makes a public/ path absolute', () => {
     const img = shareImage()
     if (config.seo.image) expect(img).toMatch(/^https?:\/\//)
+  })
+})
+
+describe('postImage', () => {
+  it("makes a post's first picture absolute from the site root", () => {
+    expect(postImage({ image: './blog/a/01.webp' })).toBe(
+      `${origin}/blog/a/01.webp`
+    )
+  })
+
+  it('passes a full url through untouched', () => {
+    const src = 'https://example.com/x.png'
+    expect(postImage({ image: src })).toBe(src)
+  })
+
+  it('is null for a post with no picture, or one that is not a file', () => {
+    expect(postImage({ image: null })).toBeNull()
+    expect(postImage({ image: 'data:image/png;base64,AA' })).toBeNull()
+    expect(postImage(null)).toBeNull()
   })
 })
 
@@ -149,6 +169,17 @@ describe('jsonLd', () => {
     expect(ld.keywords).toBe('one, two')
     expect(ld.mainEntityOfPage).toBe(canonical(post.slug))
     expect(ld.author.name).toBe(config.identity.name)
+  })
+
+  it("leads with the post's own picture, then the share card", () => {
+    const ld = jsonLd({ ...post, image: './blog/a-post/01.webp' })
+    expect(ld.image[0]).toBe(`${origin}/blog/a-post/01.webp`)
+    if (config.seo.image) expect(ld.image[1]).toBe(shareImage())
+  })
+
+  it('falls back to the share card alone for a post with no picture', () => {
+    const img = shareImage()
+    expect(jsonLd(post).image).toEqual(img ? [img] : undefined)
   })
 
   it('survives a post with no date and no topics', () => {

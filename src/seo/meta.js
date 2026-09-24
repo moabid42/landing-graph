@@ -5,7 +5,7 @@
 // so a crawler that never runs scripts and a visitor who does are told the
 // same thing.
 import config from '../../site.config.js'
-import { ORIGIN, absolute, homePath, postPath } from '../paths.js'
+import { BASE, ORIGIN, absolute, homePath, postPath } from '../paths.js'
 
 const { identity, seo, links } = config
 
@@ -19,6 +19,18 @@ export function shareImage() {
   if (!seo.image) return null
   if (/^https?:\/\//.test(seo.image)) return seo.image
   return ORIGIN ? ORIGIN + seo.image : null
+}
+
+// A post names its first picture the way it sits under public/ —
+// "./blog/<slug>/01.webp" — the same rule src/markdown.jsx resolves it by.
+/** Absolute url for a post's own picture, or null when it has none. */
+export function postImage(post) {
+  const src = post?.image
+  if (!src) return null
+  if (/^https?:\/\//.test(src)) return src
+  if (src.startsWith('/')) return absolute(src)
+  if (/^[a-z][a-z0-9+.-]*:|^#/i.test(src)) return null
+  return absolute(BASE + src.replace(/^\.\//, ''))
 }
 
 /** The <title>, description and share card for one route. */
@@ -82,6 +94,7 @@ export function jsonLd(post) {
     url: `${ORIGIN}/`,
   }
   if (post) {
+    const images = [postImage(post), shareImage()].filter(Boolean)
     return {
       '@context': 'https://schema.org',
       '@type': 'BlogPosting',
@@ -89,7 +102,9 @@ export function jsonLd(post) {
       description: post.summary || post.title,
       datePublished: post.date || undefined,
       keywords: post.topics?.length ? post.topics.join(', ') : undefined,
-      image: shareImage() || undefined,
+      // Search results show the post's own picture; the share card, which
+      // needs a fixed 1200x630, stays the site's.
+      image: images.length ? images : undefined,
       author,
       mainEntityOfPage: canonical(post.slug),
     }
