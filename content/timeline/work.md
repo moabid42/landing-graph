@@ -69,7 +69,7 @@ Taught thousands of students advanced classes on C, data structures, reverse eng
 - time: full-time
 - https://schwarz-digits.de/en
 
-Owned and Designed our first AI-powered red-teaming harness for GCP IAM (OPSEC safe) red teaming.
+Owned and Designed a GCP IAM red-teaming harness, with deterministic propose-then-verify architecture.
 Conducted various security review and code assessment accross STACKIT cloud global infra and various multi-million users applications.
 Engineered EDR evasion techniques by reverse-engineering Windows kernel telemetry and building custom payload delivery tooling in C and assembly.
 
