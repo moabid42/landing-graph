@@ -1,5 +1,6 @@
 import config from '../site.config.js'
 import { ORIGIN, absolute, feedPath, homePath, postPath } from '../src/paths.js'
+import { postImage } from '../src/seo/meta.js'
 import { readPosts } from './posts.js'
 
 // Emits robots.txt, sitemap.xml and feed.xml at build time from
@@ -82,12 +83,15 @@ export default function seoFiles({ blogDir = 'content/blog' } = {}) {
           loc: absolute(postPath(p.slug)),
           lastmod: p.updated || p.date || null,
           priority: '0.7',
+          // Lets image search find a post by its picture.
+          image: postImage(p),
         })),
       ]
 
       const sitemap =
         '<?xml version="1.0" encoding="UTF-8"?>\n' +
-        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"' +
+        ' xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n' +
         urls
           .map(
             (u) =>
@@ -97,6 +101,11 @@ export default function seoFiles({ blogDir = 'content/blog' } = {}) {
                 ? `    <lastmod>${escape(u.lastmod)}</lastmod>\n`
                 : '') +
               `    <priority>${u.priority}</priority>\n` +
+              (u.image
+                ? '    <image:image>\n' +
+                  `      <image:loc>${escape(u.image)}</image:loc>\n` +
+                  '    </image:image>\n'
+                : '') +
               '  </url>'
           )
           .join('\n') +
