@@ -34,7 +34,7 @@ Designed and built my own version of shell in pure C.
 - topics: raycasting, C, computer-graphics
 - link: https://github.com/moabid42/42cub3D
 
-Designed and built Half-life game clone using nothing by mlx C library.
+Designed and built Half-life game clone using nothing but mlx C library.
 
 ## ft_IRC
 - org: 42 Heilbronn
@@ -84,7 +84,7 @@ Designed and built a detection to technique visualization using neo4j and mappin
 - topics: detection-engineering, dsl, geometry, SMT
 - link: https://github.com/moabid42/decnique
 
-Designed and built a detection-coverage analyzer, that translates SIEM detection rules into one shared dsl language and models them against attacker techniques over a common event model using nothing but pure math.
+Designed and built a formal language and evaluation framework for measuring SIEM detection coverage against adversarial techniques over a common event model using nothing but pure math.
 
 ## Landing Graph
 - start: 2026-09
@@ -92,4 +92,4 @@ Designed and built a detection-coverage analyzer, that translates SIEM detection
 - topics: react, ui/ux
 - link: https://github.com/moabid42/landing-graph
 
-Designed and built my own personal blog based on "git log --graph --all" and opensourced it.
+Designed and built my own personal blog based on "git log --graph --all".

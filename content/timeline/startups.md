@@ -43,4 +43,4 @@ Designed and build a secure decentralized document verification system, handling
 - time: part-time
 - link: https://lyraix.ai/blog/
 
-Founded lyraix an AI security lab and designed LyraixGuard, a read-time AI guardrail system with +300 downloads on huggingface.
+Founded lyraix an AI security lab and designed LyraixGuard, a real-time AI guardrail system with +300 downloads on huggingface.

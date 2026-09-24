@@ -29,7 +29,7 @@ matter — the graph sorts by date and assigns branch lanes automatically.
 - topics: math, english, french
 - time: part-time
 
-Tutored +10 students (ages 4-18) in math, physics and english, by grounding each concept in its history and reasoning driving understanding over memorization, resulting in a minimum of 40% grade improvement.
+Tutored +10 students (ages 4-18) in math, physics and english, by grounding each concept in its history and reasoning driving understanding over memorization, and finally resulting in a minimum of 40% grade improvement.
 
 ## Cloud Security Engineer, internship
 - org: Haufe Group · Freiburg
@@ -39,7 +39,7 @@ Tutored +10 students (ages 4-18) in math, physics and english, by grounding each
 - time: full-time
 - link: https://www.haufegroup.com/en
 
-Designed MalS3Scan, a serverless AWS malware-detection pipeline processing ~10k files/day across thousands buckets, batch-dispatching to parallel Lambda scanners against a centralized YARA rule DB, with automated alerting for incidend response.
+Designed MalS3Scan, a serverless AWS malware-detection pipeline processing ~10k files/day across thousands of buckets, batch-dispatching to parallel Lambda scanners against a centralized YARA rule DB, with automated alerting for incidend response.
 
 ## System Engineer, POS systems
 - org: Schwarz Digits · Weinsberg
