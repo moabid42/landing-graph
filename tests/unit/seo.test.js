@@ -136,6 +136,27 @@ describe('tagsFor', () => {
     expect(tags(null)['article:published_time']).toBeUndefined()
   })
 
+  it('tags a post once per topic, and the README not at all', () => {
+    const topics = tagsFor(post)
+      .filter(([, key]) => key === 'article:tag')
+      .map(([, , v]) => v)
+    expect(topics).toEqual(post.topics)
+    expect(tags(null)['article:tag']).toBeUndefined()
+  })
+
+  it('credits the author on a post and dates its last edit', () => {
+    expect(tags(post)['article:author']).toBe(`${origin}/`)
+    expect(tags(null)['article:author']).toBeUndefined()
+    expect(
+      tags({ ...post, updated: '2025-01-02' })['article:modified_time']
+    ).toBe('2025-01-02')
+  })
+
+  it('describes the share image whenever there is one', () => {
+    const t = tags(null)
+    if (t['og:image']) expect(t['og:image:alt']).toBeTruthy()
+  })
+
   it('emits no empty tag, whatever the route', () => {
     for (const p of [null, post])
       for (const [, key, value] of tagsFor(p))

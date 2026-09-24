@@ -46,6 +46,8 @@ export function metaFor(post) {
     image: shareImage(),
     type: post ? 'article' : 'website',
     publishedTime: post?.date || null,
+    modifiedTime: post?.updated || null,
+    topics: post?.topics || [],
   }
 }
 
@@ -53,6 +55,9 @@ export function metaFor(post) {
 // else, including the twitter:* card tags, by `name`.
 export const isOpenGraph = (key) =>
   key.startsWith('og:') || key.startsWith('article:')
+
+/** Keys that may appear more than once in one head. */
+export const REPEATED = new Set(['article:tag'])
 
 /**
  * Every head tag for one route, as [kind, key, value] rows. A null value
@@ -73,7 +78,13 @@ export function tagsFor(post) {
     ['meta', 'og:description', m.description],
     ['meta', 'og:url', m.canonical],
     ['meta', 'og:image', m.image],
+    ['meta', 'og:image:alt', m.image && (seo.imageAlt || seo.title)],
+    ['meta', 'og:locale', 'en_US'],
     ['meta', 'article:published_time', m.publishedTime],
+    ['meta', 'article:modified_time', m.modifiedTime],
+    ['meta', 'article:author', post && ORIGIN ? `${ORIGIN}/` : null],
+    // One tag per topic: Open Graph repeats the key rather than joining them.
+    ...m.topics.map((t) => ['meta', 'article:tag', t]),
     // Without a card type X and LinkedIn fall back to a bare link.
     ['meta', 'twitter:card', m.image ? 'summary_large_image' : 'summary'],
     ['meta', 'twitter:title', m.title],

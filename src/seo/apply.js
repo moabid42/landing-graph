@@ -1,7 +1,7 @@
 // Writes the tags meta.js computed onto the live document. Kept apart from
 // meta.js so the decisions stay testable without a DOM; this half is covered
 // by the end-to-end suite, which reads the tags back out of a real browser.
-import { isOpenGraph, jsonLd, tagsFor } from './meta.js'
+import { REPEATED, isOpenGraph, jsonLd, tagsFor } from './meta.js'
 
 function setMeta(key, value) {
   const attr = isOpenGraph(key) ? 'property' : 'name'
@@ -49,12 +49,34 @@ function setJsonLd(data) {
   el.textContent = JSON.stringify(data)
 }
 
+// A repeated key cannot be updated in place — the last route may have had
+// more of them, or fewer — so the old ones go and this route's are added.
+function setRepeated(key, values) {
+  const attr = isOpenGraph(key) ? 'property' : 'name'
+  for (const el of document.head.querySelectorAll(`meta[${attr}="${key}"]`))
+    el.remove()
+  for (const value of values) {
+    const el = document.createElement('meta')
+    el.setAttribute(attr, key)
+    el.setAttribute('content', value)
+    document.head.appendChild(el)
+  }
+}
+
 /** Point the document at one route. Called on every navigation. */
 export function applyMeta(post) {
-  for (const [kind, key, value] of tagsFor(post)) {
+  const rows = tagsFor(post)
+  for (const [kind, key, value] of rows) {
+    if (REPEATED.has(key)) continue
     if (kind === 'title') document.title = value
     else if (kind === 'link') setLink(key, value)
     else setMeta(key, value)
+  }
+  for (const key of REPEATED) {
+    setRepeated(
+      key,
+      rows.filter(([, k, v]) => k === key && v).map(([, , v]) => v)
+    )
   }
   setJsonLd(jsonLd(post))
 }

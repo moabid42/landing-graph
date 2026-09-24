@@ -97,6 +97,10 @@ export default {
     // identity above — run `npm run og` after changing either.
     image: '/og.png',
 
+    // What the share image shows, for people who cannot see it. Leave it out
+    // and the title above is used.
+    imageAlt: 'Mouad Abid, software security engineer — moabid.me',
+
     themeColor: '#0d1117',
   },
 
