@@ -32,6 +32,9 @@ export function parsePost(path, raw) {
   }
   // authoring notes in leading HTML comments never render
   body = body.replace(/^\s*(<!--[\s\S]*?-->\s*)+/, '')
+  // The first picture in the body, as written ("./blog/<slug>/01.webp").
+  // Search engines show it beside the post; the share card stays og.png.
+  const image = body.match(/!\[[^\]\n]*\]\(([^)\s]+)\)/)?.[1] || null
   return {
     slug,
     title: meta.title || slug,
@@ -42,6 +45,7 @@ export function parsePost(path, raw) {
       .split(',')
       .map((s) => s.trim())
       .filter(Boolean),
+    image,
     body,
   }
 }

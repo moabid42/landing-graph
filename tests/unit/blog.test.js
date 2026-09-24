@@ -155,6 +155,28 @@ describe('shipped posts', () => {
   })
 })
 
+describe('image', () => {
+  it('is the first picture in the body', () => {
+    const p = parsePost(
+      'x/a.md',
+      withFm(
+        'title: T',
+        'Text.\n\n![one](./blog/a/01.webp)\n\n![two](./blog/a/02.webp)\n'
+      )
+    )
+    expect(p.image).toBe('./blog/a/01.webp')
+  })
+
+  it('is null for a post with no pictures', () => {
+    expect(parsePost('x/a.md', withFm('title: T')).image).toBeNull()
+  })
+
+  it('survives into the index, which has no body', () => {
+    const raw = withFm('title: T', '![alt](./blog/a/01.webp)\n')
+    expect(postMeta('x/a.md', raw).image).toBe('./blog/a/01.webp')
+  })
+})
+
 describe('postMeta', () => {
   it('is parsePost without the body', () => {
     const raw = withFm('title: T\ndate: 2024-01-01', '# Heading\n')
