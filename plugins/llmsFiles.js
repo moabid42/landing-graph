@@ -32,7 +32,7 @@ function track(dir, { key, label }) {
   return entries ? `## ${label ?? key}\n\n${entries}\n` : ''
 }
 
-function header(posts) {
+export function header(posts) {
   const lines = [
     `# ${identity.name}`,
     '',
@@ -70,6 +70,15 @@ function header(posts) {
   return lines.join('\n') + '\n'
 }
 
+/** Who this is, what they wrote and the whole timeline, as markdown. */
+export function profile(posts, timelineDir) {
+  const career = config.tracks
+    .map((t) => track(timelineDir, t))
+    .filter(Boolean)
+    .join('\n')
+  return header(posts) + (career ? `\n# Career\n\n${career}` : '')
+}
+
 export default function llmsFiles({
   blogDir = 'content/blog',
   timelineDir = 'content/timeline',
@@ -89,22 +98,9 @@ export default function llmsFiles({
         '\n## Optional\n\n' +
         `- [Everything above, plus the full career timeline and every post in full](${ORIGIN}/llms-full.txt)\n`
 
-      const career = config.tracks
-        .map((t) => track(timelineDir, t))
-        .filter(Boolean)
-        .join('\n')
-
       const full =
-        header(posts) +
-        (career ? `\n# Career\n\n${career}` : '') +
-        posts
-          .map(
-            (p) => `
----
-
-${postMarkdown(p)}`
-          )
-          .join('')
+        profile(posts, timelineDir) +
+        posts.map((p) => `\n---\n\n${postMarkdown(p)}`).join('')
 
       this.emitFile({ type: 'asset', fileName: 'llms.txt', source: index })
       this.emitFile({ type: 'asset', fileName: 'llms-full.txt', source: full })

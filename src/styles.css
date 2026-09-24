@@ -55,6 +55,13 @@ html {
      CI: a post scored 0.83 CLS there against 0.065 here. */
   scrollbar-gutter: stable;
 }
+/* The text copy plugins/prerender.js puts in #root for crawlers that do not
+   run scripts. React replaces it on its first render; until then it stays out
+   of sight, so nothing flashes or shifts. */
+.prerendered {
+  display: none;
+}
+
 body {
   background: var(--bg);
   color: var(--fg);

@@ -14,7 +14,9 @@ import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { isOpenGraph, jsonLd, tagsFor } from '../src/seo/meta.js'
 import { BASE, absolute, feedPath, postPath } from '../src/paths.js'
+import { profile } from './llmsFiles.js'
 import { postMarkdown, readPosts } from './posts.js'
+import { withSnapshot } from './snapshot.js'
 
 // The placeholder in index.html, and the fence the post pages cut along.
 const MARKER = '<!--seo-->'
@@ -62,7 +64,10 @@ function head(post, indent = '    ') {
   return [START, ...rows, END].join(`\n${indent}`)
 }
 
-export default function prerender({ blogDir = 'content/blog' } = {}) {
+export default function prerender({
+  blogDir = 'content/blog',
+  timelineDir = 'content/timeline',
+} = {}) {
   let outDir = 'dist'
 
   return {
@@ -90,7 +95,13 @@ export default function prerender({ blogDir = 'content/blog' } = {}) {
         )
       }
 
-      for (const post of readPosts(blogDir, { body: true })) {
+      const posts = readPosts(blogDir, { body: true })
+
+      // The README gets the whole profile — bio, posts, research, the
+      // timeline — as text a crawler can read without running the app.
+      writeFileSync(index, withSnapshot(html, profile(posts, timelineDir)))
+
+      for (const post of posts) {
         // postPath is base-prefixed ('/landing-graph/blog/x/'); on disk the
         // base IS the output directory, so only what follows it is a path.
         const file = join(
@@ -99,13 +110,17 @@ export default function prerender({ blogDir = 'content/blog' } = {}) {
           'index.html'
         )
         mkdirSync(dirname(file), { recursive: true })
-        writeFileSync(file, html.replace(BLOCK, head(post)))
+        writeFileSync(
+          file,
+          withSnapshot(html.replace(BLOCK, head(post)), postMarkdown(post))
+        )
         // Beside it, the post as plain markdown: the text itself, for AI
         // tools and readers that never run the script that draws the page.
         writeFileSync(join(dirname(file), 'index.md'), postMarkdown(post))
       }
 
-      // GitHub Pages serves this for anything that is not a file. Every real
+      // GitHub Pages serves this for anything that is not a file. No text
+      // copy: nothing real lives at these urls. Every real
       // route above is, so it is reached only by urls that genuinely are not
       // here — and the app falls back to the README.
       writeFileSync(join(outDir, '404.html'), html)
