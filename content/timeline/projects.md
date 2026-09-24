@@ -25,7 +25,7 @@ HOW TO EDIT — same format everywhere:
 - topics: multiprocessing, compiler-design, formal-languages
 - link: https://github.com/moabid42/shell
 
-Recreated my own version of shell in pure C.
+Designed and built my own version of shell in pure C.
 
 ## ft_cube3D
 - org: 42 Heilbronn
@@ -34,7 +34,16 @@ Recreated my own version of shell in pure C.
 - topics: raycasting, C, computer-graphics
 - link: https://github.com/moabid42/42cub3D
 
-Developed Half-life game clone using nothing by mlx C library.
+Designed and built Half-life game clone using nothing by mlx C library.
+
+## ft_IRC
+- org: 42 Heilbronn
+- start: 2022-10
+- end: 2022-11
+- topics: networking, C
+- link: https://github.com/moabid42/mini_IRC
+
+Designed and built an IRC server in pure C++.
 
 ## ft_transcendence
 - org: 42 Heilbronn
@@ -43,15 +52,7 @@ Developed Half-life game clone using nothing by mlx C library.
 - topics: gamedev, gRPC, websockets
 - link: https://github.com/williamollio/ft_transcendence
 
-Developed a pingpong game with realtime matchmaking and chat.
-
-## pwn-tools-setup
-- start: 2024-04
-- end: 2025-01
-- topics: docker, makefile
-- link: https://github.com/moabid42/pwn-tools-setup
-
-Docker with my pwn/reverse CTF tools.
+Designed and built a pingpong game with realtime matchmaking and chat.
 
 ## L3AK CTF 2024 Infra
 - org: L3AK TEAM
@@ -67,7 +68,7 @@ Developed the infra hosting L3AK CTF 2024 event, handling more than 1k concurren
 - end: 2025-07
 - topics: gcp, cloud-architecture, distributed-systems, caching
 
-Developed the infra hosting L3AK CTF 2025 event on GCP, handling more than 10k concurrent users, and millions of requests.
+Designed and built the infra hosting L3AK CTF 2025 event on GCP, handling more than 10k concurrent users, and millions of requests.
 
 ## IAMouflage
 - start: 2026-05
@@ -75,7 +76,7 @@ Developed the infra hosting L3AK CTF 2025 event on GCP, handling more than 10k c
 - topics: detections, TTPs, IAM, GCP
 - link: https://github.com/moabid42/IAMouflage
 
-Developed a detection to technique visualization using neo4j and mapping methodName (detection) <> permission (technique) for better visibility during red teaming.
+Designed and built a detection to technique visualization using neo4j and mapping methodName (detection) <> permission (technique) for better visibility during red teaming.
 
 ## Decnique
 - start: 2026-08
@@ -83,7 +84,7 @@ Developed a detection to technique visualization using neo4j and mapping methodN
 - topics: detection-engineering, dsl, geometry, SMT
 - link: https://github.com/moabid42/decnique
 
-Developed a detection-coverage analyzer, that translates SIEM detection rules into one shared dsl language and models them against attacker techniques over a common event model using nothing but pure math.
+Designed and built a detection-coverage analyzer, that translates SIEM detection rules into one shared dsl language and models them against attacker techniques over a common event model using nothing but pure math.
 
 ## Landing Graph
 - start: 2026-09
@@ -91,4 +92,4 @@ Developed a detection-coverage analyzer, that translates SIEM detection rules in
 - topics: react, ui/ux
 - link: https://github.com/moabid42/landing-graph
 
-Designed my own personal blog based on "git log --graph --all" and opensourced it.
+Designed and built my own personal blog based on "git log --graph --all" and opensourced it.
