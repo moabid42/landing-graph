@@ -148,7 +148,7 @@ export default {
   work: [
   {
     title: 'decnique',
-    text: 'A domain-specific language and SMT-backed coverage engine that models SIEM detection rules and attacker techniques on one shared event schema — surfacing detection gaps in cloud IAM.',
+      text: 'A formal language and evaluation framework for measuring SIEM detection coverage against adversarial techniques over a common event model using nothing but pure math.',
     topics: ['dsl', 'smt', 'sigma', 'elastic', 'panther'],
     href: 'https://github.com/moabid42/decnique',
     visibility: 'Public',
@@ -162,14 +162,14 @@ export default {
   },
   {
     title: 'l3ak-ctf-infra',
-    text: 'Architecture and operations for a high-traffic yearly CTF: 10,000+ concurrent users and millions of requests inside the opening hour.',
+    text: 'The infra hosting L3AK CTF events, handling more than 10k concurrent users, and millions of requests.',
     topics: ['high-load', 'GCP', 'monitoring', 'distributed systems'],
     href: null,
     visibility: 'Internal',
   },
   {
     title: 'redteam-copilot',
-    text: 'Developed a cloud red teaming copilot at Schwarz Digits, OPSEC safe and deterministic detection aware',
+    text: 'A GCP IAM red-teaming harness, with a deterministic propose-then-verify architecture',
     topics: ['llm', 'red-team', 'automation'],
     href: null,
     visibility: 'Internal',
