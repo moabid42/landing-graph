@@ -8,6 +8,30 @@ import { readPosts } from './posts.js'
 // about the site, so generating them beats keeping hand-written files in step
 // with the posts.
 
+// AI crawlers, named one by one. `User-agent: *` already lets them in, but
+// several hosts and CDNs block these by default unless a site says otherwise,
+// and an explicit group is how a site says it. Being quoted in an assistant's
+// answer needs the assistant to have read the page first.
+const AI_CRAWLERS = [
+  'GPTBot',
+  'OAI-SearchBot',
+  'ChatGPT-User',
+  'ClaudeBot',
+  'Claude-SearchBot',
+  'Claude-User',
+  'PerplexityBot',
+  'Perplexity-User',
+  'Google-Extended',
+  'Applebot-Extended',
+  'CCBot',
+]
+
+const robots = () =>
+  'User-agent: *\nAllow: /\n\n' +
+  AI_CRAWLERS.map((bot) => `User-agent: ${bot}\n`).join('') +
+  'Allow: /\n\n' +
+  `Sitemap: ${ORIGIN}/sitemap.xml\n`
+
 const escape = (s) =>
   s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
 
@@ -120,7 +144,7 @@ export default function seoFiles({ blogDir = 'content/blog' } = {}) {
       this.emitFile({
         type: 'asset',
         fileName: 'robots.txt',
-        source: `User-agent: *\nAllow: /\n\nSitemap: ${ORIGIN}/sitemap.xml\n`,
+        source: robots(),
       })
     },
   }
