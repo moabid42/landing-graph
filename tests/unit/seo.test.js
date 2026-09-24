@@ -189,6 +189,23 @@ describe('jsonLd', () => {
     expect(jsonLd(post).image).toEqual(img ? [img] : undefined)
   })
 
+  it('credits the same person on every route, with their profiles', () => {
+    const home = jsonLd(null).mainEntity
+    const author = jsonLd(post).author
+    expect(author['@id']).toBe(home['@id'])
+    expect(author.sameAs).toEqual(home.sameAs)
+    expect(author.jobTitle).toBe(config.identity.jobTitle)
+    expect(jsonLd(post).publisher['@id']).toBe(author['@id'])
+  })
+
+  it('places every route inside the one website', () => {
+    for (const p of [null, post]) {
+      const site = jsonLd(p).isPartOf
+      expect(site['@type']).toBe('WebSite')
+      expect(site.url).toBe(`${origin}/`)
+    }
+  })
+
   it('survives a post with no date and no topics', () => {
     const ld = jsonLd({ ...post, date: '', topics: [] })
     expect(ld.datePublished).toBeUndefined()

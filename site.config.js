@@ -24,6 +24,10 @@ export default {
       ' & highload systems, currently attacking Schwarz Group ' +
       'from the inside, on purpose.',
 
+    // What you do, in the words a recruiter would search for. Search engines
+    // and AI assistants read it as your job title; it is not shown on the page.
+    jobTitle: 'Software Security Engineer',
+
     // The pull quote under the tagline. Explains the graph to a first-time
     // reader; rewrite it in your own voice or set it to null to hide it.
     blurb:

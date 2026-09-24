@@ -88,10 +88,24 @@ export function tagsFor(post) {
 /** The schema.org description of one route, or null with no site url. */
 export function jsonLd(post) {
   if (!ORIGIN) return null
-  const author = {
+  const home = `${ORIGIN}/`
+  // One person and one site, named once in full on the README and pointed at
+  // by @id from every post, so a crawler joins them into the same entity.
+  const person = {
     '@type': 'Person',
+    '@id': `${home}#person`,
     name: identity.name,
-    url: `${ORIGIN}/`,
+    url: home,
+    jobTitle: identity.jobTitle || undefined,
+    sameAs: links.filter((l) => /^https?:/.test(l.url)).map((l) => l.url),
+  }
+  const website = {
+    '@type': 'WebSite',
+    '@id': `${home}#website`,
+    name: identity.repo,
+    url: home,
+    inLanguage: 'en',
+    publisher: { '@id': person['@id'] },
   }
   if (post) {
     const images = [postImage(post), shareImage()].filter(Boolean)
@@ -100,26 +114,31 @@ export function jsonLd(post) {
       '@type': 'BlogPosting',
       headline: post.title,
       description: post.summary || post.title,
+      url: canonical(post.slug),
       datePublished: post.date || undefined,
       dateModified: post.updated || post.date || undefined,
       keywords: post.topics?.length ? post.topics.join(', ') : undefined,
+      inLanguage: 'en',
       // Search results show the post's own picture; the share card, which
       // needs a fixed 1200x630, stays the site's.
       image: images.length ? images : undefined,
-      author,
+      author: person,
+      publisher: { '@id': person['@id'] },
+      isPartOf: website,
       mainEntityOfPage: canonical(post.slug),
     }
   }
   return {
     '@context': 'https://schema.org',
     '@type': 'ProfilePage',
-    url: `${ORIGIN}/`,
+    url: home,
+    inLanguage: 'en',
+    isPartOf: website,
     mainEntity: {
-      ...author,
+      ...person,
       description: seo.description,
       email: identity.email ? `mailto:${identity.email}` : undefined,
       image: shareImage() || undefined,
-      sameAs: links.filter((l) => /^https?:/.test(l.url)).map((l) => l.url),
     },
   }
 }
