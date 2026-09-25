@@ -42,6 +42,16 @@ export const IconBranch = (p) => (
   </svg>
 )
 
+export const IconFork = (p) => (
+  <svg {...base} {...p}>
+    <circle cx="4.25" cy="3.25" r="1.6" />
+    <circle cx="11.75" cy="3.25" r="1.6" />
+    <circle cx="8" cy="12.75" r="1.6" />
+    <path d="M4.25 4.85v.9a1.5 1.5 0 0 0 1.5 1.5h4.5a1.5 1.5 0 0 0 1.5-1.5v-.9" />
+    <path d="M8 7.25v3.9" />
+  </svg>
+)
+
 export const IconMerge = (p) => (
   <svg {...base} {...p}>
     <circle cx="4.5" cy="3.25" r="1.6" />

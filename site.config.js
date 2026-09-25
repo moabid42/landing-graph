@@ -38,10 +38,14 @@ export default {
       'at the same time.',
 
     // The green-dot status line. Set status to null to hide the whole row.
-    status: 'now · offensive security @ schwarz digits',
+    status: 'now · offensive security engineer @ schwarz digits',
     location: 'heilbronn, de',
 
     email: 'moabid42@proton.me',
+
+    // The repo this site is built from — the header's Fork button. Set it to
+    // null to hide the button.
+    source: 'https://github.com/moabid42/landing-graph',
   },
 
   // ------------------------------------------------------------------- links

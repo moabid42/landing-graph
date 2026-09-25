@@ -11,6 +11,7 @@ import { ENTRIES } from './content.js'
 import {
   IconRepo,
   IconBranch,
+  IconFork,
   IconBook,
   IconTag,
   IconMail,
@@ -214,14 +215,15 @@ export default function App() {
             <span className="vis-badge">Public</span>
           </div>
           <div className="gh-actions">
-            {LINKEDIN_URL && (
+            {identity.source && (
               <a
                 className="gh-btn"
-                href={LINKEDIN_URL}
+                href={identity.source}
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label="Fork this site on GitHub"
               >
-                Follow <span aria-hidden="true">↗</span>
+                <IconFork width={14} height={14} /> Fork
               </a>
             )}
             <button
@@ -235,6 +237,16 @@ export default function App() {
             >
               {theme === 'dark' ? 'light' : 'dark'}
             </button>
+            {LINKEDIN_URL && (
+              <a
+                className="gh-btn"
+                href={LINKEDIN_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Follow <span aria-hidden="true">↗</span>
+              </a>
+            )}
           </div>
         </div>
         <nav className="gh-tabs" aria-label="Sections">
