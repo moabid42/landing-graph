@@ -20,10 +20,7 @@ export default {
     // The README hero.
     name: 'Mouad Abid',
     tagline:
-      'Software Security engineer and researcher with a background in cybersecurity, computer theory ' +
-      'and cryptography. Experienced in designing and building secure infra for complex, high-load systems. ' +
-      'I bring both an attacker\'s instinct for how systems fail and a computer scientist\'s logic into' +
-      'the design process from the ground up.' ,
+      'I\'m a software security engineer who likes systems where security, performance and weird edge cases collide. I build secure infrastrcture, research how systems fail, and occasionally turn those failures into tools, papers and talks.' ,
 
     // What you do, in the words a recruiter would search for. Search engines
     // and AI assistants read it as your job title; it is not shown on the page.
@@ -32,10 +29,7 @@ export default {
     // The pull quote under the tagline. Explains the graph to a first-time
     // reader; rewrite it in your own voice or set it to null to hide it.
     blurb:
-      'The career below is rendered the only honest way: `git log --graph ' +
-      '--all`.\n' +
-      'Every job, degree and project is a branch. Most of them ran ' +
-      'at the same time.',
+      'I joke that most of my job is being professionally suspicious. I look at systems, assumptions, and edge cases and ask what happens when reality doesn\'t behave the way the design expected. Usually, that\'s  where the interesting part starts.',
 
     // The green-dot status line. Set status to null to hide the whole row.
     status: 'now · offensive security engineer @ schwarz digits',
