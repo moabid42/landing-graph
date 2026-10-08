@@ -19,6 +19,7 @@ HOW TO EDIT — same format everywhere:
 -->
 
 ## HTB International Meetup
+- highlight: true
 - org: HackTheBox · EliteSec
 - date: 2025-06
 - topics: reversing, anti-debug, maldev

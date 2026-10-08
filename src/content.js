@@ -182,6 +182,7 @@ export function parseTrack(md, track, file) {
         id: fields.id || slug(`${track}-${title}`),
         track,
         title,
+        highlight: fields.highlight === 'true',
         org: fields.org || '',
         start,
         end,
@@ -296,6 +297,11 @@ export const POINTS = parseBlocks(TAGS_SOURCE)
         problem(TAGS_FILE, title, 'missing "date" — tag skipped')
       return null
     }
-    return { id: slug(title), at, label: title }
+    return {
+      id: slug(title),
+      at,
+      label: title,
+      highlight: fields.highlight === 'true',
+    }
   })
   .filter(Boolean)

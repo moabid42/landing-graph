@@ -341,12 +341,6 @@ export default function App() {
 
             {/* ---------- timeline ---------- */}
             <section id="timeline" aria-label="Timeline">
-              <div className="sec-head">
-                <h2>
-                  <IconBranch width={16} height={16} /> Timeline
-                </h2>
-                <code className="cmd">$ git log --graph --all</code>
-              </div>
               <ErrorBoundary label="The timeline">
                 <Timeline />
               </ErrorBoundary>

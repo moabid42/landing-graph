@@ -28,6 +28,7 @@ HOW TO EDIT — same format everywhere:
 First Reality Check
 
 ## Core curriculum, software engineering
+- highlight: true
 - org: 42 Heilbronn
 - start: 2022-03
 - end: 2023-03

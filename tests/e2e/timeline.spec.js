@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test'
 import { url } from './site.js'
 import config from '../../site.config.js'
+import { checkTimelineViews } from './timeline-views.js'
 
 // Scroll so that `el` sits in the middle of the viewport, in one jump and
 // without smooth scrolling — the point being to land somewhere without ever
@@ -45,6 +46,12 @@ test.describe('the timeline graph', () => {
     await expect(page.locator('.tl-entry')).not.toHaveCount(0)
     await expect(page.locator('svg.branches path.branch')).not.toHaveCount(0)
     await expect(page.locator('.head-node')).toHaveCount(1)
+  })
+
+  test('switches between highlights and the complete history', async ({
+    page,
+  }) => {
+    await checkTimelineViews(page, '.tl-entry', '.tl-point')
   })
 
   test('shows a legend button per track, and the counts add up', async ({

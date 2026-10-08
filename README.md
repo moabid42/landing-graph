@@ -85,6 +85,11 @@ What you did, and what changed because you did it.
 | `topics`                 | comma-separated labels shown under the title.                    |
 | `time`                   | `part-time` or `full-time` — an optional colored chip.           |
 | `link`                   | optional "Learn more" button.                                    |
+| `highlight`              | `true` includes the entry in the default Highlights view.        |
+
+The timeline opens on **Highlights**. **Everything** shows every entry and
+milestone. Add `- highlight: true` to an entry or a tag in `content/tags.md`
+to feature it. Each view lays out its own graph and updates the track counts.
 
 Add a block to add an entry, delete one to remove it. Order does not
 matter — the graph sorts by date and assigns branch lanes automatically.

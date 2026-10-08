@@ -223,6 +223,19 @@ section { padding: 72px 0 24px; }
 }
 
 /* ===================== timeline ===================== */
+.sec-head.tl-sec-head { align-items: center; padding-bottom: 0; margin-bottom: 20px; }
+.tl-sec-head h2 { padding-bottom: 10px; }
+.tl-views { display: inline-flex; align-self: stretch; gap: 4px; }
+.tl-views button {
+  position: relative; display: inline-flex; align-items: center; gap: 7px; min-height: 42px; padding: 0 12px 10px;
+  font-family: var(--sans); font-size: 13px; font-weight: 500; color: var(--muted);
+  background: transparent; border: 0; cursor: pointer;
+}
+.tl-views button:hover { color: var(--fg); }
+.tl-views button[aria-pressed='true'] { color: var(--fg); }
+.tl-views button[aria-pressed='true']::after { content: ''; position: absolute; bottom: -1px; left: 12px; right: 12px; height: 2px; background: var(--tab-active); border-radius: 2px; }
+.tl-controls { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px 20px; margin-bottom: 40px; }
+.tl-view-note { font-family: var(--mono); font-size: 12px; color: var(--muted); white-space: nowrap; }
 .tl-problems {
   border: 1px solid color-mix(in srgb, var(--c-tag) 50%, transparent);
   background: color-mix(in srgb, var(--c-tag) 8%, transparent);
@@ -232,7 +245,7 @@ section { padding: 72px 0 24px; }
 .tl-problems strong { color: var(--c-tag); font-weight: 600; }
 .tl-problems ul { list-style: none; margin-top: 6px; font-family: var(--mono); }
 .tl-problems code { color: var(--c-tag); }
-.tl-legend { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 40px; }
+.tl-legend { display: flex; gap: 8px; flex-wrap: wrap; }
 .tl-filter {
   display: inline-flex; align-items: center; gap: 8px;
   font-family: var(--sans); font-size: 12px; font-weight: 500; color: var(--fg);
@@ -736,7 +749,8 @@ footer code { color: var(--muted); }
   .hero-status { gap: 10px 18px; margin: 18px 0 22px; }
   .sec-head { margin-bottom: 26px; }
   .sec-head .cmd { display: none; }
-  .tl-legend { margin-bottom: 28px; }
+  .tl-controls { margin-bottom: 28px; }
+
 }
 
 /* ===================== motion ===================== */

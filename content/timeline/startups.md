@@ -17,6 +17,7 @@ HOW TO EDIT — same format everywhere:
 -->
 
 ## Founder & captain, L3AK
+- highlight: true
 - org: Security research team · 50+ active members
 - start: 2023-03
 - end: 2025-10
@@ -36,6 +37,7 @@ Founded and Lead +100 security researchers across 20 countries from scratch into
 Designed and build a secure decentralized document verification system, handling 1k+ transaction a month.
 
 ## CEO
+- highlight: true
 - org: lyraix
 - start: 2025-11
 - end: 2026-04

@@ -1,11 +1,6 @@
 // The bridge between the tracks declared in site.config.js and the CSS that
 // paints them.
-import { BRANCHES, TRACKS } from '../content.js'
-
-// Which branch an entry rides, by entry id.
-export const BRANCH_OF = Object.fromEntries(
-  BRANCHES.flatMap((b) => b.entries.map((e) => [e.id, b]))
-)
+import { TRACKS } from '../content.js'
 
 // Track colors live in site.config.js, not in a stylesheet. Publishing them
 // as CSS variables is what lets a new track be one config line: the rules in

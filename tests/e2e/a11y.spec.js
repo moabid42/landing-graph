@@ -123,7 +123,11 @@ test.describe('accessibility', () => {
 
   test('every focused control shows a visible focus ring', async ({ page }) => {
     await page.goto(url())
-    const controls = ['.gh-header button.gh-btn', '.tl-legend .tl-filter']
+    const controls = [
+      '.gh-header button.gh-btn',
+      '.tl-views button',
+      '.tl-legend .tl-filter',
+    ]
 
     for (const selector of controls) {
       const el = page.locator(selector).first()

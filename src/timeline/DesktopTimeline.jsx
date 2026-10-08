@@ -1,9 +1,8 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
-import { BRANCHES, ENTRIES, POINTS } from '../content.js'
 import { IconTag } from '../icons.jsx'
 import { clamp, nowDecimal } from './format.js'
 import { buildScale } from './scale.js'
-import { BRANCH_OF, trackVar } from './tracks.js'
+import { trackVar } from './tracks.js'
 import useReducedMotion from './useReducedMotion.js'
 import Card from './Card.jsx'
 
@@ -14,7 +13,12 @@ const HEAD_GAP = 72 // clearance kept under the lowest card before HEAD
    Desktop: full two-sided graph on a proportional time scale.
    ===================================================================== */
 
-export default function DesktopTimeline({ filter }) {
+export default function DesktopTimeline({
+  filter,
+  entries: ENTRIES,
+  branches: BRANCHES,
+  points: POINTS,
+}) {
   const wrapRef = useRef(null)
   const progressRef = useRef(null)
   const yearRef = useRef(null)
@@ -31,13 +35,20 @@ export default function DesktopTimeline({ filter }) {
   const [revealed, setRevealed] = useState(() => new Set())
   const reduced = useReducedMotion()
   const NOW = useMemo(nowDecimal, [])
+  const BRANCH_OF = useMemo(
+    () =>
+      Object.fromEntries(
+        BRANCHES.flatMap((b) => b.entries.map((e) => [e.id, b]))
+      ),
+    [BRANCHES]
+  )
 
   /* ---- geometry ---- */
   // Piecewise scale derived from the content. The arithmetic lives in
   // scale.js so it can be tested without a browser.
   const scale = useMemo(
     () => buildScale({ now: NOW, entries: ENTRIES, points: POINTS, density }),
-    [NOW, density]
+    [NOW, ENTRIES, POINTS, density]
   )
   const { y, invY } = scale
 

@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test'
 import { url } from './site.js'
+import { checkTimelineViews } from './timeline-views.js'
 
 // Under 700px the timeline swaps to the git-log layout: one column, a trunk
 // in the gutter, and branch lines routed between rows. Different renderer,
@@ -24,6 +25,12 @@ test.describe('the mobile timeline', () => {
     await expect(
       page.locator('svg.mtl-branches g.mbranch path')
     ).not.toHaveCount(0)
+  })
+
+  test('switches between highlights and the complete history', async ({
+    page,
+  }) => {
+    await checkTimelineViews(page, '.mtl-entry', '.mtl-point')
   })
 
   test('closes the log with HEAD below the last row', async ({ page }) => {

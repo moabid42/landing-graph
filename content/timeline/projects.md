@@ -63,6 +63,7 @@ Designed and built a pingpong game with realtime matchmaking and chat.
 Developed the infra hosting L3AK CTF 2024 event, handling more than 1k concurrent users, with 0 down time.
 
 ## L3AK CTF 2025 Infra
+- highlight: true
 - org: L3AK TEAM
 - start: 2025-04
 - end: 2025-07
@@ -79,6 +80,7 @@ Designed and built the infra hosting L3AK CTF 2025 event on GCP, handling more t
 Designed and built a detection to technique visualization using neo4j and mapping methodName (detection) <> permission (technique) for better visibility during red teaming.
 
 ## Decnique
+- highlight: true
 - start: 2026-08
 - end: now
 - topics: detection-engineering, dsl, geometry, SMT

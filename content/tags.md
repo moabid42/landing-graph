@@ -17,13 +17,16 @@ Tagged commits: one-off wins and milestones pinned to a single date.
 - date: 2023-03
 
 ## winner · ETHMunich Hackathon
+- highlight: true
 - date: 2023-08
 
 ## finalist · ETHGlobal Brussels Hackathon
 - date: 2024-07
 
 ## 5 digits bounty · ETHGlobal Bangkok Hackathon
+- highlight: true
 - date: 2024-10
 
 ## winner · UC Berkeley RDI · Security Research Competition
+- highlight: true
 - date: 2026-03

@@ -1,5 +1,4 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
-import { BRANCHES, ENTRIES, POINTS } from '../content.js'
 import { IconTag } from '../icons.jsx'
 import { clamp, nowDecimal } from './format.js'
 import { trackVar } from './tracks.js'
@@ -20,7 +19,12 @@ const M_LANE0 = 28 // first branch lane x
 const M_LANE_W = 9 // px between branch lanes
 const M_CV = 16 // curve length of mobile fork/merge joins
 
-export default function MobileTimeline({ filter }) {
+export default function MobileTimeline({
+  filter,
+  entries: ENTRIES,
+  branches: BRANCHES,
+  points: POINTS,
+}) {
   const wrapRef = useRef(null)
   const fillRef = useRef(null)
   const headRef = useRef(null)
@@ -53,7 +57,7 @@ export default function MobileTimeline({ filter }) {
       out.push(it)
     }
     return out
-  }, [NOW]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [ENTRIES, POINTS])
 
   /* ---- measure rows, map dates to pixel positions, route branches ----
      Anchors (row, date) pairs give a piecewise date→y function; each
@@ -145,7 +149,7 @@ export default function MobileTimeline({ filter }) {
       ro.disconnect()
       cancelAnimationFrame(raf)
     }
-  }, [rows, NOW])
+  }, [rows, NOW, BRANCHES])
 
   /* trunk scroll-progress fill */
   useEffect(() => {

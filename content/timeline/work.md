@@ -42,6 +42,7 @@ Tutored +10 students (ages 4-18) in math, physics and english, by grounding each
 Designed MalS3Scan, a serverless AWS malware-detection pipeline processing ~10k files/day across thousands of buckets, batch-dispatching to parallel Lambda scanners against a centralized YARA rule DB, with automated alerting for incidend response.
 
 ## System Engineer, POS systems
+- highlight: true
 - org: Schwarz Digits · Weinsberg
 - start: 2023-09
 - end: 2025-07
@@ -62,6 +63,7 @@ Owned integration and security for 150,000+ point-of-sale systems with zero down
 Taught thousands of students advanced classes on C, data structures, reverse engineering and binary exploitation live. Hosted Cybersecurity Day for 100+ onsite people.
 
 ## Offensive Security Engineer
+- highlight: true
 - org: Schwarz Digits · Berlin, remote
 - start: 2025-07
 - end: now
@@ -74,6 +76,7 @@ Conducted various security review and code assessment accross STACKIT cloud glob
 Engineered EDR evasion techniques by reverse-engineering Windows kernel telemetry and building custom payload delivery tooling in C and assembly.
 
 ## Software Security Engineer
+- highlight: true
 - org: Mingabyte · Munich, remote
 - start: 2025-12
 - end: now
