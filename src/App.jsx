@@ -396,48 +396,69 @@ export default function App() {
                   )}
                 </div>
               ) : (
-                <div className="paper-grid">
-                  {RESEARCH.map((r) => (
-                    <a
-                      key={r.title}
-                      className="paper-card"
-                      href={r.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <h3>
-                        <IconFlask
-                          width={14}
-                          height={14}
-                          className="paper-icon"
-                        />
-                        <span className="paper-title">{r.title}</span>
-                        <span className="paper-arrow" aria-hidden="true">
-                          ↗
-                        </span>
-                      </h3>
-                      <p className="paper-tldr">{r.tldr}</p>
-                      {r.topics?.length > 0 && (
-                        <div className="paper-topics">
-                          {r.topics.map((t, i) => (
-                            <span key={`${t}-${i}`} className="topic">
-                              {t}
+                <ul
+                  className="research-releases"
+                  aria-label="Research publications"
+                >
+                  {RESEARCH.map((paper) => {
+                    const { host, id } = paperMeta(paper.href)
+                    return (
+                      <li key={paper.title} className="research-release">
+                        <div className="release-meta">
+                          <span className="release-label">Publication</span>
+                          {id && (
+                            <span
+                              className="release-tag"
+                              title="Publication ID"
+                            >
+                              <IconTag width={14} height={14} /> #{id}
                             </span>
-                          ))}
+                          )}
+                          {host && <span className="release-host">{host}</span>}
                         </div>
-                      )}
-                      {(() => {
-                        const { host, id } = paperMeta(r.href)
-                        return host ? (
-                          <div className="paper-meta">
-                            <span>{host}</span>
-                            {id && <span className="paper-id">#{id}</span>}
+                        <article className="release-card">
+                          <div className="release-body">
+                            <h3>
+                              <a
+                                href={paper.href}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              >
+                                {paper.title}
+                              </a>
+                            </h3>
+                            <p className="release-summary">{paper.tldr}</p>
+                            {paper.topics?.length > 0 && (
+                              <div className="release-topics">
+                                {paper.topics.map((topic, i) => (
+                                  <span key={`${topic}-${i}`} className="topic">
+                                    {topic}
+                                  </span>
+                                ))}
+                              </div>
+                            )}
                           </div>
-                        ) : null
-                      })()}
-                    </a>
-                  ))}
-                </div>
+                          <div className="release-footer">
+                            <a
+                              href={paper.href}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              <IconBook width={16} height={16} />
+                              Read paper
+                              <span
+                                className="release-arrow"
+                                aria-hidden="true"
+                              >
+                                ↗
+                              </span>
+                            </a>
+                          </div>
+                        </article>
+                      </li>
+                    )
+                  })}
+                </ul>
               )}
             </section>
 
