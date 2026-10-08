@@ -350,6 +350,7 @@ export default function DesktopTimeline({
                   <li
                     key={e.id}
                     data-id={e.id}
+                    aria-hidden={dimmed(e.track) || undefined}
                     className={`tl-item tl-entry ${dimmed(e.track) ? 'dim' : ''} ${shown(e.id)}`}
                   >
                     <span
@@ -365,6 +366,7 @@ export default function DesktopTimeline({
                     <Card
                       e={e}
                       ended={ended}
+                      dimmed={dimmed(e.track)}
                       cardRef={(n) => (cardRefs.current[e.id] = n)}
                       style={cardStyle}
                     />

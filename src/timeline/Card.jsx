@@ -3,9 +3,14 @@ import { fmtDate, sha } from './format.js'
 import { trackVar } from './tracks.js'
 
 // One commit in the graph: the card that sits beside the branch line.
-export default function Card({ e, ended, cardRef, style }) {
+export default function Card({ e, ended, cardRef, style, dimmed = false }) {
   return (
-    <article className="tl-card" ref={cardRef} style={style}>
+    <article
+      className="tl-card"
+      ref={cardRef}
+      style={style}
+      inert={dimmed ? '' : undefined}
+    >
       <p className="tl-meta">
         <span className="sha">{sha(e.id)}</span>
         <span className="dates">

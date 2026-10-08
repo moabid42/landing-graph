@@ -1,5 +1,28 @@
 import { expect } from '@playwright/test'
 
+export async function checkTrackDimming(page, entries) {
+  const other = page.locator(`${entries}.dim`).first()
+  const id = await other.getAttribute('data-id')
+  const card = page.locator(`${entries}[data-id="${id}"] .tl-card`)
+  await expect
+    .poll(() => card.evaluate((el) => Number(getComputedStyle(el).opacity)))
+    .toBeLessThan(0.3)
+  expect(
+    await card.evaluate((el) => Number(getComputedStyle(el).opacity))
+  ).toBeGreaterThan(0)
+  await expect(page.locator(`${entries}:not(.dim) .tl-card`).first()).toHaveCSS(
+    'opacity',
+    '1'
+  )
+  // Faded context is not part of the selected track's accessible list.
+  await expect(other).toHaveAttribute('aria-hidden', 'true')
+  await expect(card).toHaveAttribute('inert', '')
+  await page.locator('.tl-filter[aria-pressed="true"]').click()
+  await expect(card).toHaveCSS('opacity', '1')
+  await expect(card).not.toHaveAttribute('inert')
+  await expect(page.locator(`${entries}[aria-hidden="true"]`)).toHaveCount(0)
+}
+
 export async function checkTimelineViews(page, entries, points) {
   const highlights = page.getByRole('button', { name: /^Highlights/ })
   const everything = page.getByRole('button', { name: /^Everything/ })

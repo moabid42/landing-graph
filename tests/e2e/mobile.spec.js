@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test'
 import { POST_LINK, url } from './site.js'
-import { checkTimelineViews } from './timeline-views.js'
+import { checkTimelineViews, checkTrackDimming } from './timeline-views.js'
 import AxeBuilder from '@axe-core/playwright'
 
 // Under 700px the timeline swaps to the git-log layout: one column, a trunk
@@ -100,6 +100,7 @@ test.describe('the mobile timeline', () => {
     await button.click()
     await expect(button).toHaveAttribute('aria-pressed', 'true')
     await expect(page.locator('.mtl-entry.dim')).not.toHaveCount(0)
+    await checkTrackDimming(page, '.mtl-entry')
   })
 })
 

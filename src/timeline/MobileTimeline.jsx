@@ -288,9 +288,10 @@ export default function MobileTimeline({
               key={row.key}
               ref={ref}
               data-id={e.id}
+              aria-hidden={dimmed(e.track) || undefined}
               className={`tl-item mtl-entry ${dimmed(e.track) ? 'dim' : ''} ${shown(e.id)}`}
             >
-              <Card e={e} ended={ended} />
+              <Card e={e} ended={ended} dimmed={dimmed(e.track)} />
             </li>
           )
         })}

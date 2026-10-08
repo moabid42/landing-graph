@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test'
 import { url } from './site.js'
 import config from '../../site.config.js'
-import { checkTimelineViews } from './timeline-views.js'
+import { checkTimelineViews, checkTrackDimming } from './timeline-views.js'
 
 // Scroll so that `el` sits in the middle of the viewport, in one jump and
 // without smooth scrolling — the point being to land somewhere without ever
@@ -85,6 +85,7 @@ test.describe('the timeline graph', () => {
     await expect(page.locator('svg.branches path.branch.dim')).not.toHaveCount(
       0
     )
+    await checkTrackDimming(page, '.tl-entry')
   })
 
   test('clicking the active filter again clears it', async ({ page }) => {
