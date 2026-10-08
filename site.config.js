@@ -184,13 +184,7 @@ export default {
   //          not there hides the callout, same as everywhere else.
   //   label  the text on the link at the bottom of the callout
   //   text   the callout itself
-  note: {
-    link: 'linkedin',
-    label: 'Follow on LinkedIn',
-    text:
-      'Papers, posts and everything else I publish goes out on LinkedIn ' +
-      'first. Follow me there and you will see the next one as it lands.',
-  },
+  note: null,
 
   // ---------------------------------------------------------------- research
   // The Research section: one clickable box per paper, opening its

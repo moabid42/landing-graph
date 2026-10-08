@@ -289,8 +289,8 @@ export default function App() {
                     </p>
                   )}
                   <div className="hero-cta">
-                    <a className="gh-btn primary" href={MAILTO}>
-                      <IconMail width={14} height={14} /> Email me
+                    <a className="gh-btn primary" href="#blog">
+                      <IconPencil width={14} height={14} /> Explore my work
                     </a>
                     <a className="gh-btn" href="#timeline">
                       <IconBranch width={14} height={14} /> Follow the graph
