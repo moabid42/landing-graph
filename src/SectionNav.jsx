@@ -12,17 +12,15 @@ import {
   IconMail,
 } from './icons.jsx'
 
-const primary = [
+const sections = [
   { label: 'README', icon: IconBook },
+  { id: 'work', label: 'Pinned', icon: IconRepo, count: config.work.length },
   {
     id: 'timeline',
     label: 'Timeline',
     icon: IconBranch,
     count: ENTRIES.length,
   },
-]
-const secondary = [
-  { id: 'work', label: 'Pinned', icon: IconRepo, count: config.work.length },
   {
     id: 'blog',
     label: 'Writing',
@@ -38,6 +36,9 @@ const secondary = [
   { id: 'stack', label: 'Stack', icon: IconTag },
   { id: 'contact', label: 'Contact', icon: IconMail },
 ]
+
+// README and Timeline stay visible on mobile; the other sections use More.
+const secondary = sections.filter((item) => item.id && item.id !== 'timeline')
 
 export default function SectionNav({ post, home, section }) {
   const [open, setOpen] = useState(false)
@@ -95,8 +96,7 @@ export default function SectionNav({ post, home, section }) {
 
   return (
     <nav className="gh-tabs" aria-label="Sections">
-      {primary.map((item) => renderLink(item))}
-      {secondary.map((item) => renderLink(item))}
+      {sections.map((item) => renderLink(item))}
       <div className="nav-more" ref={moreRef}>
         <button
           ref={buttonRef}

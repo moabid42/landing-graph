@@ -309,13 +309,6 @@ export default function App() {
               </div>
             </section>
 
-            {/* ---------- timeline ---------- */}
-            <section id="timeline" aria-label="Timeline">
-              <ErrorBoundary label="The timeline">
-                <Timeline />
-              </ErrorBoundary>
-            </section>
-
             {/* ---------- pinned work ---------- */}
             <section id="work" aria-label="Selected work">
               <div className="sec-head">
@@ -353,6 +346,13 @@ export default function App() {
                   </article>
                 ))}
               </div>
+            </section>
+
+            {/* ---------- timeline ---------- */}
+            <section id="timeline" aria-label="Timeline">
+              <ErrorBoundary label="The timeline">
+                <Timeline />
+              </ErrorBoundary>
             </section>
 
             {/* ---------- writing ---------- */}
