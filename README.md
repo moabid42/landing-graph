@@ -257,10 +257,12 @@ and the head each route serves.
 
 ### Hooks
 
-`npm install` sets up two hooks via husky:
+`npm install` sets up three hooks via husky:
 
 - **pre-commit** — `lint-staged` (eslint + prettier on staged files) then the
   unit suite.
+- **pre-push** — eslint, formatting across the whole repository, and the
+  dependency audit. Any failure stops the push.
 - **commit-msg** — [commitlint](commitlint.config.js). Messages are
   conventional and one line: `type: lower case summary, no full stop`.
   Allowed types include `content` for markdown edits alongside the usual

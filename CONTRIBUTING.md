@@ -28,7 +28,9 @@ npm run e2e
 ```
 
 CI runs all of these plus a production build, the entry-payload budget and
-Lighthouse. The pre-commit hook runs the fast half for you.
+Lighthouse. The pre-commit hook checks staged files and runs unit tests.
+The pre-push hook runs lint, formatting, and the dependency audit across the
+whole repository and stops the push if any check fails.
 
 ## Commits
 

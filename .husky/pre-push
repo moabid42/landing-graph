@@ -1,0 +1,3 @@
+# Match CI's lint, formatting and dependency audit checks.
+# A failed check must stop the push before any refs reach the remote.
+npm run lint && npm run format:check && npm run audit
