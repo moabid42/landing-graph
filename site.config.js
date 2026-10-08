@@ -20,7 +20,7 @@ export default {
     // The README hero.
     name: 'Mouad Abid',
     tagline:
-      'I\'m a software security engineer who likes systems where security, performance and weird edge cases collide. I build secure infrastrcture, research how systems fail, and occasionally turn those failures into tools, papers and talks.' ,
+      "I'm a software security engineer who likes systems where security, performance and weird edge cases collide. I build secure infrastructure, research how systems fail, and occasionally turn those failures into tools, papers and talks.",
 
     // What you do, in the words a recruiter would search for. Search engines
     // and AI assistants read it as your job title; it is not shown on the page.
