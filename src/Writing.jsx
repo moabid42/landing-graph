@@ -72,6 +72,7 @@ export default function Writing({ mediumUrl }) {
                 <a className="post-title" {...link(postPath(post.slug))}>
                   {post.title}
                 </a>
+                {post.summary && <p className="post-summary">{post.summary}</p>}
                 <p className="post-meta">
                   <span>{post.readingMinutes} min read</span>
                   {post.topics[0] && <span>{post.topics[0]}</span>}

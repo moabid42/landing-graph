@@ -646,17 +646,19 @@ section { padding: 72px 0 24px; }
   overflow-wrap: anywhere;
 }
 .post-row::before {
-  content: ''; position: absolute; left: 6px; top: 24px; bottom: -24px;
-  width: 2px; background: var(--border);
+  content: ''; position: absolute; left: 7px; top: 25px;
+  width: 2px; height: calc(100% + 1px); transform: translateX(-50%);
+  background: var(--border);
 }
 .post-row:last-child::before { display: none; }
 .post-row::after {
-  content: ''; position: absolute; left: 2px; top: 20px;
+  content: ''; position: absolute; left: 7px; top: 25px;
   width: 10px; height: 10px; border: 2px solid var(--muted);
-  border-radius: 50%; background: var(--bg);
+  border-radius: 50%; background: var(--bg); transform: translate(-50%, -50%);
 }
 .post-sha { font-family: var(--mono); font-size: 12px; color: var(--muted); }
 .post-title { font-size: 15px; font-weight: 600; line-height: 1.5; }
+.post-summary { font-size: 13px; line-height: 1.6; color: var(--muted); max-width: 70ch; }
 .post-meta {
   display: flex; align-items: baseline; gap: 4px 8px; flex-wrap: wrap;
   color: var(--muted); font-size: 12px; line-height: 1.6;

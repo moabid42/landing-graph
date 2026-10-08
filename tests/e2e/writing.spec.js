@@ -20,9 +20,11 @@ test.describe('the writing section', () => {
       await expect(row.locator('.post-sha')).toHaveText(/^[a-f0-9]{7}$/)
       await expect(row.locator('.post-meta')).toContainText(/\d+ min read/)
       await expect(row.locator('time')).toHaveAttribute('datetime', post.date)
-      await expect(row).not.toContainText(post.summary)
+      if (post.summary) {
+        await expect(row.locator('.post-summary')).toHaveText(post.summary)
+      }
     }
-    await expect(page.locator('.post-summary, .pager')).toHaveCount(0)
+    await expect(page.locator('.pager')).toHaveCount(0)
   })
 
   test('opens all writing and preserves the list on reload and history navigation', async ({
