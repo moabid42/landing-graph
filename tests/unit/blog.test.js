@@ -189,6 +189,24 @@ describe('image', () => {
 })
 
 describe('postMeta', () => {
+  it('estimates reading time without shipping the body in the index', () => {
+    const meta = postMeta('x/a.md', withFm('title: T', 'word '.repeat(201)))
+    expect(meta.readingMinutes).toBe(2)
+    expect(meta).not.toHaveProperty('body')
+  })
+
+  it('does not count images or author notes toward reading time', () => {
+    const body =
+      'word '.repeat(200) +
+      `\n![${'alt '.repeat(200)}](https://example.com/photo.png)\n` +
+      `<!-- ${'note '.repeat(200)} -->`
+    expect(postMeta('x/a.md', withFm('title: T', body)).readingMinutes).toBe(1)
+  })
+
+  it('shows at least a one minute read for a short post', () => {
+    expect(postMeta('x/a.md', withFm('title: T', '')).readingMinutes).toBe(1)
+  })
+
   it('is parsePost without the body', () => {
     const raw = withFm('title: T\ndate: 2024-01-01', '# Heading\n')
     const full = parsePost('x/a.md', raw)

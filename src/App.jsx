@@ -1,11 +1,12 @@
 import { Fragment, useEffect, useState } from 'react'
 import Timeline from './timeline/index.jsx'
 import SectionNav from './SectionNav.jsx'
+import Writing from './Writing.jsx'
 import Markdown from './markdown.jsx'
 import { POSTS, loadBody } from './blog/index.js'
 import ErrorBoundary from './ErrorBoundary.jsx'
 import { applyMeta } from './seo/apply.js'
-import { homePath, postPath } from './paths.js'
+import { homePath } from './paths.js'
 import { link, useRoute } from './router.js'
 import config from '../site.config.js'
 import {
@@ -121,7 +122,7 @@ function PostPage({ post }) {
   return (
     <section className="post-page" aria-label="Blog post">
       <p className="post-back">
-        <a {...link(`${homePath()}#blog`)}>← all writing</a>
+        <a {...link(`${homePath()}#all-writing`)}>← all writing</a>
       </p>
       <article className="readme">
         <div className="readme-head">
@@ -161,18 +162,10 @@ function PostPage({ post }) {
   )
 }
 
-const POSTS_PER_PAGE = 5
-
 export default function App() {
   const [theme, setTheme] = useTheme()
-  const [page, setPage] = useState(1)
   const slug = useRoute()
   const post = slug ? POSTS.find((p) => p.slug === slug) : null
-  const pages = Math.ceil(POSTS.length / POSTS_PER_PAGE)
-  const pagePosts = POSTS.slice(
-    (page - 1) * POSTS_PER_PAGE,
-    page * POSTS_PER_PAGE
-  )
 
   // The README tab and the crumb go to the bare site root, the way a logo
   // does: no fragment left in the address bar afterwards.
@@ -363,94 +356,7 @@ export default function App() {
             </section>
 
             {/* ---------- writing ---------- */}
-            <section id="blog" aria-label="Writing">
-              <div className="sec-head">
-                <h2>
-                  <IconPencil width={16} height={16} /> Writing
-                </h2>
-                {MEDIUM_URL && (
-                  <a
-                    className="sec-note"
-                    href={MEDIUM_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    also on medium <span aria-hidden="true">↗</span>
-                  </a>
-                )}
-              </div>
-              {POSTS.length === 0 ? (
-                <div className="blankslate">
-                  <IconPencil width={22} height={22} />
-                  <p className="bs-title">No posts published here yet</p>
-                  <p className="bs-text">
-                    New writing lands on this page and on Medium at the same
-                    time.
-                  </p>
-                  {MEDIUM_URL && (
-                    <a
-                      className="gh-btn"
-                      href={MEDIUM_URL}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      Read on Medium <span aria-hidden="true">↗</span>
-                    </a>
-                  )}
-                </div>
-              ) : (
-                <>
-                  <ul className="post-list">
-                    {pagePosts.map((p) => (
-                      <li key={p.slug} className="post-row">
-                        <span className="post-date">{p.date}</span>
-                        <div className="post-main">
-                          <a {...link(postPath(p.slug))}>{p.title}</a>
-                          {p.summary && (
-                            <p className="post-summary">{p.summary}</p>
-                          )}
-                          {p.topics.length > 0 && (
-                            <span className="post-topics">
-                              {p.topics.map((t, i) => (
-                                <span key={`${t}-${i}`} className="topic">
-                                  {t}
-                                </span>
-                              ))}
-                            </span>
-                          )}
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
-                  {pages > 1 && (
-                    <nav className="pager" aria-label="Post pages">
-                      <button
-                        disabled={page === 1}
-                        onClick={() => setPage(page - 1)}
-                      >
-                        ‹ Newer
-                      </button>
-                      {Array.from({ length: pages }, (_, i) => (
-                        <button
-                          key={i}
-                          className={page === i + 1 ? 'active' : ''}
-                          aria-current={page === i + 1 ? 'page' : undefined}
-                          onClick={() => setPage(i + 1)}
-                        >
-                          {i + 1}
-                        </button>
-                      ))}
-                      <button
-                        disabled={page === pages}
-                        onClick={() => setPage(page + 1)}
-                      >
-                        Older ›
-                      </button>
-                    </nav>
-                  )}
-                </>
-              )}
-            </section>
+            <Writing mediumUrl={MEDIUM_URL} />
 
             {/* ---------- research ---------- */}
             <section id="research" aria-label="Research">

@@ -6,7 +6,7 @@
 //   title: Human-readable title
 //   date: YYYY-MM-DD
 //   topics: comma, separated
-//   summary: one line shown in the post list
+//   summary: one line for search results and share cards
 //   updated: YYYY-MM-DD    (optional — the last real edit, for search engines)
 //   draft: true            (optional — keeps the post off the site)
 //   ---
@@ -36,12 +36,21 @@ export function parsePost(path, raw) {
   // The first picture in the body, as written ("./blog/<slug>/01.webp").
   // Search engines show it beside the post; the share card stays og.png.
   const image = body.match(/!\[[^\]\n]*\]\(([^)\s]+)\)/)?.[1] || null
+  // Estimate at 200 words per minute, omitting image URLs and author notes.
+  // Store only the count in the eager index; post bodies still load on demand.
+  const words =
+    body
+      .replace(/<!--[\s\S]*?-->/g, '')
+      .replace(/!\[[^\]]*\]\([^)]*\)/g, '')
+      .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
+      .match(/\S+/g)?.length || 0
   return {
     slug,
     title: meta.title || slug,
     date: meta.date || '',
     updated: meta.updated || '',
     summary: meta.summary || '',
+    readingMinutes: Math.max(1, Math.ceil(words / 200)),
     draft: (meta.draft || '').toLowerCase() === 'true',
     topics: (meta.topics || '')
       .split(',')

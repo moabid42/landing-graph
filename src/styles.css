@@ -541,7 +541,6 @@ section { padding: 72px 0 24px; }
 .post-back { margin-bottom: 14px; font-size: 13px; font-family: var(--mono); }
 .readme-head .head-date { margin-left: auto; }
 .post-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: -8px; }
-.post-summary { flex-basis: 100%; font-size: 13px; color: var(--muted); margin: 0; }
 
 .md-body { font-size: 15.5px; line-height: 1.65; max-width: 100%; }
 /* In running prose a link needs a non-colour cue to be distinguishable.
@@ -636,33 +635,37 @@ section { padding: 72px 0 24px; }
    to make room for. */
 .post-status.loading { min-height: 70vh; }
 
+/* Writing follows the same compact log as the timeline. */
+#blog { scroll-margin-top: 84px; }
+#all-writing { scroll-margin-top: 100px; }
+@media (max-width: 699px) { #all-writing { scroll-margin-top: 140px; } }
 .post-list { list-style: none; border-top: 1px solid var(--border-muted); }
 .post-row {
-  display: flex; align-items: baseline; gap: 16px;
-  padding: 12px 0; border-bottom: 1px solid var(--border-muted);
+  position: relative; display: flex; flex-direction: column; gap: 4px;
+  padding: 16px 0 16px 30px; border-bottom: 1px solid var(--border-muted);
+  overflow-wrap: anywhere;
 }
-.post-date {
-  font-family: var(--mono); font-size: 12px; color: var(--muted);
-  flex: none; width: 70px;
+.post-row::before {
+  content: ''; position: absolute; left: 6px; top: 24px; bottom: -24px;
+  width: 2px; background: var(--border);
 }
-.post-main { flex: 1; display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
-.post-main > a { font-size: 15px; font-weight: 600; }
-.post-topics { display: inline-flex; gap: 6px; flex-wrap: wrap; }
-@media (max-width: 560px) {
-  .post-row { flex-wrap: wrap; gap: 6px 12px; }
-  .post-date { width: auto; }
+.post-row:last-child::before { display: none; }
+.post-row::after {
+  content: ''; position: absolute; left: 2px; top: 20px;
+  width: 10px; height: 10px; border: 2px solid var(--muted);
+  border-radius: 50%; background: var(--bg);
 }
-
-/* GitHub-style pagination under the post list */
-.pager { display: flex; justify-content: center; gap: 4px; margin-top: 22px; }
-.pager button {
-  font-family: var(--sans); font-size: 13px; color: var(--fg);
-  background: none; border: 1px solid transparent; border-radius: 6px;
-  padding: 5px 11px; cursor: pointer;
+.post-sha { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.post-title { font-size: 15px; font-weight: 600; line-height: 1.5; }
+.post-meta {
+  display: flex; align-items: baseline; gap: 4px 8px; flex-wrap: wrap;
+  color: var(--muted); font-size: 12px; line-height: 1.6;
 }
-.pager button:hover:not(:disabled):not(.active) { border-color: var(--border); }
-.pager button:disabled { color: var(--muted); opacity: 0.5; cursor: default; }
-.pager button.active { background: var(--link); color: #ffffff; }
+.post-meta > :not(:first-child)::before { content: '·'; margin-right: 8px; }
+.writing-more {
+  display: inline-flex; align-items: center; min-height: 44px;
+  margin-top: 8px; font-size: 13px;
+}
 
 /* One box per paper. The whole box is the link, so the title underlines on
    hover but the tl;dr under it does not. */
