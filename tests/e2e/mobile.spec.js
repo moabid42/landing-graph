@@ -109,21 +109,34 @@ test.describe('the mobile section navigation', () => {
     await page.goto(url())
   })
 
-  const more = (page) => page.getByRole('button', { name: 'More', exact: true })
+  const more = (page) => page.locator('.nav-more-toggle')
   const menu = (page) => page.locator('#more-sections')
 
-  for (const width of [320, 375, 390, 699, 768, 899]) {
+  for (const [width, labels] of [
+    [320, ['Timeline', 'Writing']],
+    [375, ['Timeline', 'Writing']],
+    [390, ['Timeline', 'Writing']],
+    [699, ['Timeline', 'Writing']],
+    [700, ['README', 'Pinned', 'Timeline', 'Writing']],
+    [749, ['README', 'Pinned', 'Timeline', 'Writing']],
+    [750, ['README', 'Pinned', 'Timeline', 'Writing', 'Research']],
+    [768, ['README', 'Pinned', 'Timeline', 'Writing', 'Research']],
+    [899, ['README', 'Pinned', 'Timeline', 'Writing', 'Research']],
+  ]) {
     test(`fits the tabs and More menu at ${width}px`, async ({ page }) => {
       await page.setViewportSize({ width, height: 844 })
       const nav = page.getByRole('navigation', { name: 'Sections' })
-      await expect(nav.getByRole('link')).toHaveCount(2)
+      const tabs = nav.getByRole('link')
+      await expect(tabs).toHaveCount(labels.length)
+      for (const [index, label] of labels.entries())
+        await expect(tabs.nth(index)).toContainText(label)
       await expect(more(page)).toHaveAttribute('aria-expanded', 'false')
       expect(await nav.evaluate((el) => el.scrollWidth - el.clientWidth)).toBe(
         0
       )
       await more(page).click()
       await expect(more(page)).toHaveAttribute('aria-expanded', 'true')
-      await expect(menu(page).getByRole('link')).toHaveCount(5)
+      await expect(menu(page).getByRole('link')).toHaveCount(7 - labels.length)
       const bounds = await menu(page).boundingBox()
       expect(bounds.x).toBeGreaterThanOrEqual(0)
       expect(bounds.x + bounds.width).toBeLessThanOrEqual(width)
@@ -140,9 +153,9 @@ test.describe('the mobile section navigation', () => {
   test('reaches every overflow section and closes after navigation', async ({
     page,
   }) => {
+    await page.setViewportSize({ width: 320, height: 844 })
     for (const [label, id] of [
       ['Pinned', 'work'],
-      ['Writing', 'blog'],
       ['Research', 'research'],
       ['Stack', 'stack'],
       ['Contact', 'contact'],
@@ -156,6 +169,12 @@ test.describe('the mobile section navigation', () => {
       await expect(menu(page)).toBeHidden()
       await expect(more(page)).toHaveAttribute('aria-expanded', 'false')
       await expect(more(page)).toHaveClass(/active/)
+      await expect(more(page)).toHaveText(label)
+      expect(
+        await page
+          .locator('.gh-tabs')
+          .evaluate((el) => el.scrollWidth - el.clientWidth)
+      ).toBe(0)
       await expect
         .poll(async () => {
           const heading = await page.locator(`#${id} h2`).boundingBox()
@@ -164,6 +183,57 @@ test.describe('the mobile section navigation', () => {
         })
         .toBe(true)
     }
+  })
+
+  test('reaches Writing directly and returns home through the crumb or menu', async ({
+    page,
+  }) => {
+    const writing = page.locator('.gh-tabs > a[href="#blog"]')
+    for (const home of ['crumb', 'menu']) {
+      await writing.click()
+      await expect(page).toHaveURL(url('/#blog'))
+      await expect(writing).toHaveAttribute('aria-current', 'location')
+      await expect(more(page)).not.toHaveClass(/active/)
+      if (home === 'crumb') await page.locator('.crumb .repo-name').click()
+      else {
+        await more(page).click()
+        await menu(page)
+          .getByRole('link', { name: 'README', exact: true })
+          .click()
+      }
+      await expect(page).toHaveURL(url())
+      await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0)
+      await expect(menu(page)).toBeHidden()
+    }
+  })
+
+  test('moves the current section between the tabs and menu on tablet resize', async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 749, height: 844 })
+    await more(page).click()
+    await menu(page)
+      .getByRole('link', { name: /^Research/ })
+      .click()
+    await expect(more(page)).toHaveText('Research')
+    await more(page).click()
+    await expect(
+      menu(page).getByRole('link', { name: /^Research/ })
+    ).toHaveAttribute('aria-current', 'location')
+    await page.setViewportSize({ width: 768, height: 844 })
+    await expect(menu(page)).toBeHidden()
+    await expect(more(page)).toHaveText('More')
+    await expect(
+      page.locator('.gh-tabs > a[href="#research"]')
+    ).toHaveAttribute('aria-current', 'location')
+    await more(page).click()
+    await expect(
+      menu(page).getByRole('link', { name: /^Research/ })
+    ).toHaveCount(0)
+    await page.setViewportSize({ width: 749, height: 844 })
+    await expect(menu(page)).toBeHidden()
+    await expect(more(page)).toHaveText('Research')
+    await expect(page).toHaveURL(url('/#research'))
   })
 
   test('tracks scrolling between Timeline and the overflow sections', async ({
@@ -187,10 +257,11 @@ test.describe('the mobile section navigation', () => {
     await page.keyboard.press('Escape')
     await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }))
     await expect(more(page)).not.toHaveClass(/active/)
-    await expect(page.locator('.gh-tabs > a').first()).toHaveAttribute(
-      'aria-current',
-      'page'
-    )
+    await expect(more(page)).toHaveText('More')
+    await more(page).click()
+    await expect(
+      menu(page).getByRole('link', { name: 'README', exact: true })
+    ).toHaveAttribute('aria-current', 'page')
   })
 
   test('supports keyboard access, Escape, and outside clicks', async ({
@@ -218,11 +289,14 @@ test.describe('the mobile section navigation', () => {
   test('returns from a post to a section through More', async ({ page }) => {
     const href = await page.locator(POST_LINK).first().getAttribute('href')
     await page.goto(href)
-    await expect(more(page)).toHaveClass(/active/)
+    await expect(more(page)).not.toHaveClass(/active/)
+    await expect(
+      page.locator('.gh-tabs > a').filter({ hasText: 'Writing' })
+    ).toHaveAttribute('aria-current', 'page')
     await more(page).click()
     await expect(
       menu(page).getByRole('link', { name: /^Writing/ })
-    ).toHaveAttribute('aria-current', 'page')
+    ).toHaveCount(0)
     await menu(page)
       .getByRole('link', { name: /^Research/ })
       .click()

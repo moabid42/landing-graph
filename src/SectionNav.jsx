@@ -37,15 +37,37 @@ const sections = [
   { id: 'contact', label: 'Contact', icon: IconMail },
 ]
 
-// README and Timeline stay visible on mobile; the other sections use More.
-const secondary = sections.filter((item) => item.id && item.id !== 'timeline')
+// Keep Timeline and Writing within reach on phones, and retain more tabs
+// as space grows. The menu contains only the sections absent from the bar.
+const overflowRules = [
+  { query: '(max-width: 899px)', ids: ['stack', 'contact'] },
+  { query: '(max-width: 749px)', ids: ['research'] },
+  { query: '(max-width: 699px)', ids: [null, 'work'] },
+]
+
+const overflowAtViewport = () =>
+  overflowRules.flatMap(({ query, ids }) =>
+    window.matchMedia(query).matches ? ids : []
+  )
 
 export default function SectionNav({ post, home, section }) {
   const [open, setOpen] = useState(false)
   const [activeSection, setActiveSection] = useState(null)
+  const [overflowIds, setOverflowIds] = useState(overflowAtViewport)
   const navRef = useRef(null)
   const moreRef = useRef(null)
   const buttonRef = useRef(null)
+
+  useEffect(() => {
+    const queries = overflowRules.map(({ query }) => window.matchMedia(query))
+    const resize = () => {
+      setOverflowIds(overflowAtViewport())
+      setOpen(false)
+    }
+    queries.forEach((query) => query.addEventListener('change', resize))
+    return () =>
+      queries.forEach((query) => query.removeEventListener('change', resize))
+  }, [])
 
   useEffect(() => {
     const header = navRef.current.closest('.gh-header')
@@ -116,24 +138,25 @@ export default function SectionNav({ post, home, section }) {
         buttonRef.current?.focus()
       }
     }
-    const mq = window.matchMedia('(max-width: 899px)')
-    const resize = (event) => {
-      if (!event.matches) setOpen(false)
-    }
     document.addEventListener('pointerdown', outside)
     document.addEventListener('focusin', outside)
     document.addEventListener('keydown', escape)
-    mq.addEventListener('change', resize)
     return () => {
       document.removeEventListener('pointerdown', outside)
       document.removeEventListener('focusin', outside)
       document.removeEventListener('keydown', escape)
-      mq.removeEventListener('change', resize)
     }
   }, [open])
 
   const currentSection = post ? 'blog' : activeSection
-  const moreActive = secondary.some((item) => item.id === currentSection)
+  const overflow = sections.filter((item) =>
+    overflowIds.includes(item.id ?? null)
+  )
+  const visible = sections.filter((item) => !overflow.includes(item))
+  const activeOverflow = overflow.find(
+    (item) => item.id && item.id === currentSection
+  )
+  const moreActive = Boolean(activeOverflow)
 
   const renderLink = (item, inMore = false) => {
     const Icon = item.icon
@@ -143,7 +166,7 @@ export default function SectionNav({ post, home, section }) {
       <a
         key={item.label}
         href={props.href}
-        className={`${inMore ? 'nav-more-link' : `tab ${secondary.includes(item) ? 'nav-secondary' : ''}`} ${active ? 'active' : ''}`}
+        className={`${inMore ? 'nav-more-link' : 'tab'} ${active ? 'active' : ''}`}
         aria-current={
           active ? (post || !item.id ? 'page' : 'location') : undefined
         }
@@ -160,8 +183,12 @@ export default function SectionNav({ post, home, section }) {
   }
 
   return (
-    <nav className="gh-tabs" aria-label="Sections" ref={navRef}>
-      {sections.map((item) => renderLink(item))}
+    <nav
+      className={`gh-tabs ${overflow.length ? 'has-overflow' : ''}`}
+      aria-label="Sections"
+      ref={navRef}
+    >
+      {visible.map((item) => renderLink(item))}
       <div className="nav-more" ref={moreRef}>
         <button
           ref={buttonRef}
@@ -172,7 +199,7 @@ export default function SectionNav({ post, home, section }) {
           aria-controls="more-sections"
           onClick={() => setOpen(!open)}
         >
-          More
+          {activeOverflow?.label ?? 'More'}
           <svg
             width="12"
             height="12"
@@ -184,7 +211,7 @@ export default function SectionNav({ post, home, section }) {
           </svg>
         </button>
         <div className="nav-more-menu" id="more-sections" hidden={!open}>
-          {open && secondary.map((item) => renderLink(item, true))}
+          {open && overflow.map((item) => renderLink(item, true))}
         </div>
       </div>
     </nav>
