@@ -29,7 +29,7 @@ export default {
     // The pull quote under the tagline. Explains the graph to a first-time
     // reader; rewrite it in your own voice or set it to null to hide it.
     blurb:
-      'I joke that most of my job is being professionally suspicious. I look at systems, assumptions, and edge cases and ask what happens when reality doesn\'t behave the way the design expected. Usually, that\'s where the interesting part starts.',
+      "I've always had a habit of asking too many why question, and somehow curiosity has taken me further than any plan I've ever made.",
 
     // The green-dot status line. Set status to null to hide the whole row.
     status: 'now · offensive security engineer @ Schwarz Digits',
