@@ -24,7 +24,7 @@ HOW TO EDIT — same format everywhere:
 - topics: ctf, red team, community
 - link: https://ctftime.org/team/220336
 
-Founded and Lead +100 security researchers across 20 countries from scratch into a consistent top 10 worldwide CTFtime ranking, with results at DEF CON CTF and Google CTF.
+Founded and led a team of 100+ security researchers across 20 countries, achieving a consistent top-10 worldwide CTFtime ranking, with results at DEF CON CTF and Google CTF.
 
 ## CTO
 - org: xTID
@@ -34,7 +34,7 @@ Founded and Lead +100 security researchers across 20 countries from scratch into
 - time: part-time
 - link: https://xtid.io/
 
-Designed and build a secure decentralized document verification system, handling 1k+ transaction a month.
+Designed and built a secure decentralized document verification system handling 1k+ transactions a month.
 
 ## CEO
 - highlight: true
@@ -45,4 +45,4 @@ Designed and build a secure decentralized document verification system, handling
 - time: part-time
 - link: https://lyraix.ai/blog/
 
-Founded lyraix an AI security lab and designed LyraixGuard, a real-time AI guardrail system with +300 downloads on huggingface.
+Founded lyraix, an AI security lab, and designed LyraixGuard, a real-time AI guardrail system with 300+ downloads on Hugging Face.

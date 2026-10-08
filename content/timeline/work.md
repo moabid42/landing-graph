@@ -29,7 +29,7 @@ matter — the graph sorts by date and assigns branch lanes automatically.
 - topics: math, english, french
 - time: part-time
 
-Tutored +10 students (ages 4-18) in math, physics and english, by grounding each concept in its history and reasoning driving understanding over memorization, and finally resulting in a minimum of 40% grade improvement.
+Tutored 10+ students (ages 4–18) in math, physics and English. Grounded each concept in its history and reasoning, prioritizing understanding over memorization and achieving a minimum 40% improvement in grades.
 
 ## Cloud Security Engineer, internship
 - org: Haufe Group · Freiburg
@@ -39,7 +39,7 @@ Tutored +10 students (ages 4-18) in math, physics and english, by grounding each
 - time: full-time
 - link: https://www.haufegroup.com/en
 
-Designed MalS3Scan, a serverless AWS malware-detection pipeline processing ~10k files/day across thousands of buckets, batch-dispatching to parallel Lambda scanners against a centralized YARA rule DB, with automated alerting for incidend response.
+Designed MalS3Scan, a serverless AWS malware-detection pipeline processing ~10k files/day across thousands of buckets, batch-dispatching to parallel Lambda scanners against a centralized YARA rule DB, with automated alerting for incident response.
 
 ## System Engineer, POS systems
 - highlight: true
@@ -60,7 +60,7 @@ Owned integration and security for 150,000+ point-of-sale systems with zero down
 - time: part-time
 - link: https://www.42heilbronn.de/en/
 
-Taught thousands of students advanced classes on C, data structures, reverse engineering and binary exploitation live. Hosted Cybersecurity Day for 100+ onsite people.
+Taught thousands of students live advanced classes on C, data structures, reverse engineering and binary exploitation. Hosted Cybersecurity Day for 100+ people onsite.
 
 ## Offensive Security Engineer
 - highlight: true
@@ -69,10 +69,10 @@ Taught thousands of students advanced classes on C, data structures, reverse eng
 - end: now
 - topics: red team, infra, research
 - time: full-time
-- https://schwarz-digits.de/en
+- link: https://schwarz-digits.de/en
 
-Owned and Designed a GCP IAM red-teaming harness, with deterministic propose-then-verify architecture.
-Conducted various security review and code assessment accross STACKIT cloud global infra and various multi-million users applications.
+Owned and designed a GCP IAM red-teaming harness with a deterministic propose-then-verify architecture.
+Conducted security reviews and code assessments across STACKIT’s global cloud infrastructure and applications serving millions of users.
 Engineered EDR evasion techniques by reverse-engineering Windows kernel telemetry and building custom payload delivery tooling in C and assembly.
 
 ## Software Security Engineer
@@ -84,5 +84,5 @@ Engineered EDR evasion techniques by reverse-engineering Windows kernel telemetr
 - time: part-time
 - link: https://mingabyte.de/en/
 
-Designed a secure high-load AI inference system in Rust & Python.
-Lead execution and delivery of the company's TISAX certification in less than 350 hours.
+Designed a secure high-load AI inference system in Rust and Python.
+Led the execution and delivery of the company's TISAX certification in less than 350 hours.

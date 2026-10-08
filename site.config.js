@@ -29,11 +29,11 @@ export default {
     // The pull quote under the tagline. Explains the graph to a first-time
     // reader; rewrite it in your own voice or set it to null to hide it.
     blurb:
-      'I joke that most of my job is being professionally suspicious. I look at systems, assumptions, and edge cases and ask what happens when reality doesn\'t behave the way the design expected. Usually, that\'s  where the interesting part starts.',
+      'I joke that most of my job is being professionally suspicious. I look at systems, assumptions, and edge cases and ask what happens when reality doesn\'t behave the way the design expected. Usually, that\'s where the interesting part starts.',
 
     // The green-dot status line. Set status to null to hide the whole row.
-    status: 'now · offensive security engineer @ schwarz digits',
-    location: 'heilbronn, de',
+    status: 'now · offensive security engineer @ Schwarz Digits',
+    location: 'Heilbronn, DE',
 
     email: 'moabid42@proton.me',
 
@@ -46,7 +46,7 @@ export default {
   // Rendered as the `git remote -v` table in the Contact section, in this
   // order. Sections elsewhere look these up by name: "medium" is the Writing
   // section's link, "researchgate" is the Research section's, "github" is the
-  // header crumb and "linkedin" is the Follow button. Add, remove or reorder
+  // header crumb and "linkedin" is the LinkedIn button. Add, remove or reorder
   // freely — a missing name just hides whatever renders it.
   links: [
     { name: 'origin', url: 'mailto:moabid42@proton.me', kind: 'email' },
@@ -161,14 +161,14 @@ export default {
   },
   {
     title: 'l3ak-ctf-infra',
-    text: 'The infra hosting L3AK CTF events, handling more than 10k concurrent users, and millions of requests.',
+    text: 'The infrastructure behind L3AK CTF events, handling more than 10k concurrent users and millions of requests.',
     topics: ['high-load', 'GCP', 'monitoring', 'distributed systems'],
     href: null,
     visibility: 'Internal',
   },
   {
     title: 'redteam-copilot',
-    text: 'A GCP IAM red-teaming harness, with a deterministic propose-then-verify architecture',
+    text: 'A GCP IAM red-teaming harness, with a deterministic propose-then-verify architecture.',
     topics: ['llm', 'red-team', 'automation'],
     href: null,
     visibility: 'Internal',
@@ -244,7 +244,7 @@ export default {
   {
     cat: 'security',
     items:
-      'red teaming · detection engineering · cloud security · threat modeling · code review · rev ·  pwn · crypto',
+      'red teaming · detection engineering · cloud security · threat modeling · code review · reverse engineering · binary exploitation · cryptography',
   },
   {
     cat: 'infrastructure',

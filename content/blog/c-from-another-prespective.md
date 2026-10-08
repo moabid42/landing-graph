@@ -1,5 +1,5 @@
 ---
-title: C from another Prespective
+title: C from another perspective
 date: 2023-03-27
 topics: coding-conventions, c
 summary: How I actually write C — the conventions, habits, and safety rules that keep the code readable and sane.
@@ -8,8 +8,8 @@ source: https://medium.com/@m0ab1d42/c-from-another-prespective-dc33462be53b
 
 ## C from another Perspective
 
-With this I am starting an/series of articale/s, where I am gonna be explaining my own C perspective, and what I mean by that, how I write actually C code (which was inspired by my friend **enijakow,** he should take the credit for that ngl**: D)**.  
-In this article, I am going to discuss the following :
+With this, I am starting a series of articles explaining my perspective on C: how I actually write C code. My approach was inspired by my friend **enijakow**, who deserves the credit for that, ngl :D.
+In this article, I am going to discuss the following:
 
 - C conventions, and how they can help you write safer code.
 - C details that beginners mostly miss.

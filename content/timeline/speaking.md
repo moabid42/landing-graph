@@ -25,7 +25,7 @@ HOW TO EDIT — same format everywhere:
 - topics: reversing, anti-debug, maldev
 - link: https://www.linkedin.com/posts/1337-coding-school_hackthebox-elitesec-42network-activity-7335361736692154370-JZ2i?utm_source=share&utm_medium=member_desktop&rcm=ACoAADhzXYcBfwkDrhdnjiwVFhzoKTLSlT3A7D8
 
-Presented my research on advanced linux anti-debugging mechanisms, titeled "Hook Oriented Programming".
+Presented my research on advanced Linux anti-debugging mechanisms, titled "Hook Oriented Programming".
 
 ## NULLHAT Morocco
 - org: HackerOne · EliteSec
@@ -33,7 +33,7 @@ Presented my research on advanced linux anti-debugging mechanisms, titeled "Hook
 - topics: reversing, pwn
 - link: https://lnkd.in/p/edeUMhFC
 
-Co-Organized HackerOne meetup Morocco, delivering high quality challenges and talks.
+Co-organized a HackerOne meetup in Morocco, delivering high-quality challenges and talks.
 
 ## Cyber Odyssey
 - org: 1337 · AkaSec
@@ -41,4 +41,4 @@ Co-Organized HackerOne meetup Morocco, delivering high quality challenges and ta
 - topics: crypto, IoT, CSPRNG
 - link: https://www.linkedin.com/posts/akasec-1337_meet-our-speakers-first-we-have-mouad-abid-activity-7393334107402838016-SN4D?utm_source=social_share_send&utm_medium=member_desktop_web&rcm=ACoAADhzXYcBfwkDrhdnjiwVFhzoKTLSlT3A7D8
 
-Presented my research on CSPRNG in embedded systems, titeled "Robust Complete PRNG"
+Presented my research on CSPRNG in embedded systems, titled "Robust Complete PRNG".

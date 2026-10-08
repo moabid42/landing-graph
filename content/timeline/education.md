@@ -25,7 +25,7 @@ HOW TO EDIT — same format everywhere:
 - topics: math, informatics, physics
 - link: https://fstt.uae.ac.ma/
 
-First Reality Check
+First reality check.
 
 ## Core curriculum, software engineering
 - highlight: true

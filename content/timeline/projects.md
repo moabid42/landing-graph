@@ -25,7 +25,7 @@ HOW TO EDIT — same format everywhere:
 - topics: multiprocessing, compiler-design, formal-languages
 - link: https://github.com/moabid42/shell
 
-Designed and built my own version of shell in pure C.
+Designed and built my own shell in pure C.
 
 ## ft_cube3D
 - org: 42 Heilbronn
@@ -34,7 +34,7 @@ Designed and built my own version of shell in pure C.
 - topics: raycasting, C, computer-graphics
 - link: https://github.com/moabid42/42cub3D
 
-Designed and built Half-life game clone using nothing but mlx C library.
+Designed and built a Half-Life game clone using only the mlx C library.
 
 ## ft_IRC
 - org: 42 Heilbronn
@@ -52,7 +52,7 @@ Designed and built an IRC server in pure C++.
 - topics: gamedev, gRPC, websockets
 - link: https://github.com/williamollio/ft_transcendence
 
-Designed and built a pingpong game with realtime matchmaking and chat.
+Designed and built a ping-pong game with real-time matchmaking and chat.
 
 ## L3AK CTF 2024 Infra
 - org: L3AK TEAM
@@ -60,7 +60,7 @@ Designed and built a pingpong game with realtime matchmaking and chat.
 - end: 2024-05
 - topics: distributed-systems, caching, high-availability, system-monitoring
 
-Developed the infra hosting L3AK CTF 2024 event, handling more than 1k concurrent users, with 0 down time.
+Developed the infrastructure hosting the L3AK CTF 2024 event, handling more than 1k concurrent users with zero downtime.
 
 ## L3AK CTF 2025 Infra
 - highlight: true
@@ -69,7 +69,7 @@ Developed the infra hosting L3AK CTF 2024 event, handling more than 1k concurren
 - end: 2025-07
 - topics: gcp, cloud-architecture, distributed-systems, caching
 
-Designed and built the infra hosting L3AK CTF 2025 event on GCP, handling more than 10k concurrent users, and millions of requests.
+Designed and built the infrastructure hosting the L3AK CTF 2025 event on GCP, handling more than 10k concurrent users and millions of requests.
 
 ## IAMouflage
 - start: 2026-05
@@ -77,7 +77,7 @@ Designed and built the infra hosting L3AK CTF 2025 event on GCP, handling more t
 - topics: detections, TTPs, IAM, GCP
 - link: https://github.com/moabid42/IAMouflage
 
-Designed and built a detection to technique visualization using neo4j and mapping methodName (detection) <> permission (technique) for better visibility during red teaming.
+Designed and built a detection-to-technique visualization using Neo4j, mapping methodName (detection) to permission (technique) for better visibility during red teaming.
 
 ## Decnique
 - highlight: true
