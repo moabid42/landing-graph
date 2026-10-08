@@ -18,6 +18,8 @@ import {
   IconPencil,
   IconFlask,
   IconInfo,
+  IconSun,
+  IconMoon,
 } from './icons.jsx'
 
 const {
@@ -235,7 +237,12 @@ export default function App() {
               }
               onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
             >
-              {theme === 'dark' ? 'light' : 'dark'}
+              {theme === 'dark' ? (
+                <IconSun width={14} height={14} />
+              ) : (
+                <IconMoon width={14} height={14} />
+              )}
+              {theme === 'dark' ? 'Light' : 'Dark'}
             </button>
             {LINKEDIN_URL && (
               <a
@@ -244,7 +251,7 @@ export default function App() {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Follow <span aria-hidden="true">↗</span>
+                LinkedIn <span aria-hidden="true">↗</span>
               </a>
             )}
           </div>

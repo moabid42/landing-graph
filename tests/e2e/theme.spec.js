@@ -20,10 +20,10 @@ test.describe('the theme toggle', () => {
   })
 
   test('switches between dark and light', async ({ page }) => {
-    await expect(toggle(page)).toHaveText('light')
+    await expect(toggle(page)).toHaveText('Light')
     await toggle(page).click()
     expect(await themeAttr(page)).toBe('light')
-    await expect(toggle(page)).toHaveText('dark')
+    await expect(toggle(page)).toHaveText('Dark')
     await toggle(page).click()
     expect(await themeAttr(page)).toBeNull()
   })
@@ -32,7 +32,7 @@ test.describe('the theme toggle', () => {
     await toggle(page).click()
     await page.reload()
     expect(await themeAttr(page)).toBe('light')
-    await expect(toggle(page)).toHaveText('dark')
+    await expect(toggle(page)).toHaveText('Dark')
   })
 
   test('swaps in the light palette from the config', async ({ page }) => {

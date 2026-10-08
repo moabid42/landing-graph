@@ -111,3 +111,16 @@ export const IconBook = (p) => (
     <path d="M8 3.5v10.4" />
   </svg>
 )
+
+export const IconSun = (p) => (
+  <svg {...base} {...p}>
+    <circle cx="8" cy="8" r="2.75" />
+    <path d="M8 1v1.5M8 13.5V15M1 8h1.5M13.5 8H15M3.05 3.05l1.06 1.06m7.78 7.78 1.06 1.06M3.05 12.95l1.06-1.06m7.78-7.78 1.06-1.06" />
+  </svg>
+)
+
+export const IconMoon = (p) => (
+  <svg {...base} {...p}>
+    <path d="M14.1 9.2A6.2 6.2 0 0 1 6.8 1.9 6.2 6.2 0 1 0 14.1 9.2Z" />
+  </svg>
+)
