@@ -750,7 +750,19 @@ footer code { color: var(--muted); }
   .sec-head { margin-bottom: 26px; }
   .sec-head .cmd { display: none; }
   .tl-controls { margin-bottom: 28px; }
-
+  .sec-head.tl-sec-head { gap: 8px; }
+  .tl-sec-head h2 { font-size: 18px; flex-shrink: 0; gap: 7px; }
+  .tl-views { gap: 0; min-width: 0; }
+  .tl-views button { min-height: 40px; padding-left: 7px; padding-right: 7px; font-size: 12px; gap: 0; }
+  .tl-views .counter { display: none; }
+  .tl-views button[aria-pressed='true']::after { left: 7px; right: 7px; }
+  .tl-view-note { white-space: normal; }
+  .mtl-entry .tl-card { min-width: 0; padding: 12px; overflow-wrap: anywhere; }
+  .mtl-entry .tl-meta { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px 8px; }
+  .mtl-entry .tl-meta .dates { grid-column: 1 / -1; grid-row: 2; }
+  .mtl-entry .tl-more { margin-left: 0; }
+  .mtl-point .plabel { max-width: 100%; overflow-wrap: anywhere; }
+  .mtl-point .plabel svg { flex-shrink: 0; }
 }
 
 /* ===================== motion ===================== */

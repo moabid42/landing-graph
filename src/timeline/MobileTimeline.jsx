@@ -126,14 +126,18 @@ export default function MobileTimeline({
         let lane = 0
         while (laneEnds[lane] !== undefined && laneEnds[lane] > b.forkY) lane++
         laneEnds[lane] = b.mergeY
-        b.lx = M_LANE0 + lane * M_LANE_W
+        b.lane = lane
         maxLane = Math.max(maxLane, lane)
       }
+      // Keep concurrent branches inside a compact gutter so cards retain
+      // readable width even when the full history has many open threads.
+      const laneWidth = Math.min(M_LANE_W, 24 / Math.max(1, maxLane))
+      for (const b of branches) b.lx = M_LANE0 + b.lane * laneWidth
       const next = {
         branches,
         headY,
         H: wrap.offsetHeight,
-        padLeft: M_LANE0 + maxLane * M_LANE_W + 16,
+        padLeft: M_LANE0 + maxLane * laneWidth + 16,
       }
       setGraph((prev) =>
         JSON.stringify(prev) === JSON.stringify(next) ? prev : next

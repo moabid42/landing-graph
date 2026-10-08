@@ -47,14 +47,52 @@ test.describe('the mobile timeline', () => {
     expect(headTop).toBeGreaterThanOrEqual(lastRowBottom - 1)
   })
 
-  test('never scrolls the page sideways', async ({ page }) => {
-    const overflow = await page.evaluate(
-      () =>
-        document.documentElement.scrollWidth -
-        document.documentElement.clientWidth
-    )
-    expect(overflow).toBeLessThanOrEqual(0)
-  })
+  for (const width of [320, 375, 390]) {
+    test(`fits both views without horizontal scrolling at ${width}px`, async ({
+      page,
+    }) => {
+      await page.setViewportSize({ width, height: 844 })
+      for (const view of ['Highlights', 'Everything']) {
+        await page.getByRole('button', { name: new RegExp(`^${view}`) }).click()
+        await expect
+          .poll(() =>
+            page.evaluate(
+              () =>
+                document.documentElement.scrollWidth -
+                document.documentElement.clientWidth
+            )
+          )
+          .toBeLessThanOrEqual(0)
+
+        // Checking just the document misses content spilling into its side
+        // padding. Every card and control must fit inside the timeline too.
+        await expect
+          .poll(() =>
+            page.locator('#timeline').evaluate((timeline) => {
+              const bounds = timeline.getBoundingClientRect()
+              return [
+                ...timeline.querySelectorAll(
+                  '.tl-views button, .mtl-entry .tl-card, .mtl-entry .tl-card *, .mtl-point .plabel'
+                ),
+              ]
+                .filter(
+                  (el) => el.getBoundingClientRect().right > bounds.right + 1
+                )
+                .map((el) => el.className)
+            })
+          )
+          .toEqual([])
+
+        const heading = await page.locator('.tl-sec-head h2').boundingBox()
+        const switcher = await page.locator('.tl-views').boundingBox()
+        expect(
+          Math.abs(
+            heading.y + heading.height / 2 - switcher.y - switcher.height / 2
+          )
+        ).toBeLessThan(1)
+      }
+    })
+  }
 
   test('filters on mobile too', async ({ page }) => {
     const button = page.locator('.tl-legend .tl-filter').first()
