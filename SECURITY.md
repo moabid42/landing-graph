@@ -29,6 +29,11 @@ Clean, and CI fails if it stops being clean. There is no allowlist and no
 `--omit=dev` carve-out, which is the point: an audit with exceptions is one
 nobody reads.
 
+Mermaid's KaTeX dependency is overridden to the patched `0.18.x` line.
+Mermaid currently requests `0.16.x`, which is covered by
+[GHSA-238p-pmpm-9mq7](https://github.com/advisories/GHSA-238p-pmpm-9mq7).
+Remove the override once Mermaid requests a patched version itself.
+
 Keeping it that way cost one architectural decision. Lighthouse is not a
 dependency of this repo. `@lhci/cli` pulls in Lighthouse and puppeteer — 276
 packages — and one of them, `extract-zip`, has an advisory with **no
