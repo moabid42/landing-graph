@@ -22,6 +22,9 @@ test.describe('the README page', () => {
   // A fragment means "this spot on this page", which is exactly what a
   // section tab is. Losing them would cost every section its shareable link.
   test('the section tabs stay in-page anchors', async ({ page }) => {
+    await expect(
+      page.getByRole('button', { name: 'More', exact: true })
+    ).toBeHidden()
     for (const [tab, id] of [
       ['Timeline', 'timeline'],
       ['Pinned', 'work'],

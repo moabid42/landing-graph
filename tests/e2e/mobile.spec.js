@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test'
-import { url } from './site.js'
+import { POST_LINK, url } from './site.js'
 import { checkTimelineViews } from './timeline-views.js'
+import AxeBuilder from '@axe-core/playwright'
 
 // Under 700px the timeline swaps to the git-log layout: one column, a trunk
 // in the gutter, and branch lines routed between rows. Different renderer,
@@ -100,4 +101,126 @@ test.describe('the mobile timeline', () => {
     await expect(button).toHaveAttribute('aria-pressed', 'true')
     await expect(page.locator('.mtl-entry.dim')).not.toHaveCount(0)
   })
+})
+
+test.describe('the mobile section navigation', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto(url())
+  })
+
+  const more = (page) => page.getByRole('button', { name: 'More', exact: true })
+  const menu = (page) => page.locator('#more-sections')
+
+  for (const width of [320, 375, 390, 699, 768, 899]) {
+    test(`fits the tabs and More menu at ${width}px`, async ({ page }) => {
+      await page.setViewportSize({ width, height: 844 })
+      const nav = page.getByRole('navigation', { name: 'Sections' })
+      await expect(nav.getByRole('link')).toHaveCount(2)
+      await expect(more(page)).toHaveAttribute('aria-expanded', 'false')
+      expect(await nav.evaluate((el) => el.scrollWidth - el.clientWidth)).toBe(
+        0
+      )
+      await more(page).click()
+      await expect(more(page)).toHaveAttribute('aria-expanded', 'true')
+      await expect(menu(page).getByRole('link')).toHaveCount(5)
+      const bounds = await menu(page).boundingBox()
+      expect(bounds.x).toBeGreaterThanOrEqual(0)
+      expect(bounds.x + bounds.width).toBeLessThanOrEqual(width)
+      expect(
+        await page.evaluate(
+          () =>
+            document.documentElement.scrollWidth -
+            document.documentElement.clientWidth
+        )
+      ).toBe(0)
+    })
+  }
+
+  test('reaches every overflow section and closes after navigation', async ({
+    page,
+  }) => {
+    for (const [label, id] of [
+      ['Pinned', 'work'],
+      ['Writing', 'blog'],
+      ['Research', 'research'],
+      ['Stack', 'stack'],
+      ['Contact', 'contact'],
+    ]) {
+      await more(page).click()
+      await menu(page)
+        .getByRole('link', { name: new RegExp(`^${label}`) })
+        .click()
+      await expect(page).toHaveURL(url(`/#${id}`))
+      await expect(page.locator(`#${id}`)).toBeVisible()
+      await expect(menu(page)).toBeHidden()
+      await expect(more(page)).toHaveAttribute('aria-expanded', 'false')
+    }
+  })
+
+  test('supports keyboard access, Escape, and outside clicks', async ({
+    page,
+  }) => {
+    await more(page).focus()
+    await page.keyboard.press('Enter')
+    await page.keyboard.press('Tab')
+    await expect(menu(page).getByRole('link').first()).toBeFocused()
+    await page.keyboard.press('Escape')
+    await expect(menu(page)).toBeHidden()
+    await expect(more(page)).toBeFocused()
+    await more(page).click()
+    await page.locator('.gh-header .avatar').click()
+    await expect(menu(page)).toBeHidden()
+  })
+
+  test('closes when keyboard focus leaves the navigation', async ({ page }) => {
+    await more(page).click()
+    await menu(page).getByRole('link').last().focus()
+    await page.keyboard.press('Tab')
+    await expect(menu(page)).toBeHidden()
+  })
+
+  test('returns from a post to a section through More', async ({ page }) => {
+    const href = await page.locator(POST_LINK).first().getAttribute('href')
+    await page.goto(href)
+    await expect(more(page)).toHaveClass(/active/)
+    await more(page).click()
+    await expect(
+      menu(page).getByRole('link', { name: /^Writing/ })
+    ).toHaveAttribute('aria-current', 'page')
+    await menu(page)
+      .getByRole('link', { name: /^Research/ })
+      .click()
+    await expect(page).toHaveURL(url('/#research'))
+    await expect(page.locator('#research')).toBeVisible()
+    await expect(menu(page)).toBeHidden()
+  })
+
+  test('restores the desktop tabs after resizing', async ({ page }) => {
+    await more(page).click()
+    await page.setViewportSize({ width: 1440, height: 900 })
+    await expect(more(page)).toBeHidden()
+    await expect(menu(page)).toBeHidden()
+    await expect(
+      page.getByRole('navigation', { name: 'Sections' }).getByRole('link')
+    ).toHaveCount(7)
+    await page.setViewportSize({ width: 390, height: 844 })
+    await expect(more(page)).toHaveAttribute('aria-expanded', 'false')
+  })
+
+  for (const theme of ['dark', 'light']) {
+    test(`the open More menu is accessible in ${theme} mode`, async ({
+      page,
+    }) => {
+      if (theme === 'light')
+        await page
+          .getByRole('button', { name: 'Switch to light theme' })
+          .click()
+      await more(page).click()
+      const { violations } = await new AxeBuilder({ page })
+        .include('.gh-header')
+        .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
+        .analyze()
+      expect(violations).toEqual([])
+    })
+  }
 })

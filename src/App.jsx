@@ -1,5 +1,6 @@
 import { Fragment, useEffect, useState } from 'react'
 import Timeline from './timeline/index.jsx'
+import SectionNav from './SectionNav.jsx'
 import Markdown from './markdown.jsx'
 import { POSTS, loadBody } from './blog/index.js'
 import ErrorBoundary from './ErrorBoundary.jsx'
@@ -7,7 +8,6 @@ import { applyMeta } from './seo/apply.js'
 import { homePath, postPath } from './paths.js'
 import { link, useRoute } from './router.js'
 import config from '../site.config.js'
-import { ENTRIES } from './content.js'
 import {
   IconRepo,
   IconBranch,
@@ -249,37 +249,7 @@ export default function App() {
             )}
           </div>
         </div>
-        <nav className="gh-tabs" aria-label="Sections">
-          <a className={`tab ${post ? '' : 'active'}`} {...home()}>
-            <IconBook width={14} height={14} /> README
-          </a>
-          <a className="tab" {...section('timeline')}>
-            <IconBranch width={14} height={14} /> Timeline
-            <span className="counter">{ENTRIES.length}</span>
-          </a>
-          <a className="tab" {...section('work')}>
-            <IconRepo width={14} height={14} /> Pinned
-            <span className="counter">{WORK.length}</span>
-          </a>
-          <a className={`tab ${post ? 'active' : ''}`} {...section('blog')}>
-            <IconPencil width={14} height={14} /> Writing
-            {POSTS.length > 0 && (
-              <span className="counter">{POSTS.length}</span>
-            )}
-          </a>
-          <a className="tab" {...section('research')}>
-            <IconFlask width={14} height={14} /> Research
-            {RESEARCH.length > 0 && (
-              <span className="counter">{RESEARCH.length}</span>
-            )}
-          </a>
-          <a className="tab" {...section('stack')}>
-            <IconTag width={14} height={14} /> Stack
-          </a>
-          <a className="tab" {...section('contact')}>
-            <IconMail width={14} height={14} /> Contact
-          </a>
-        </nav>
+        <SectionNav post={Boolean(post)} home={home()} section={section} />
       </header>
 
       <main id="top">
