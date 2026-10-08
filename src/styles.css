@@ -263,7 +263,8 @@ section { padding: 72px 0 24px; }
 .tl-list { list-style: none; }
 .tl-item { position: absolute; }
 .tl-entry { position: static; }
-.tl-entry.dim .tl-card,
+.tl-entry.dim .tl-card, .mtl-entry.dim .tl-card { border-color: var(--border-muted); border-style: dashed; }
+.tl-entry.dim .tl-card h3, .mtl-entry.dim .tl-card h3 { color: var(--muted); }
 .tl-entry.dim .tl-conn,
 .tl-entry.dim .tl-node { opacity: 0.12; }
 .branch.dim { opacity: 0.07 !important; }
@@ -371,7 +372,6 @@ section { padding: 72px 0 24px; }
 
 .mtl-entry { position: relative; padding-left: var(--mtl-pad, 50px); }
 .mtl-entry .tl-card { position: static; width: auto; }
-.tl-item.mtl-entry.dim { opacity: 0.15; }
 /* branch lines: fork at their card, run through following rows, merge
    back into the trunk where their end date falls — parallel = overlap */
 .mtl-branches { position: absolute; top: 0; left: 0; pointer-events: none; z-index: 1; }
