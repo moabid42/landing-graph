@@ -283,7 +283,7 @@ export default function App() {
                   )}
                   <div className="hero-cta">
                     <a className="gh-btn primary" href="#blog">
-                      <IconPencil width={14} height={14} /> Explore my work
+                      <IconPencil width={14} height={14} /> Read my writing
                     </a>
                     <a className="gh-btn" href="#timeline">
                       <IconBranch width={14} height={14} /> Follow the graph

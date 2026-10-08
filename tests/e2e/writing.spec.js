@@ -63,7 +63,7 @@ test.describe('the writing section', () => {
     await page.setViewportSize({ width: 320, height: 700 })
     await page
       .locator('.hero-cta')
-      .getByRole('link', { name: 'Explore my work' })
+      .getByRole('link', { name: 'Read my writing' })
       .click()
     await expect(page).toHaveURL(url('/#blog'))
     for (const fullList of [false, true]) {

@@ -36,6 +36,64 @@ test.describe('the README page', () => {
       await page.locator('.gh-tabs a', { hasText: tab }).click()
       await expect(page).toHaveURL(url(`/#${id}`))
       await expect(page.locator(`#${id}`)).toBeVisible()
+      await expect(page.locator(`.gh-tabs a[href="#${id}"]`)).toHaveAttribute(
+        'aria-current',
+        'location'
+      )
+      await expect
+        .poll(async () => {
+          const heading = await page.locator(`#${id} h2`).boundingBox()
+          const header = await page.locator('.gh-header').boundingBox()
+          return heading.y >= header.y + header.height
+        })
+        .toBe(true)
+    }
+  })
+
+  test('tracks the visible section while scrolling without changing the URL', async ({
+    page,
+  }) => {
+    for (const id of [
+      'work',
+      'timeline',
+      'blog',
+      'research',
+      'stack',
+      'contact',
+    ]) {
+      await page
+        .locator(`#${id}`)
+        .evaluate((el) => el.scrollIntoView({ behavior: 'instant' }))
+      await expect(page.locator(`.gh-tabs a[href="#${id}"]`)).toHaveAttribute(
+        'aria-current',
+        'location'
+      )
+      await expect(page).toHaveURL(url())
+    }
+    await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }))
+    await expect(page.locator('.gh-tabs a').first()).toHaveAttribute(
+      'aria-current',
+      'page'
+    )
+  })
+
+  test('uses the current header height for section jumps after resizing', async ({
+    page,
+  }) => {
+    for (const width of [320, 390, 768, 1440]) {
+      await page.setViewportSize({ width, height: 900 })
+      for (const id of ['work', 'timeline', 'stack']) {
+        await page
+          .locator(`#${id}`)
+          .evaluate((el) => el.scrollIntoView({ behavior: 'instant' }))
+        await expect
+          .poll(async () => {
+            const heading = await page.locator(`#${id} h2`).boundingBox()
+            const header = await page.locator('.gh-header').boundingBox()
+            return heading.y >= header.y + header.height
+          })
+          .toBe(true)
+      }
     }
   })
 

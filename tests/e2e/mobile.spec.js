@@ -155,7 +155,42 @@ test.describe('the mobile section navigation', () => {
       await expect(page.locator(`#${id}`)).toBeVisible()
       await expect(menu(page)).toBeHidden()
       await expect(more(page)).toHaveAttribute('aria-expanded', 'false')
+      await expect(more(page)).toHaveClass(/active/)
+      await expect
+        .poll(async () => {
+          const heading = await page.locator(`#${id} h2`).boundingBox()
+          const header = await page.locator('.gh-header').boundingBox()
+          return heading.y >= header.y + header.height
+        })
+        .toBe(true)
     }
+  })
+
+  test('tracks scrolling between Timeline and the overflow sections', async ({
+    page,
+  }) => {
+    await page
+      .locator('#timeline')
+      .evaluate((el) => el.scrollIntoView({ behavior: 'instant' }))
+    await expect(
+      page.locator('.gh-tabs > a[href="#timeline"]')
+    ).toHaveAttribute('aria-current', 'location')
+    await expect(more(page)).not.toHaveClass(/active/)
+    await page
+      .locator('#work')
+      .evaluate((el) => el.scrollIntoView({ behavior: 'instant' }))
+    await expect(more(page)).toHaveClass(/active/)
+    await more(page).click()
+    await expect(
+      menu(page).getByRole('link', { name: /^Pinned/ })
+    ).toHaveAttribute('aria-current', 'location')
+    await page.keyboard.press('Escape')
+    await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }))
+    await expect(more(page)).not.toHaveClass(/active/)
+    await expect(page.locator('.gh-tabs > a').first()).toHaveAttribute(
+      'aria-current',
+      'page'
+    )
   })
 
   test('supports keyboard access, Escape, and outside clicks', async ({

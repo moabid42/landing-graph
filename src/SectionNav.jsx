@@ -42,8 +42,68 @@ const secondary = sections.filter((item) => item.id && item.id !== 'timeline')
 
 export default function SectionNav({ post, home, section }) {
   const [open, setOpen] = useState(false)
+  const [activeSection, setActiveSection] = useState(null)
+  const navRef = useRef(null)
   const moreRef = useRef(null)
   const buttonRef = useRef(null)
+
+  useEffect(() => {
+    const header = navRef.current.closest('.gh-header')
+    const main = document.querySelector('main')
+    const targets = sections
+      .filter((item) => item.id)
+      .map((item) => ({
+        id: item.id,
+        heading: document.querySelector(`#${item.id} h2`),
+      }))
+      .filter((item) => item.heading)
+    let frame = null
+    let headerHeight = 0
+
+    const update = () => {
+      frame = null
+      const bounds = header.getBoundingClientRect()
+      if (bounds.height !== headerHeight) {
+        headerHeight = bounds.height
+        document.documentElement.style.setProperty(
+          '--header-height',
+          `${headerHeight}px`
+        )
+      }
+      if (post) return
+
+      let active = null
+      for (const target of targets) {
+        if (target.heading.getBoundingClientRect().top <= bounds.bottom + 24)
+          active = target.id
+      }
+      // The final section can be too short to reach the header before the
+      // page ends. It still owns the navigation when the reader reaches it.
+      if (
+        window.scrollY > 0 &&
+        window.scrollY + window.innerHeight >=
+          document.documentElement.scrollHeight - 2
+      ) {
+        active = targets.at(-1)?.id ?? null
+      }
+      setActiveSection(active)
+    }
+    const schedule = () => {
+      if (frame === null) frame = requestAnimationFrame(update)
+    }
+    const observer = new ResizeObserver(schedule)
+    observer.observe(header)
+    observer.observe(main)
+    window.addEventListener('scroll', schedule, { passive: true })
+    window.addEventListener('resize', schedule)
+    update()
+    return () => {
+      observer.disconnect()
+      window.removeEventListener('scroll', schedule)
+      window.removeEventListener('resize', schedule)
+      if (frame !== null) cancelAnimationFrame(frame)
+    }
+  }, [post])
 
   useEffect(() => {
     if (!open) return
@@ -72,16 +132,21 @@ export default function SectionNav({ post, home, section }) {
     }
   }, [open])
 
+  const currentSection = post ? 'blog' : activeSection
+  const moreActive = secondary.some((item) => item.id === currentSection)
+
   const renderLink = (item, inMore = false) => {
     const Icon = item.icon
     const props = item.id ? section(item.id) : home
-    const active = post ? item.id === 'blog' : !item.id
+    const active = (item.id ?? null) === currentSection
     return (
       <a
         key={item.label}
         href={props.href}
         className={`${inMore ? 'nav-more-link' : `tab ${secondary.includes(item) ? 'nav-secondary' : ''}`} ${active ? 'active' : ''}`}
-        aria-current={active ? 'page' : undefined}
+        aria-current={
+          active ? (post || !item.id ? 'page' : 'location') : undefined
+        }
         onClick={(event) => {
           props.onClick?.(event)
           setOpen(false)
@@ -95,13 +160,14 @@ export default function SectionNav({ post, home, section }) {
   }
 
   return (
-    <nav className="gh-tabs" aria-label="Sections">
+    <nav className="gh-tabs" aria-label="Sections" ref={navRef}>
       {sections.map((item) => renderLink(item))}
       <div className="nav-more" ref={moreRef}>
         <button
           ref={buttonRef}
           type="button"
-          className={`tab nav-more-toggle ${post ? 'active' : ''}`}
+          className={`tab nav-more-toggle ${moreActive ? 'active' : ''}`}
+          aria-current={moreActive ? (post ? 'page' : 'location') : undefined}
           aria-expanded={open}
           aria-controls="more-sections"
           onClick={() => setOpen(!open)}
