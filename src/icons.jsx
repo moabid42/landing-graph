@@ -52,6 +52,14 @@ export const IconFork = (p) => (
   </svg>
 )
 
+export const IconLinkedIn = (p) => (
+  <svg {...base} {...p}>
+    <rect x="1.5" y="1.5" width="13" height="13" rx="1.5" />
+    <circle cx="4.75" cy="4.75" r=".75" fill="currentColor" stroke="none" />
+    <path d="M4.75 7v4.75M7.75 7v4.75M7.75 9a2 2 0 0 1 4 0v2.75" />
+  </svg>
+)
+
 export const IconMerge = (p) => (
   <svg {...base} {...p}>
     <circle cx="4.5" cy="3.25" r="1.6" />

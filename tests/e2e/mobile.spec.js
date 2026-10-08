@@ -112,6 +112,47 @@ test.describe('the mobile section navigation', () => {
   const more = (page) => page.locator('.nav-more-toggle')
   const menu = (page) => page.locator('#more-sections')
 
+  for (const width of [320, 360, 375, 390, 699]) {
+    test(`keeps named icon actions beside the identity at ${width}px`, async ({
+      page,
+    }) => {
+      await page.setViewportSize({ width, height: 844 })
+      const header = page.locator('.gh-header')
+      const actions = header.locator('.gh-actions')
+      await expect(
+        actions.getByRole('link', { name: 'Fork this site on GitHub' })
+      ).toBeVisible()
+      await expect(
+        actions.getByRole('link', { name: 'Visit LinkedIn profile' })
+      ).toBeVisible()
+      await expect(actions.locator('.header-connect svg')).toBeVisible()
+      for (const label of await actions.locator('.header-action-label').all())
+        await expect(label).toBeHidden()
+      const crumbBox = await header.locator('.crumb').boundingBox()
+      const actionBox = await actions.boundingBox()
+      expect(
+        Math.abs(
+          crumbBox.y + crumbBox.height / 2 - actionBox.y - actionBox.height / 2
+        )
+      ).toBeLessThan(1)
+      expect(crumbBox.x + crumbBox.width).toBeLessThanOrEqual(actionBox.x)
+      expect(actionBox.x + actionBox.width).toBeLessThanOrEqual(width - 14)
+      expect((await header.boundingBox()).height).toBeLessThan(104)
+      const toggle = actions.getByRole('button', {
+        name: 'Switch to light theme',
+      })
+      await toggle.click()
+      await expect(
+        actions.getByRole('button', { name: 'Switch to dark theme' })
+      ).toBeVisible()
+      expect(
+        await page.evaluate(
+          () => document.documentElement.scrollWidth - innerWidth
+        )
+      ).toBe(0)
+    })
+  }
+
   for (const [width, labels] of [
     [320, ['Timeline', 'Writing']],
     [375, ['Timeline', 'Writing']],

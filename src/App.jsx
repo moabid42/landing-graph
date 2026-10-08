@@ -13,6 +13,7 @@ import {
   IconRepo,
   IconBranch,
   IconFork,
+  IconLinkedIn,
   IconBook,
   IconTag,
   IconMail,
@@ -212,18 +213,25 @@ export default function App() {
           <div className="gh-actions">
             {identity.source && (
               <a
-                className="gh-btn"
+                className="gh-btn header-fork"
                 href={identity.source}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Fork this site on GitHub"
+                title="Fork this site on GitHub"
               >
-                <IconFork width={14} height={14} /> Fork
+                <IconFork width={14} height={14} />
+                <span className="header-action-label">Fork</span>
               </a>
             )}
             <button
-              className="gh-btn"
+              className="gh-btn header-theme"
               aria-label={
+                theme === 'dark'
+                  ? 'Switch to light theme'
+                  : 'Switch to dark theme'
+              }
+              title={
                 theme === 'dark'
                   ? 'Switch to light theme'
                   : 'Switch to dark theme'
@@ -235,16 +243,23 @@ export default function App() {
               ) : (
                 <IconMoon width={14} height={14} />
               )}
-              {theme === 'dark' ? 'Light' : 'Dark'}
+              <span className="header-action-label">
+                {theme === 'dark' ? 'Light' : 'Dark'}
+              </span>
             </button>
             {LINKEDIN_URL && (
               <a
-                className="gh-btn"
+                className="gh-btn primary header-connect"
                 href={LINKEDIN_URL}
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label="Visit LinkedIn profile"
+                title="LinkedIn"
               >
-                LinkedIn <span aria-hidden="true">↗</span>
+                <IconLinkedIn className="header-action-icon" />
+                <span className="header-action-label">
+                  LinkedIn <span aria-hidden="true">↗</span>
+                </span>
               </a>
             )}
           </div>
