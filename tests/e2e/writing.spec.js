@@ -77,11 +77,17 @@ test.describe('the writing section', () => {
           return heading.y >= header.y + header.height
         })
         .toBe(true)
-      expect(
-        await page.evaluate(
-          () => document.documentElement.scrollWidth - window.innerWidth
+      // Compare content with the usable width: desktop scrollbars reserve
+      // space on Linux and Windows, while macOS uses overlay scrollbars.
+      await expect
+        .poll(() =>
+          page.evaluate(
+            () =>
+              document.documentElement.scrollWidth -
+              document.documentElement.clientWidth
+          )
         )
-      ).toBe(0)
+        .toBeLessThanOrEqual(0)
       for (const row of await page.locator('.post-row').all()) {
         const bounds = await row.boundingBox()
         expect(bounds.x).toBeGreaterThanOrEqual(0)

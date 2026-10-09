@@ -262,7 +262,9 @@ and the head each route serves.
 - **pre-commit** — `lint-staged` (eslint + prettier on staged files) then the
   unit suite.
 - **pre-push** — eslint, formatting across the whole repository, and the
-  dependency audit. Any failure stops the push.
+  dependency audit, followed by the full end-to-end suite against a fresh
+  production build. Requires Chromium (`npx playwright install chromium`).
+  Any failure stops the push.
 - **commit-msg** — [commitlint](commitlint.config.js). Messages are
   conventional and one line: `type: lower case summary, no full stop`.
   Allowed types include `content` for markdown edits alongside the usual

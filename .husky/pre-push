@@ -1,3 +1,8 @@
-# Match CI's lint, formatting and dependency audit checks.
+# Match CI's lint, formatting, dependency audit and browser checks.
 # A failed check must stop the push before any refs reach the remote.
-npm run lint && npm run format:check && npm run audit
+npm run lint
+npm run format:check
+npm run audit
+# CI mode forces a fresh production build instead of reusing a local server.
+# One worker and no retries keep failures clear and resource use predictable.
+CI=1 npm run e2e -- --retries=0 --reporter=list

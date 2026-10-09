@@ -29,8 +29,10 @@ npm run e2e
 
 CI runs all of these plus a production build, the entry-payload budget and
 Lighthouse. The pre-commit hook checks staged files and runs unit tests.
-The pre-push hook runs lint, formatting, and the dependency audit across the
-whole repository and stops the push if any check fails.
+The pre-push hook runs lint, formatting, the dependency audit, and the full
+end-to-end suite against a fresh production build. It stops the push if any
+check fails. Install Chromium with the setup command above before pushing.
+CI still tests on Linux, where scrollbar layout can differ from macOS.
 
 ## Commits
 
