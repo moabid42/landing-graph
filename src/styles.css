@@ -245,6 +245,53 @@ section {
 .sec-head .cmd, .sec-head .sec-note {
   font-family: var(--mono); font-size: 12px; color: var(--muted);
 }
+.sec-head .section-link { color: var(--link); }
+.section-links { display: flex; flex-wrap: wrap; gap: 8px 18px; }
+.section-links a { white-space: nowrap; }
+
+/* Dedicated pages keep the README frame and repository typography. */
+.page-intro { padding-top: 32px; padding-bottom: 0; }
+.page-intro .readme-body { padding-block: 28px; }
+.page-intro .readme-body h1 { font-size: clamp(28px, 4vw, 36px); }
+.page-intro .hero-sub { font-size: 16px; max-width: 56em; }
+.page-facts { display: flex; gap: 8px 20px; flex-wrap: wrap; margin-top: 20px; color: var(--muted); font: 12px var(--mono); }
+.page-facts span + span::before { content: '·'; margin-right: 20px; }
+.section-page > section:not(.page-intro) { --section-pad: 40px; }
+.page-explore { border-top: 1px solid var(--border); margin-top: 40px; padding-top: 20px; display: flex; flex-wrap: wrap; gap: 12px 24px; font-size: 13px; }
+.page-explore > span { width: 100%; color: var(--muted); font-family: var(--mono); font-size: 12px; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+.archive-controls { margin-bottom: 28px; }
+.archive-fields { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; }
+.archive-search { flex: 1; min-width: min(220px, 100%); }
+.archive-fields input, .archive-fields select { width: 100%; min-height: 38px; border: 1px solid var(--border); border-radius: 6px; padding: 8px 12px; background: var(--bg-subtle); color: var(--fg); font: 13px var(--sans); }
+.archive-fields input::placeholder { color: var(--muted); }
+.archive-fields select { width: auto; max-width: 100%; }
+.archive-count { margin-top: 10px; color: var(--muted); font: 12px var(--mono); }
+.archive-year { display: flex; align-items: center; gap: 8px; margin: 28px 0 14px; color: var(--muted); font: 600 14px var(--mono); }
+.writing-year:first-of-type .archive-year { margin-top: 0; }
+.archive-topics { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+.archive-topics button { font-family: var(--sans); border: 1px solid transparent; cursor: pointer; }
+.archive-topics button:hover, .archive-topics button[aria-pressed='true'] { color: var(--link); border-color: var(--link); }
+.project-history { margin-top: 48px; }
+.project-list { list-style: none; display: grid; gap: 16px; }
+.project-date { color: var(--muted); font: 12px var(--mono); margin-bottom: 12px; }
+.project-org { color: var(--muted); font-size: 13px; margin-top: 6px; }
+.project-link { display: inline-block; margin-top: 16px; font-size: 13px; }
+.stack-items { display: flex; flex-wrap: wrap; gap: 8px; }
+.stack-items .topic { font-size: 13px; padding: 4px 10px; }
+.remote-description { margin-top: 4px; color: var(--muted); font: 12px var(--sans); }
+@media (max-width: 699px) {
+  .page-intro { padding-top: 22px; }
+  .page-intro .readme-body { padding-block: 22px; }
+  .page-intro .hero-sub { font-size: 14px; }
+  .page-facts { gap: 8px 14px; }
+  .page-facts span + span::before { margin-right: 14px; }
+  .sec-head { flex-wrap: wrap; gap: 8px 16px; }
+  .sec-head .section-link { font-size: 11px; }
+  .archive-fields > label:not(.archive-search) { max-width: 100%; }
+  .remotes td { padding-inline: 10px; overflow-wrap: anywhere; }
+  .remotes td:first-child { width: auto; }
+}
 
 /* ===================== timeline ===================== */
 .sec-head.tl-sec-head { align-items: center; padding-bottom: 0; margin-bottom: 20px; }

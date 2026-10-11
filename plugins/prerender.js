@@ -13,7 +13,9 @@
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { isOpenGraph, jsonLd, tagsFor } from '../src/seo/meta.js'
-import { BASE, absolute, feedPath, postPath } from '../src/paths.js'
+import { BASE, absolute, feedPath, postPath, pagePath } from '../src/paths.js'
+import { PAGES } from '../src/pages.js'
+import { pageMarkdown } from './pageSnapshot.js'
 import { profile } from './llmsFiles.js'
 import { postMarkdown, readPosts } from './posts.js'
 import { withSnapshot } from './snapshot.js'
@@ -32,8 +34,8 @@ const esc = (s) =>
     .replace(/"/g, '&quot;')
 
 /** The whole head block for one route, fenced so it can be replaced later. */
-function head(post, indent = '    ') {
-  const rows = tagsFor(post)
+function head(post, page = null, indent = '    ') {
+  const rows = tagsFor(post, page)
     .filter(([, , value]) => value)
     .map(([kind, key, value]) => {
       if (kind === 'title') return `<title>${esc(value)}</title>`
@@ -54,7 +56,7 @@ function head(post, indent = '    ') {
     )
   }
 
-  const ld = jsonLd(post)
+  const ld = jsonLd(post, page)
   if (ld) {
     // A literal "</script>" inside the json would close the tag early.
     const json = JSON.stringify(ld).replace(/</g, '\\u003c')
@@ -100,6 +102,17 @@ export default function prerender({
       // The README gets the whole profile — bio, posts, research, the
       // timeline — as text a crawler can read without running the app.
       writeFileSync(index, withSnapshot(html, profile(posts, timelineDir)))
+
+      for (const page of Object.keys(PAGES)) {
+        const directory = join(outDir, pagePath(page).slice(BASE.length))
+        mkdirSync(directory, { recursive: true })
+        const markdown = pageMarkdown(page, posts, timelineDir)
+        writeFileSync(
+          join(directory, 'index.html'),
+          withSnapshot(html.replace(BLOCK, head(null, page)), markdown)
+        )
+        writeFileSync(join(directory, 'index.md'), markdown)
+      }
 
       for (const post of posts) {
         // postPath is base-prefixed ('/landing-graph/blog/x/'); on disk the

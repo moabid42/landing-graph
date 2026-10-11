@@ -10,15 +10,17 @@ import {
   ORIGIN,
   absolute,
   homePath,
+  pagePath,
   postMarkdownPath,
   postPath,
 } from '../paths.js'
+import { PAGES } from '../pages.js'
 
 const { identity, seo, links } = config
 
 /** Absolute url for a route, or null when no site url is configured. */
-export function canonical(slug) {
-  return absolute(slug ? postPath(slug) : homePath())
+export function canonical(slug, page = null) {
+  return absolute(slug ? postPath(slug) : page ? pagePath(page) : homePath())
 }
 
 /** Absolute url for the share image, or null when none is configured. */
@@ -41,15 +43,21 @@ export function postImage(post) {
 }
 
 /** The <title>, description and share card for one route. */
-export function metaFor(post) {
+export function metaFor(post, page = null) {
+  const info = PAGES[page]
   const title = post
     ? `${post.title} · ${identity.repo}`
-    : seo.title || `${identity.handle} / ${identity.repo}`
-  const description = (post && (post.summary || post.title)) || seo.description
+    : info
+      ? `${info.title} · ${identity.repo}`
+      : seo.title || `${identity.handle} / ${identity.repo}`
+  const description =
+    (post && (post.summary || post.title)) ||
+    info?.description ||
+    seo.description
   return {
     title,
     description,
-    canonical: canonical(post?.slug),
+    canonical: canonical(post?.slug, page),
     image: shareImage(),
     type: post ? 'article' : 'website',
     publishedTime: post?.date || null,
@@ -72,8 +80,8 @@ export const REPEATED = new Set(['article:tag'])
  * on the README, og:image with no share image configured — and both writers
  * leave it out rather than emitting it empty.
  */
-export function tagsFor(post) {
-  const m = metaFor(post)
+export function tagsFor(post, page = null) {
+  const m = metaFor(post, page)
   return [
     ['title', 'title', m.title],
     ['meta', 'description', m.description],
@@ -83,7 +91,11 @@ export function tagsFor(post) {
     [
       'alternate',
       'text/markdown',
-      post && absolute(postMarkdownPath(post.slug)),
+      post
+        ? absolute(postMarkdownPath(post.slug))
+        : page
+          ? absolute(`${pagePath(page)}index.md`)
+          : null,
     ],
     ['meta', 'og:site_name', identity.repo],
     ['meta', 'og:type', m.type],
@@ -110,7 +122,7 @@ export function tagsFor(post) {
 // who the author is, when a post was published, which profiles are the same
 // person. The og:* tags cannot say any of that.
 /** The schema.org description of one route, or null with no site url. */
-export function jsonLd(post) {
+export function jsonLd(post, page = null) {
   if (!ORIGIN) return null
   const home = `${ORIGIN}/`
   // One person and one site, named once in full on the README and pointed at
@@ -130,6 +142,18 @@ export function jsonLd(post) {
     url: home,
     inLanguage: 'en',
     publisher: { '@id': person['@id'] },
+  }
+  if (PAGES[page]) {
+    return {
+      '@context': 'https://schema.org',
+      '@type': ['stack', 'more'].includes(page) ? 'WebPage' : 'CollectionPage',
+      name: PAGES[page].title,
+      description: PAGES[page].description,
+      url: canonical(null, page),
+      inLanguage: 'en',
+      isPartOf: website,
+      about: person,
+    }
   }
   if (post) {
     const images = [postImage(post), shareImage()].filter(Boolean)

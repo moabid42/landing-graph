@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test'
 import { url } from './site.js'
+import { pagePath } from '../../src/paths.js'
 import config from '../../site.config.js'
 import { checkTimelineViews, checkTrackDimming } from './timeline-views.js'
 
@@ -36,7 +37,7 @@ function cardsInViewport(page) {
 
 test.describe('the timeline graph', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto(url())
+    await page.goto(url(pagePath('timeline')))
     await page.locator('.tl-wrap .tl-card').first().waitFor()
   })
 

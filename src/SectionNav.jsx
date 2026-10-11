@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from 'react'
 import config from '../site.config.js'
 import { ENTRIES } from './content.js'
 import { POSTS } from './blog/index.js'
+import { homePath, pagePath } from './paths.js'
+import { link } from './router.js'
 import {
   IconBook,
   IconBranch,
@@ -13,7 +15,7 @@ import {
 } from './icons.jsx'
 
 const sections = [
-  { label: 'README', icon: IconBook },
+  { id: 'home', label: 'README', icon: IconBook },
   { id: 'work', label: 'Pinned', icon: IconRepo, count: config.work.length },
   {
     id: 'timeline',
@@ -22,7 +24,7 @@ const sections = [
     count: ENTRIES.length,
   },
   {
-    id: 'blog',
+    id: 'writing',
     label: 'Writing',
     icon: IconPencil,
     count: POSTS.length || null,
@@ -34,15 +36,15 @@ const sections = [
     count: config.research.length || null,
   },
   { id: 'stack', label: 'Stack', icon: IconTag },
-  { id: 'contact', label: 'Contact', icon: IconMail },
+  { id: 'more', label: 'Find more', icon: IconMail },
 ]
 
 // Keep Timeline and Writing within reach on phones, and retain more tabs
 // as space grows. The menu contains only the sections absent from the bar.
 const overflowRules = [
-  { query: '(max-width: 899px)', ids: ['stack', 'contact'] },
+  { query: '(max-width: 899px)', ids: ['stack', 'more'] },
   { query: '(max-width: 749px)', ids: ['research'] },
-  { query: '(max-width: 699px)', ids: [null, 'work'] },
+  { query: '(max-width: 699px)', ids: ['home', 'work'] },
 ]
 
 const overflowAtViewport = () =>
@@ -50,9 +52,8 @@ const overflowAtViewport = () =>
     window.matchMedia(query).matches ? ids : []
   )
 
-export default function SectionNav({ post, home, section }) {
+export default function SectionNav({ current }) {
   const [open, setOpen] = useState(false)
-  const [activeSection, setActiveSection] = useState(null)
   const [overflowIds, setOverflowIds] = useState(overflowAtViewport)
   const navRef = useRef(null)
   const moreRef = useRef(null)
@@ -71,14 +72,6 @@ export default function SectionNav({ post, home, section }) {
 
   useEffect(() => {
     const header = navRef.current.closest('.gh-header')
-    const main = document.querySelector('main')
-    const targets = sections
-      .filter((item) => item.id)
-      .map((item) => ({
-        id: item.id,
-        heading: document.querySelector(`#${item.id} h2`),
-      }))
-      .filter((item) => item.heading)
     let frame = null
     let headerHeight = 0
 
@@ -92,40 +85,22 @@ export default function SectionNav({ post, home, section }) {
           `${headerHeight}px`
         )
       }
-      if (post) return
-
-      let active = null
-      for (const target of targets) {
-        if (target.heading.getBoundingClientRect().top <= bounds.bottom + 24)
-          active = target.id
-      }
-      // The final section can be too short to reach the header before the
-      // page ends. It still owns the navigation when the reader reaches it.
-      if (
-        window.scrollY > 0 &&
-        window.scrollY + window.innerHeight >=
-          document.documentElement.scrollHeight - 2
-      ) {
-        active = targets.at(-1)?.id ?? null
-      }
-      setActiveSection(active)
     }
     const schedule = () => {
       if (frame === null) frame = requestAnimationFrame(update)
     }
     const observer = new ResizeObserver(schedule)
     observer.observe(header)
-    observer.observe(main)
-    window.addEventListener('scroll', schedule, { passive: true })
     window.addEventListener('resize', schedule)
     update()
     return () => {
       observer.disconnect()
-      window.removeEventListener('scroll', schedule)
       window.removeEventListener('resize', schedule)
       if (frame !== null) cancelAnimationFrame(frame)
     }
-  }, [post])
+  }, [])
+
+  useEffect(() => setOpen(false), [current])
 
   useEffect(() => {
     if (!open) return
@@ -148,10 +123,8 @@ export default function SectionNav({ post, home, section }) {
     }
   }, [open])
 
-  const currentSection = post ? 'blog' : activeSection
-  const overflow = sections.filter((item) =>
-    overflowIds.includes(item.id ?? null)
-  )
+  const currentSection = current ?? 'home'
+  const overflow = sections.filter((item) => overflowIds.includes(item.id))
   const visible = sections.filter((item) => !overflow.includes(item))
   const activeOverflow = overflow.find(
     (item) => item.id && item.id === currentSection
@@ -160,16 +133,17 @@ export default function SectionNav({ post, home, section }) {
 
   const renderLink = (item, inMore = false) => {
     const Icon = item.icon
-    const props = item.id ? section(item.id) : home
-    const active = (item.id ?? null) === currentSection
+    const props = link(
+      item.id === 'home' ? homePath() : pagePath(item.id),
+      () => window.scrollTo({ top: 0, behavior: 'instant' })
+    )
+    const active = item.id === currentSection
     return (
       <a
         key={item.label}
         href={props.href}
         className={`${inMore ? 'nav-more-link' : 'tab'} ${active ? 'active' : ''}`}
-        aria-current={
-          active ? (post || !item.id ? 'page' : 'location') : undefined
-        }
+        aria-current={active ? 'page' : undefined}
         onClick={(event) => {
           props.onClick?.(event)
           setOpen(false)
@@ -194,12 +168,15 @@ export default function SectionNav({ post, home, section }) {
           ref={buttonRef}
           type="button"
           className={`tab nav-more-toggle ${moreActive ? 'active' : ''}`}
-          aria-current={moreActive ? (post ? 'page' : 'location') : undefined}
+          aria-label="More pages"
+          title={
+            activeOverflow ? `Current page: ${activeOverflow.label}` : undefined
+          }
           aria-expanded={open}
           aria-controls="more-sections"
-          onClick={() => setOpen(!open)}
+          onClick={() => setOpen((value) => !value)}
         >
-          {activeOverflow?.label ?? 'More'}
+          More
           <svg
             width="12"
             height="12"

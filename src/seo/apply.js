@@ -81,8 +81,8 @@ function setRepeated(key, values) {
 }
 
 /** Point the document at one route. Called on every navigation. */
-export function applyMeta(post) {
-  const rows = tagsFor(post)
+export function applyMeta(post, page = null) {
+  const rows = tagsFor(post, page)
   for (const [kind, key, value] of rows) {
     if (REPEATED.has(key)) continue
     if (kind === 'title') document.title = value
@@ -96,5 +96,5 @@ export function applyMeta(post) {
       rows.filter(([, k, v]) => k === key && v).map(([, , v]) => v)
     )
   }
-  setJsonLd(jsonLd(post))
+  setJsonLd(jsonLd(post, page))
 }

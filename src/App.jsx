@@ -1,47 +1,32 @@
-import { Fragment, useEffect, useState } from 'react'
+import { Fragment, useEffect, useLayoutEffect, useState } from 'react'
 import Timeline from './timeline/index.jsx'
 import SectionNav from './SectionNav.jsx'
 import Writing from './Writing.jsx'
+import { Pinned, Research, Stack, Contact } from './ProfileSections.jsx'
+import SectionPage from './SectionPage.jsx'
 import Markdown from './markdown.jsx'
 import { POSTS, loadBody } from './blog/index.js'
 import ErrorBoundary from './ErrorBoundary.jsx'
 import { applyMeta } from './seo/apply.js'
-import { homePath } from './paths.js'
+import { homePath, pagePath } from './paths.js'
 import { link, useRoute } from './router.js'
 import config from '../site.config.js'
 import {
-  IconRepo,
   IconBranch,
   IconFork,
   IconLinkedIn,
   IconBook,
-  IconTag,
-  IconMail,
   IconPencil,
-  IconFlask,
   IconInfo,
   IconSun,
   IconMoon,
 } from './icons.jsx'
 
-const {
-  identity,
-  links,
-  footer,
-  work: WORK,
-  stack: STACK,
-  languages: LANGUAGES,
-  research: RESEARCH,
-  note,
-} = config
+const { identity, links, footer, note } = config
 
 // Look a remote up by name. A name that is not in site.config.js returns
 // null, and whatever renders it hides itself — deleting a link is enough.
 const linkTo = (name) => links.find((l) => l.name === name)?.url ?? null
-
-// "https://www.example.com/x" -> "example.com/x"; "mailto:a@b" -> "a@b"
-const linkLabel = (url) =>
-  url.replace(/^https?:\/\/(www\.)?/, '').replace(/^mailto:/, '')
 
 // Config strings may use `backticks` for inline code, the way markdown does,
 // and a newline wherever the line should break.
@@ -58,22 +43,7 @@ const ticks = (s) =>
     .split(/`([^`]+)`/g)
     .map((part, i) => (i % 2 ? <code key={i}>{part}</code> : lines(part, i)))
 
-// A paper's url is also its metadata: the host is the archive it lives on and
-// ResearchGate's publication number reads like a commit sha. Anything the url
-// does not carry is simply left off the card.
-const paperMeta = (href) => {
-  let host = null
-  try {
-    host = new URL(href).hostname.replace(/^www\./, '')
-  } catch {
-    /* a malformed url still renders, just without its footer */
-  }
-  return { host, id: href.match(/\/publication\/(\d+)/)?.[1] ?? null }
-}
-
-const MAILTO = `mailto:${identity.email}`
 const MEDIUM_URL = linkTo('medium')
-const RESEARCHGATE_URL = linkTo('researchgate')
 const GITHUB_URL = linkTo('github')
 const LINKEDIN_URL = linkTo('linkedin')
 const NOTE_URL = note ? linkTo(note.link) : null
@@ -123,7 +93,7 @@ function PostPage({ post }) {
   return (
     <section className="post-page" aria-label="Blog post">
       <p className="post-back">
-        <a {...link(`${homePath()}#all-writing`)}>← all writing</a>
+        <a {...link(pagePath('writing'))}>← all writing</a>
       </p>
       <article className="readme">
         <div className="readme-head">
@@ -165,30 +135,32 @@ function PostPage({ post }) {
 
 export default function App() {
   const [theme, setTheme] = useTheme()
-  const slug = useRoute()
+  const route = useRoute()
+  const { slug, page, pathname, hash, scroll } = route
   const post = slug ? POSTS.find((p) => p.slug === slug) : null
 
   // The README tab and the crumb go to the bare site root, the way a logo
   // does: no fragment left in the address bar afterwards.
   const home = () => link(homePath(), () => window.scrollTo(0, 0))
 
-  // The other tabs are ordinary in-page anchors on the README — a fragment is
-  // exactly what "this spot on this page" means. From a post the section is
-  // not on the page at all, so there they carry the full path home and are
-  // hijacked the same way a post link is.
-  const section = (id) =>
-    post ? link(`${homePath()}#${id}`) : { href: `#${id}` }
-
   // Title, description, canonical and the share card, per route. index.html
   // carries the same values statically for crawlers that never run scripts.
   useEffect(() => {
-    applyMeta(post)
-    // A post opens at the top; the README opens wherever the url points,
-    // which is how a section tab gets you back from a post to that section.
-    if (post) window.scrollTo(0, 0)
-    else if (window.location.hash)
-      document.getElementById(window.location.hash.slice(1))?.scrollIntoView()
-  }, [post])
+    applyMeta(post, page)
+  }, [post, page])
+
+  useLayoutEffect(() => {
+    if (hash) {
+      const target = document.getElementById(hash.slice(1))
+      target?.scrollIntoView({ behavior: 'instant' })
+    } else {
+      window.scrollTo({
+        left: scroll?.[0] ?? 0,
+        top: scroll?.[1] ?? 0,
+        behavior: 'instant',
+      })
+    }
+  }, [pathname, hash, scroll])
 
   return (
     <>
@@ -264,12 +236,14 @@ export default function App() {
             )}
           </div>
         </div>
-        <SectionNav post={Boolean(post)} home={home()} section={section} />
+        <SectionNav current={post ? 'writing' : page} />
       </header>
 
-      <main id="top">
+      <main id="top" tabIndex={-1}>
         {post ? (
           <PostPage post={post} />
+        ) : page ? (
+          <SectionPage key={page} page={page} />
         ) : (
           <>
             {/* ---------- README hero ---------- */}
@@ -297,10 +271,13 @@ export default function App() {
                     </p>
                   )}
                   <div className="hero-cta">
-                    <a className="gh-btn primary" href="#blog">
+                    <a
+                      className="gh-btn primary"
+                      {...link(pagePath('writing'))}
+                    >
                       <IconPencil width={14} height={14} /> Read my writing
                     </a>
-                    <a className="gh-btn" href="#timeline">
+                    <a className="gh-btn" {...link(pagePath('timeline'))}>
                       <IconBranch width={14} height={14} /> Follow the graph
                     </a>
                   </div>
@@ -324,44 +301,7 @@ export default function App() {
               </div>
             </section>
 
-            {/* ---------- pinned work ---------- */}
-            <section id="work" aria-label="Selected work">
-              <div className="sec-head">
-                <h2>
-                  <IconRepo width={16} height={16} /> Pinned
-                </h2>
-                <span className="sec-note">selected work</span>
-              </div>
-              <div className="pin-grid">
-                {WORK.map((w) => (
-                  <article key={w.title} className="pin-card">
-                    <h3>
-                      <IconRepo width={14} height={14} />
-                      {w.href ? (
-                        <a
-                          href={w.href}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          {w.title}
-                        </a>
-                      ) : (
-                        <span className="no-link">{w.title}</span>
-                      )}
-                      <span className="vis-badge">{w.visibility}</span>
-                    </h3>
-                    <p className="pin-desc">{w.text}</p>
-                    <div className="pin-topics">
-                      {w.topics.map((t, i) => (
-                        <span key={`${t}-${i}`} className="topic">
-                          {t}
-                        </span>
-                      ))}
-                    </div>
-                  </article>
-                ))}
-              </div>
-            </section>
+            <Pinned />
 
             {/* ---------- timeline ---------- */}
             <section id="timeline" aria-label="Timeline">
@@ -373,190 +313,11 @@ export default function App() {
             {/* ---------- writing ---------- */}
             <Writing mediumUrl={MEDIUM_URL} />
 
-            {/* ---------- research ---------- */}
-            <section id="research" aria-label="Research">
-              <div className="sec-head">
-                <h2>
-                  <IconFlask width={16} height={16} /> Research
-                </h2>
-                {RESEARCHGATE_URL && (
-                  <a
-                    className="sec-note"
-                    href={RESEARCHGATE_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    full profile on researchgate{' '}
-                    <span aria-hidden="true">↗</span>
-                  </a>
-                )}
-              </div>
-              {RESEARCH.length === 0 ? (
-                <div className="blankslate">
-                  <IconFlask width={22} height={22} />
-                  <p className="bs-title">Papers are being indexed</p>
-                  <p className="bs-text">
-                    Titles and a short tl;dr will be listed here, each opening
-                    the full text on ResearchGate.
-                  </p>
-                  {RESEARCHGATE_URL && (
-                    <a
-                      className="gh-btn"
-                      href={RESEARCHGATE_URL}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      View on ResearchGate <span aria-hidden="true">↗</span>
-                    </a>
-                  )}
-                </div>
-              ) : (
-                <ul
-                  className="research-releases"
-                  aria-label="Research publications"
-                >
-                  {RESEARCH.map((paper) => {
-                    const { host, id } = paperMeta(paper.href)
-                    return (
-                      <li key={paper.title} className="research-release">
-                        <div className="release-meta">
-                          <span className="release-label">Publication</span>
-                          {id && (
-                            <span
-                              className="release-tag"
-                              title="Publication ID"
-                            >
-                              <IconTag width={14} height={14} /> #{id}
-                            </span>
-                          )}
-                          {host && <span className="release-host">{host}</span>}
-                        </div>
-                        <article className="release-card">
-                          <div className="release-body">
-                            <h3>
-                              <a
-                                href={paper.href}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                              >
-                                {paper.title}
-                              </a>
-                            </h3>
-                            <p className="release-summary">{paper.tldr}</p>
-                            {paper.topics?.length > 0 && (
-                              <div className="release-topics">
-                                {paper.topics.map((topic, i) => (
-                                  <span key={`${topic}-${i}`} className="topic">
-                                    {topic}
-                                  </span>
-                                ))}
-                              </div>
-                            )}
-                          </div>
-                          <div className="release-footer">
-                            <a
-                              href={paper.href}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              <IconBook width={16} height={16} />
-                              Read paper
-                              <span
-                                className="release-arrow"
-                                aria-hidden="true"
-                              >
-                                ↗
-                              </span>
-                            </a>
-                          </div>
-                        </article>
-                      </li>
-                    )
-                  })}
-                </ul>
-              )}
-            </section>
+            <Research />
 
-            {/* ---------- stack ---------- */}
-            <section id="stack" aria-label="Stack">
-              <div className="sec-head">
-                <h2>
-                  <IconTag width={16} height={16} /> Stack
-                </h2>
-                <span className="sec-note">languages &amp; tools</span>
-              </div>
-              <div className="lang-bar" aria-hidden="true">
-                {LANGUAGES.map((l) => (
-                  <span
-                    key={l.name}
-                    className="lang-seg"
-                    style={{ background: l.color }}
-                    title={l.name}
-                  />
-                ))}
-              </div>
-              <ul className="lang-list">
-                {LANGUAGES.map((l) => (
-                  <li key={l.name}>
-                    <span
-                      className="lang-dot"
-                      style={{ background: l.color }}
-                      aria-hidden="true"
-                    />
-                    {l.name}
-                  </li>
-                ))}
-              </ul>
-              <dl className="stack-list">
-                {STACK.map((s) => (
-                  <div key={s.cat} className="stack-row">
-                    <dt>{s.cat}</dt>
-                    <dd>{s.items}</dd>
-                  </div>
-                ))}
-              </dl>
-            </section>
+            <Stack />
 
-            {/* ---------- contact ---------- */}
-            <section id="contact" aria-label="Contact">
-              <div className="sec-head">
-                <h2>
-                  <IconMail width={16} height={16} /> Contact
-                </h2>
-                <span className="sec-note">remotes</span>
-              </div>
-              <div className="remote-block">
-                <div className="remote-head">
-                  <code>$ git remote -v</code>
-                </div>
-                <table className="remotes">
-                  <tbody>
-                    {links.map((l) => (
-                      <tr key={l.name}>
-                        <td>{l.name}</td>
-                        <td>
-                          <a
-                            href={l.url}
-                            {...(l.url.startsWith('mailto:')
-                              ? {}
-                              : {
-                                  target: '_blank',
-                                  rel: 'noopener noreferrer',
-                                })}
-                          >
-                            {linkLabel(l.url)}
-                          </a>
-                        </td>
-                        <td className="kind">({l.kind})</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-              <a className="gh-btn primary big-cta" href={MAILTO}>
-                <IconMail width={14} height={14} /> Email me
-              </a>
-            </section>
+            <Contact />
           </>
         )}
       </main>

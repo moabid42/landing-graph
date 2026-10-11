@@ -26,6 +26,8 @@ export async function checkTrackDimming(page, entries) {
 export async function checkTimelineViews(page, entries, points) {
   const highlights = page.getByRole('button', { name: /^Highlights/ })
   const everything = page.getByRole('button', { name: /^Everything/ })
+  await expect(everything).toHaveAttribute('aria-pressed', 'true')
+  await highlights.click()
   await expect(highlights).toHaveAttribute('aria-pressed', 'true')
   await expect(
     page.locator(`${entries} .tl-card h3`, { hasText: 'Decnique' })

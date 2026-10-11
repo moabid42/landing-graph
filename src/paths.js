@@ -9,6 +9,7 @@
 // Imported by the app, by the Vite plugins and by vite.config.js itself, so
 // it stays free of anything that only exists in a browser or only in Node.
 import config from '../site.config.js'
+import { PAGES } from './pages.js'
 
 /** The configured site url, no trailing slash. '' when there is none. */
 export const ORIGIN = (config.seo?.url || '').replace(/\/+$/, '')
@@ -31,6 +32,18 @@ export const homePath = () => BASE
 // the destination directly saves every visitor that round trip.
 /** One post's route. */
 export const postPath = (slug) => `${BASE}blog/${slug}/`
+
+/** A dedicated section page. */
+export const pagePath = (page) => `${BASE}${page}/`
+
+/** The section a pathname names, or null for any other route. */
+export function pageFromPath(pathname) {
+  const rest = pathname.startsWith(BASE)
+    ? pathname.slice(BASE.length)
+    : pathname.replace(/^\/+/, '')
+  const page = rest.replace(/\/$/, '')
+  return Object.hasOwn(PAGES, page) ? page : null
+}
 
 /** One post as plain markdown, next to its page. */
 export const postMarkdownPath = (slug) => `${postPath(slug)}index.md`

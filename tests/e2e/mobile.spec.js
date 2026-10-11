@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test'
 import { POST_LINK, url } from './site.js'
+import { pagePath } from '../../src/paths.js'
 import { checkTimelineViews, checkTrackDimming } from './timeline-views.js'
 import AxeBuilder from '@axe-core/playwright'
 
@@ -9,7 +10,7 @@ import AxeBuilder from '@axe-core/playwright'
 
 test.describe('the mobile timeline', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto(url())
+    await page.goto(url(pagePath('timeline')))
     await page.locator('.mtl-entry').first().waitFor()
   })
 
@@ -199,18 +200,18 @@ test.describe('the mobile section navigation', () => {
       ['Pinned', 'work'],
       ['Research', 'research'],
       ['Stack', 'stack'],
-      ['Contact', 'contact'],
+      ['Find more', 'more'],
     ]) {
       await more(page).click()
       await menu(page)
         .getByRole('link', { name: new RegExp(`^${label}`) })
         .click()
-      await expect(page).toHaveURL(url(`/#${id}`))
-      await expect(page.locator(`#${id}`)).toBeVisible()
+      await expect(page).toHaveURL(url(pagePath(id)))
+      await expect(page.locator('h1')).toBeVisible()
       await expect(menu(page)).toBeHidden()
       await expect(more(page)).toHaveAttribute('aria-expanded', 'false')
       await expect(more(page)).toHaveClass(/active/)
-      await expect(more(page)).toHaveText(label)
+      await expect(more(page)).toHaveText('More')
       expect(
         await page
           .locator('.gh-tabs')
@@ -218,7 +219,7 @@ test.describe('the mobile section navigation', () => {
       ).toBe(0)
       await expect
         .poll(async () => {
-          const heading = await page.locator(`#${id} h2`).boundingBox()
+          const heading = await page.locator('h1').boundingBox()
           const header = await page.locator('.gh-header').boundingBox()
           return heading.y >= header.y + header.height
         })
@@ -229,11 +230,11 @@ test.describe('the mobile section navigation', () => {
   test('reaches Writing directly and returns home through the crumb or menu', async ({
     page,
   }) => {
-    const writing = page.locator('.gh-tabs > a[href="#blog"]')
+    const writing = page.locator(`.gh-tabs > a[href="${pagePath('writing')}"]`)
     for (const home of ['crumb', 'menu']) {
       await writing.click()
-      await expect(page).toHaveURL(url('/#blog'))
-      await expect(writing).toHaveAttribute('aria-current', 'location')
+      await expect(page).toHaveURL(url(pagePath('writing')))
+      await expect(writing).toHaveAttribute('aria-current', 'page')
       await expect(more(page)).not.toHaveClass(/active/)
       if (home === 'crumb') await page.locator('.crumb .repo-name').click()
       else {
@@ -256,52 +257,52 @@ test.describe('the mobile section navigation', () => {
     await menu(page)
       .getByRole('link', { name: /^Research/ })
       .click()
-    await expect(more(page)).toHaveText('Research')
+    await expect(more(page)).toHaveText('More')
     await more(page).click()
     await expect(
       menu(page).getByRole('link', { name: /^Research/ })
-    ).toHaveAttribute('aria-current', 'location')
+    ).toHaveAttribute('aria-current', 'page')
     await page.setViewportSize({ width: 768, height: 844 })
     await expect(menu(page)).toBeHidden()
     await expect(more(page)).toHaveText('More')
     await expect(
-      page.locator('.gh-tabs > a[href="#research"]')
-    ).toHaveAttribute('aria-current', 'location')
+      page.locator(`.gh-tabs > a[href="${pagePath('research')}"]`)
+    ).toHaveAttribute('aria-current', 'page')
     await more(page).click()
     await expect(
       menu(page).getByRole('link', { name: /^Research/ })
     ).toHaveCount(0)
     await page.setViewportSize({ width: 749, height: 844 })
     await expect(menu(page)).toBeHidden()
-    await expect(more(page)).toHaveText('Research')
-    await expect(page).toHaveURL(url('/#research'))
+    await expect(more(page)).toHaveText('More')
+    await expect(page).toHaveURL(url(pagePath('research')))
   })
 
-  test('tracks scrolling between Timeline and the overflow sections', async ({
+  test('keeps the current page selected after scrolling and browser history navigation', async ({
     page,
   }) => {
-    await page
-      .locator('#timeline')
-      .evaluate((el) => el.scrollIntoView({ behavior: 'instant' }))
-    await expect(
-      page.locator('.gh-tabs > a[href="#timeline"]')
-    ).toHaveAttribute('aria-current', 'location')
-    await expect(more(page)).not.toHaveClass(/active/)
-    await page
-      .locator('#work')
-      .evaluate((el) => el.scrollIntoView({ behavior: 'instant' }))
+    await more(page).click()
+    await menu(page)
+      .getByRole('link', { name: /^Research/ })
+      .click()
+    await page.evaluate(() =>
+      window.scrollTo({ top: document.body.scrollHeight, behavior: 'instant' })
+    )
     await expect(more(page)).toHaveClass(/active/)
     await more(page).click()
     await expect(
-      menu(page).getByRole('link', { name: /^Pinned/ })
-    ).toHaveAttribute('aria-current', 'location')
+      menu(page).getByRole('link', { name: /^Research/ })
+    ).toHaveAttribute('aria-current', 'page')
     await page.keyboard.press('Escape')
-    await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }))
+    await page.locator(`.gh-tabs > a[href="${pagePath('writing')}"]`).click()
     await expect(more(page)).not.toHaveClass(/active/)
-    await expect(more(page)).toHaveText('More')
-    await more(page).click()
+    await page.goBack()
+    await expect(page).toHaveURL(url(pagePath('research')))
+    await expect(more(page)).toHaveClass(/active/)
+    await expect(menu(page)).toBeHidden()
+    await page.goForward()
     await expect(
-      menu(page).getByRole('link', { name: 'README', exact: true })
+      page.locator(`.gh-tabs > a[href="${pagePath('writing')}"]`)
     ).toHaveAttribute('aria-current', 'page')
   })
 
@@ -341,7 +342,7 @@ test.describe('the mobile section navigation', () => {
     await menu(page)
       .getByRole('link', { name: /^Research/ })
       .click()
-    await expect(page).toHaveURL(url('/#research'))
+    await expect(page).toHaveURL(url(pagePath('research')))
     await expect(page.locator('#research')).toBeVisible()
     await expect(menu(page)).toBeHidden()
   })

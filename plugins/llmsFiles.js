@@ -1,7 +1,8 @@
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import config from '../site.config.js'
-import { ORIGIN, absolute, postPath } from '../src/paths.js'
+import { ORIGIN, absolute, postPath, pagePath } from '../src/paths.js'
+import { PAGES } from '../src/pages.js'
 import { postMarkdown, readPosts } from './posts.js'
 
 // Emits llms.txt and llms-full.txt at build time (https://llmstxt.org).
@@ -42,6 +43,12 @@ export function header(posts) {
   ]
   if (identity.status) lines.push('', `Currently: ${identity.status}.`)
   if (identity.location) lines.push(`Based in: ${identity.location}.`)
+
+  lines.push('', '## Pages', '')
+  for (const [page, info] of Object.entries(PAGES))
+    lines.push(
+      `- [${info.title}](${absolute(pagePath(page))}): ${info.description}`
+    )
 
   if (posts.length) {
     lines.push('', '## Posts', '')

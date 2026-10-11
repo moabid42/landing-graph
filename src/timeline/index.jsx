@@ -5,6 +5,7 @@ import DesktopTimeline from './DesktopTimeline.jsx'
 import MobileTimeline from './MobileTimeline.jsx'
 import { selectTimeline } from './views.js'
 import { IconBranch } from '../icons.jsx'
+import { SectionLink } from '../ProfileSections.jsx'
 
 const history = { entries: ENTRIES, branches: BRANCHES, points: POINTS }
 const VIEWS = {
@@ -12,8 +13,8 @@ const VIEWS = {
   everything: history,
 }
 
-export default function Timeline() {
-  const [view, setView] = useState('highlights')
+export default function Timeline({ full = false }) {
+  const [view, setView] = useState(full ? 'everything' : 'highlights')
   const [filter, setFilter] = useState(null)
   const [mobile, setMobile] = useState(
     () =>
@@ -43,23 +44,27 @@ export default function Timeline() {
         <h2>
           <IconBranch width={16} height={16} /> Timeline
         </h2>
-        <div className="tl-views" role="group" aria-label="Timeline view">
-          {Object.entries(VIEWS).map(([key, value]) => (
-            <button
-              key={key}
-              type="button"
-              aria-pressed={view === key}
-              aria-controls="timeline-graph"
-              onClick={() => {
-                setView(key)
-                setFilter(null)
-              }}
-            >
-              {key === 'highlights' ? 'Highlights' : 'Everything'}
-              <span className="counter">{value.entries.length}</span>
-            </button>
-          ))}
-        </div>
+        {full ? (
+          <div className="tl-views" role="group" aria-label="Timeline view">
+            {Object.entries(VIEWS).map(([key, value]) => (
+              <button
+                key={key}
+                type="button"
+                aria-pressed={view === key}
+                aria-controls="timeline-graph"
+                onClick={() => {
+                  setView(key)
+                  setFilter(null)
+                }}
+              >
+                {key === 'highlights' ? 'Highlights' : 'Everything'}
+                <span className="counter">{value.entries.length}</span>
+              </button>
+            ))}
+          </div>
+        ) : (
+          <SectionLink page="timeline">View full timeline</SectionLink>
+        )}
       </div>
       {PROBLEMS.length > 0 && (
         <div className="tl-problems" role="alert">
@@ -99,6 +104,7 @@ export default function Timeline() {
           ))}
         </div>
         <p className="tl-view-note" role="status">
+          {!full && 'Highlights · '}
           {data.entries.length} entries · {data.points.length} milestones
         </p>
       </div>

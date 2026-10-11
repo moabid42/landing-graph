@@ -1,5 +1,13 @@
 import config from '../site.config.js'
-import { ORIGIN, absolute, feedPath, homePath, postPath } from '../src/paths.js'
+import {
+  ORIGIN,
+  absolute,
+  feedPath,
+  homePath,
+  postPath,
+  pagePath,
+} from '../src/paths.js'
+import { PAGES } from '../src/pages.js'
 import { postImage } from '../src/seo/meta.js'
 import { readPosts } from './posts.js'
 
@@ -103,6 +111,17 @@ export default function seoFiles({ blogDir = 'content/blog' } = {}) {
               .pop() || null,
           priority: '1.0',
         },
+        ...Object.keys(PAGES).map((page) => ({
+          loc: absolute(pagePath(page)),
+          lastmod:
+            page === 'writing'
+              ? posts
+                  .map((post) => post.updated || post.date)
+                  .sort()
+                  .pop() || null
+              : null,
+          priority: '0.8',
+        })),
         ...posts.map((p) => ({
           loc: absolute(postPath(p.slug)),
           lastmod: p.updated || p.date || null,

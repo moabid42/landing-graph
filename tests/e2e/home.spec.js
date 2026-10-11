@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test'
 import { url } from './site.js'
+import { pagePath } from '../../src/paths.js'
 import config from '../../site.config.js'
 
 const { identity, links, footer, seo } = config
@@ -19,38 +20,32 @@ test.describe('the README page', () => {
     await expect(page).toHaveTitle(seo.title)
   })
 
-  // A fragment means "this spot on this page", which is exactly what a
-  // section tab is. Losing them would cost every section its shareable link.
-  test('the section tabs stay in-page anchors', async ({ page }) => {
+  test('the section tabs open dedicated pages and mark the current route', async ({
+    page,
+  }) => {
     await expect(
-      page.getByRole('button', { name: 'More', exact: true })
+      page.getByRole('button', { name: 'More pages', exact: true })
     ).toBeHidden()
-    for (const [tab, id] of [
-      ['Timeline', 'timeline'],
-      ['Pinned', 'work'],
-      ['Writing', 'blog'],
-      ['Research', 'research'],
-      ['Stack', 'stack'],
-      ['Contact', 'contact'],
+    for (const [tab, route, heading] of [
+      ['Timeline', 'timeline', 'Timeline'],
+      ['Pinned', 'work', 'Selected work'],
+      ['Writing', 'writing', 'Writing'],
+      ['Research', 'research', 'Research'],
+      ['Stack', 'stack', 'Stack'],
+      ['Find more', 'more', 'Find more'],
     ]) {
       await page.locator('.gh-tabs a', { hasText: tab }).click()
-      await expect(page).toHaveURL(url(`/#${id}`))
-      await expect(page.locator(`#${id}`)).toBeVisible()
-      await expect(page.locator(`.gh-tabs a[href="#${id}"]`)).toHaveAttribute(
-        'aria-current',
-        'location'
-      )
-      await expect
-        .poll(async () => {
-          const heading = await page.locator(`#${id} h2`).boundingBox()
-          const header = await page.locator('.gh-header').boundingBox()
-          return heading.y >= header.y + header.height
-        })
-        .toBe(true)
+      await expect(page).toHaveURL(url(pagePath(route)))
+      await expect(page.locator('h1')).toHaveText(heading)
+      await expect(
+        page.locator(`.gh-tabs a[href="${pagePath(route)}"]`)
+      ).toHaveAttribute('aria-current', 'page')
+      await expect(page.locator('.gh-tabs a[aria-current]')).toHaveCount(1)
+      await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0)
     }
   })
 
-  test('tracks the visible section while scrolling without changing the URL', async ({
+  test('keeps README selected while scrolling through landing highlights', async ({
     page,
   }) => {
     for (const id of [
@@ -64,17 +59,13 @@ test.describe('the README page', () => {
       await page
         .locator(`#${id}`)
         .evaluate((el) => el.scrollIntoView({ behavior: 'instant' }))
-      await expect(page.locator(`.gh-tabs a[href="#${id}"]`)).toHaveAttribute(
+      await expect(page.locator('.gh-tabs a').first()).toHaveAttribute(
         'aria-current',
-        'location'
+        'page'
       )
+      await expect(page.locator('.gh-tabs a[aria-current]')).toHaveCount(1)
       await expect(page).toHaveURL(url())
     }
-    await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }))
-    await expect(page.locator('.gh-tabs a').first()).toHaveAttribute(
-      'aria-current',
-      'page'
-    )
   })
 
   test('uses the current header height for section jumps after resizing', async ({
@@ -137,6 +128,7 @@ test.describe('the README page', () => {
   test('lists every configured remote in the contact table', async ({
     page,
   }) => {
+    await page.goto(url(pagePath('more')))
     const rows = page.locator('#contact table tr')
     await expect(rows).toHaveCount(links.length)
     for (const [i, link] of links.entries()) {
@@ -151,6 +143,7 @@ test.describe('the README page', () => {
   test('opens external remotes in a new tab, but not mailto', async ({
     page,
   }) => {
+    await page.goto(url(pagePath('more')))
     for (const link of links) {
       // scoped to the table: the Email me button is a second mailto anchor
       const anchor = page.locator(`#contact table a[href="${link.url}"]`)

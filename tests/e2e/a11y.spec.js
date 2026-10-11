@@ -125,7 +125,7 @@ test.describe('accessibility', () => {
     await page.goto(url())
     const controls = [
       '.gh-header button.gh-btn',
-      '.tl-views button',
+      '.section-link',
       '.tl-legend .tl-filter',
     ]
 
