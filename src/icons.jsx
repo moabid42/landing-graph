@@ -120,6 +120,15 @@ export const IconBook = (p) => (
   </svg>
 )
 
+export const IconFingerprint = (p) => (
+  <svg {...base} {...p}>
+    <path d="M2.5 6.5a5.5 5.5 0 0 1 11 0v2" />
+    <path d="M2.5 9.5c0 1.1-.2 2.2-.6 3.2" />
+    <path d="M3.8 13.5c.5-1.4.7-2.9.7-4.5V6.5a3.5 3.5 0 0 1 7 0V9c0 1.8-.3 3.5-.8 5" />
+    <path d="M8 6.5V9c0 1.7-.3 3.3-.9 4.8" />
+  </svg>
+)
+
 export const IconSun = (p) => (
   <svg {...base} {...p}>
     <circle cx="8" cy="8" r="2.75" />

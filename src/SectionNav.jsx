@@ -6,6 +6,7 @@ import { homePath, pagePath } from './paths.js'
 import { link } from './router.js'
 import {
   IconBook,
+  IconFingerprint,
   IconBranch,
   IconRepo,
   IconPencil,
@@ -16,7 +17,6 @@ import {
 
 const sections = [
   { id: 'home', label: 'README', icon: IconBook },
-  { id: 'soul', label: config.soul.title, icon: IconBook },
   { id: 'work', label: 'Pinned', icon: IconRepo, count: config.work.length },
   {
     id: 'timeline',
@@ -37,13 +37,14 @@ const sections = [
     count: config.research.length || null,
   },
   { id: 'stack', label: 'Stack', icon: IconTag },
+  { id: 'soul', label: config.soul.title, icon: IconFingerprint },
   { id: 'more', label: 'Contact', icon: IconMail },
 ]
 
 // Keep Timeline and Writing within reach on phones, and retain more tabs
 // as space grows. The menu contains only the sections absent from the bar.
 const overflowRules = [
-  { query: '(max-width: 999px)', ids: ['soul', 'stack', 'more'] },
+  { query: '(max-width: 999px)', ids: ['stack', 'soul', 'more'] },
   { query: '(max-width: 749px)', ids: ['research'] },
   { query: '(max-width: 699px)', ids: ['home', 'work'] },
 ]

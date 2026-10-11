@@ -5,7 +5,7 @@ import { homePath, pagePath } from './paths.js'
 import { link } from './router.js'
 import { ENTRIES, POINTS } from './content.js'
 import { POSTS } from './blog/index.js'
-import { IconBook } from './icons.jsx'
+import { IconBook, IconFingerprint } from './icons.jsx'
 import { Pinned, Research, Stack, Contact } from './ProfileSections.jsx'
 import Timeline from './timeline/index.jsx'
 import Writing from './Writing.jsx'
@@ -32,6 +32,7 @@ const facts = {
 
 export default function SectionPage({ page }) {
   const info = PAGES[page]
+  const Icon = page === 'soul' ? IconFingerprint : IconBook
   return (
     <div className="section-page">
       <section className="page-intro" aria-label={`${info.title} introduction`}>
@@ -40,7 +41,7 @@ export default function SectionPage({ page }) {
         </p>
         <div className="readme">
           <div className="readme-head">
-            <IconBook width={14} height={14} />
+            <Icon width={14} height={14} />
             <span>{info.file}</span>
           </div>
           <div className="readme-body">
