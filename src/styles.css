@@ -272,8 +272,12 @@ section {
 .writing-year:first-of-type .archive-year { margin-top: 0; }
 .archive-topics { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
 .archive-topics button { font-family: var(--sans); border: 1px solid transparent; cursor: pointer; }
-.archive-topics button:hover, .archive-topics button[aria-pressed='true'] { color: var(--link); border-color: var(--link); }
+.archive-topics button:hover, .archive-topics button[aria-pressed='true'] { color: var(--link); border-color: var(--link); background: var(--bg-subtle); }
 .project-history { margin-top: 48px; }
+#project-history-heading { scroll-margin-top: calc(var(--header-height, 128px) + 16px); }
+.archive-pagination { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
+.archive-pagination > span { color: var(--muted); font: 12px var(--mono); }
+.archive-pagination button:disabled { opacity: .5; cursor: default; }
 .project-list { list-style: none; display: grid; gap: 16px; }
 .project-date { color: var(--muted); font: 12px var(--mono); margin-bottom: 12px; }
 .project-org { color: var(--muted); font-size: 13px; margin-top: 6px; }

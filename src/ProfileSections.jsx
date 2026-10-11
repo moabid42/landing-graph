@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import config from '../site.config.js'
 import { IconRepo, IconFlask, IconTag, IconBook, IconMail } from './icons.jsx'
 import { pagePath } from './paths.js'
@@ -6,6 +7,7 @@ import ArchiveControls from './ArchiveControls.jsx'
 import { ENTRIES } from './content.js'
 import { fmtDate } from './timeline/format.js'
 import useArchiveFilters from './useArchiveFilters.js'
+import { paginate } from './archive.js'
 
 const {
   identity,
@@ -17,6 +19,13 @@ const {
 } = config
 const MAILTO = `mailto:${identity.email}`
 const RESEARCHGATE_URL = links.find((l) => l.name === 'researchgate')?.url
+const PROJECTS = ENTRIES.filter((entry) => entry.track === 'projects')
+  .sort((a, b) => b.start - a.start)
+  .map((project) => ({
+    ...project,
+    topics: [...new Set(project.meta.split(' · ').filter(Boolean))],
+  }))
+const PROJECT_TOPICS = [...new Set(PROJECTS.flatMap((p) => p.topics))].sort()
 const remoteNotes = {
   origin: 'Questions, ideas and conversations.',
   github: 'Public projects and source code.',
@@ -47,9 +56,32 @@ const paperMeta = (href) => {
 }
 
 export function Pinned({ full = false }) {
-  const projects = ENTRIES.filter((entry) => entry.track === 'projects').sort(
-    (a, b) => b.start - a.start
+  const { query, setQuery, topic, setTopic, currentPage, setCurrentPage } =
+    useArchiveFilters('work', full, true)
+  const search = query.trim().toLowerCase()
+  const projects = PROJECTS.filter(
+    (project) =>
+      (!topic || project.topics.includes(topic)) &&
+      (!search ||
+        [project.title, project.org, project.text, ...project.topics]
+          .join(' ')
+          .toLowerCase()
+          .includes(search))
   )
+  const pagination = paginate(projects, currentPage)
+
+  useEffect(() => {
+    if (full && currentPage !== pagination.page) setCurrentPage(pagination.page)
+  }, [full, currentPage, pagination.page, setCurrentPage])
+
+  const changePage = (page) => {
+    setCurrentPage(page)
+    document.getElementById('project-history-heading')?.scrollIntoView({
+      behavior: 'instant',
+      block: 'start',
+    })
+  }
+
   return (
     <section id="work" aria-label="Selected work">
       <div className="sec-head">
@@ -84,16 +116,37 @@ export function Pinned({ full = false }) {
           </article>
         ))}
       </div>
-      {full && projects.length > 0 && (
+      {full && PROJECTS.length > 0 && (
         <div className="project-history">
           <div className="sec-head">
-            <h2>
+            <h2 id="project-history-heading">
               <IconRepo width={16} height={16} /> Project history
             </h2>
             <span className="sec-note">from the graph</span>
           </div>
-          <ul className="project-list">
-            {projects.map((project) => (
+          <ArchiveControls
+            label="projects"
+            query={query}
+            setQuery={setQuery}
+            topic={topic}
+            setTopic={setTopic}
+            topics={PROJECT_TOPICS}
+            count={
+              projects.length ? `${pagination.start}–${pagination.end}` : 0
+            }
+            total={projects.length}
+          />
+          {projects.length === 0 && (
+            <div className="blankslate">
+              <IconRepo width={22} height={22} />
+              <p className="bs-title">No projects match these filters</p>
+              <p className="bs-text">
+                Try another search or clear the filters above.
+              </p>
+            </div>
+          )}
+          <ul className="project-list" id="project-history-list">
+            {pagination.items.map((project) => (
               <li key={project.id} className="pin-card">
                 <p className="project-date">
                   {fmtDate(project.start)}
@@ -103,12 +156,18 @@ export function Pinned({ full = false }) {
                 <h3>{project.title}</h3>
                 {project.org && <p className="project-org">{project.org}</p>}
                 <p className="pin-desc">{project.text}</p>
-                {project.meta && (
-                  <div className="pin-topics">
-                    {project.meta.split(' · ').map((value) => (
-                      <span key={value} className="topic">
+                {project.topics.length > 0 && (
+                  <div className="pin-topics archive-topics">
+                    {project.topics.map((value) => (
+                      <button
+                        key={value}
+                        type="button"
+                        className="topic"
+                        aria-pressed={topic === value}
+                        onClick={() => setTopic(topic === value ? '' : value)}
+                      >
                         {value}
-                      </span>
+                      </button>
                     ))}
                   </div>
                 )}
@@ -125,6 +184,36 @@ export function Pinned({ full = false }) {
               </li>
             ))}
           </ul>
+          {pagination.pageCount > 1 && (
+            <nav
+              className="archive-pagination"
+              aria-label="Project history pagination"
+            >
+              <button
+                type="button"
+                className="gh-btn"
+                aria-label="Previous project page"
+                aria-controls="project-history-list"
+                disabled={pagination.page === 1}
+                onClick={() => changePage(pagination.page - 1)}
+              >
+                ← Previous
+              </button>
+              <span role="status">
+                Page {pagination.page} of {pagination.pageCount}
+              </span>
+              <button
+                type="button"
+                className="gh-btn"
+                aria-label="Next project page"
+                aria-controls="project-history-list"
+                disabled={pagination.page === pagination.pageCount}
+                onClick={() => changePage(pagination.page + 1)}
+              >
+                Next →
+              </button>
+            </nav>
+          )}
         </div>
       )}
     </section>

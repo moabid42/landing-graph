@@ -97,7 +97,9 @@ The navigation opens dedicated pages for selected work (`/work/`), the full
 timeline (`/timeline/`), writing (`/writing/`), research (`/research/`), the
 stack (`/stack/`), contact (`/more/`) and your personal philosophy (`/soul/`).
 The landing page previews each collection and links to its full page. Writing
-is grouped by year; writing and research can be searched and filtered by topic.
+is grouped by year; writing, research and project history can be searched and
+filtered by topic. Project history shows ten entries per page; its search,
+topic and page selection stay in the URL for reloads and shared links.
 
 The **soul.md** tab opens `/soul/`, rendered from `content/soul.md` with the
 same Markdown styling as blog posts. Replace the starter text with your own
