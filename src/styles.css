@@ -471,6 +471,10 @@ section {
 }
 .worktime.full { color: var(--c-full); border-color: color-mix(in srgb, var(--c-full) 45%, transparent); background: color-mix(in srgb, var(--c-full) 12%, transparent); }
 .worktime.part { color: var(--c-part); border-color: color-mix(in srgb, var(--c-part) 45%, transparent); background: color-mix(in srgb, var(--c-part) 12%, transparent); }
+/* Keep small badge text readable on its tinted background in light mode. */
+html[data-theme='light'] .gh-label { color: color-mix(in srgb, var(--tl-c, var(--muted)) 90%, #000); }
+html[data-theme='light'] .worktime.full { color: color-mix(in srgb, var(--c-full) 90%, #000); }
+html[data-theme='light'] .worktime.part { color: color-mix(in srgb, var(--c-part) 90%, #000); }
 /* Learn more: compact button pinned top-right, on the sha/dates row */
 .tl-more {
   margin-left: auto;
