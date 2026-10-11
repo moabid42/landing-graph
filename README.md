@@ -33,7 +33,8 @@ Then, in order:
    research, stack, footer.
 2. **`content/timeline/*.md`** — your timeline, one file per track.
 3. **`content/blog/*.md`** — your posts, one file each; the filename is the url.
-4. **`public/favicon-default.svg`** — swap the graph mark for your own; it
+4. **`content/soul.md`** — your philosophy, values and who you are outside your work.
+5. **`public/favicon-default.svg`** — swap the graph mark for your own; it
    is the icon `index.html` points at, and what `npm run og` draws the share
    card from.
 
@@ -94,9 +95,16 @@ to feature it. Each view lays out its own graph and updates the track counts.
 
 The navigation opens dedicated pages for selected work (`/work/`), the full
 timeline (`/timeline/`), writing (`/writing/`), research (`/research/`), the
-stack (`/stack/`) and profiles and contact (`/more/`). The landing page previews
-each collection and links to its full page. Writing is grouped by year;
-writing and research can be searched and filtered by topic.
+stack (`/stack/`), contact (`/more/`) and your personal philosophy (`/soul/`).
+The landing page previews each collection and links to its full page. Writing
+is grouped by year; writing and research can be searched and filtered by topic.
+
+The **soul.md** tab opens `/soul/`, rendered from `content/soul.md` with the
+same Markdown styling as blog posts. Replace the starter text with your own
+writing; its authoring comments stay hidden. The title and short description
+are in `soul` in `site.config.js`. Its body loads only when the page opens.
+The build also includes the document in the page's static HTML, Markdown
+copy and `llms-full.txt`.
 
 Add a block to add an entry, delete one to remove it. Order does not
 matter — the graph sorts by date and assigns branch lanes automatically.
