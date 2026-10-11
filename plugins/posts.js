@@ -26,11 +26,11 @@ export function readPosts(dir, { body = false } = {}) {
     .sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0))
 }
 
-// Post bodies point at pictures the way they sit under public/; outside the
+// Markdown bodies point at pictures the way they sit under public/; outside the
 // page those relative paths lead nowhere.
-const absoluteImages = (md) =>
+export const absoluteImages = (md) =>
   md.replace(
-    /(!\[[^\]\n]*\]\()\.?\/?(blog\/[^)\s]+)\)/g,
+    /(!\[[^\]\n]*\]\()\.?\/?((?:blog|soul)\/[^)\s]+)\)/g,
     (_, head, path) => `${head}${absolute(BASE + path)})`
   )
 

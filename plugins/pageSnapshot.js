@@ -3,6 +3,7 @@ import { join } from 'node:path'
 import config from '../site.config.js'
 import { PAGES } from '../src/pages.js'
 import { absolute, postPath } from '../src/paths.js'
+import { absoluteImages } from './posts.js'
 
 function timelineFile(timelineDir, key) {
   try {
@@ -21,7 +22,7 @@ export function pageMarkdown(page, posts, timelineDir) {
   const lines = [`# ${info.title}`, '', info.description, '']
   if (page === 'soul') {
     lines.push(
-      readFileSync(join(timelineDir, '..', 'soul.md'), 'utf8')
+      absoluteImages(readFileSync(join(timelineDir, '..', 'soul.md'), 'utf8'))
         .replace(/<!--[\s\S]*?-->/g, '')
         .trim()
     )

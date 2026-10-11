@@ -4,7 +4,7 @@ import { readFileSync } from 'node:fs'
 import config from '../../site.config.js'
 import { PAGES } from '../../src/pages.js'
 import { pagePath, absolute } from '../../src/paths.js'
-import { readPosts } from '../../plugins/posts.js'
+import { absoluteImages, readPosts } from '../../plugins/posts.js'
 import { url } from './site.js'
 
 for (const [route, info] of Object.entries(PAGES)) {
@@ -67,8 +67,13 @@ test('soul loads on demand and its authored text reaches the static exports', as
     await request.get(url(`${pagePath('soul')}index.md`))
   ).text()
   const full = await (await request.get(url('/llms-full.txt'))).text()
-  expect(markdown).toContain(body)
-  expect(full).toContain(body)
+  expect(markdown).toContain(absoluteImages(body))
+  expect(full).toContain(absoluteImages(body))
+  for (const [, imageUrl] of markdown.matchAll(/!\[[^\]\n]*\]\(([^)\s]+)\)/g)) {
+    expect(imageUrl).toMatch(/^https?:\/\//)
+    const image = await request.get(url(new URL(imageUrl).pathname))
+    expect(image.status()).toBe(200)
+  }
   if (authoringNote) {
     await expect(prose).not.toContainText(authoringNote)
     expect(markdown).not.toContain(authoringNote)

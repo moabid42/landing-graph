@@ -47,7 +47,7 @@ export default {
   // strings label the page, navigation tab and search/share previews.
   soul: {
     title: 'soul.md',
-    description: 'My philosophy, the things I value, and who I am beyond the work.',
+    description: 'My philosophy, the things I value, und co.',
   },
 
   // ------------------------------------------------------------------- links
