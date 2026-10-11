@@ -87,9 +87,16 @@ What you did, and what changed because you did it.
 | `link`                   | optional "Learn more" button.                                    |
 | `highlight`              | `true` includes the entry in the default Highlights view.        |
 
-The timeline opens on **Highlights**. **Everything** shows every entry and
-milestone. Add `- highlight: true` to an entry or a tag in `content/tags.md`
+The landing page shows **Highlights**. The dedicated `/timeline/` page opens
+on **Everything**, with every entry and milestone, and can switch back to
+highlights. Add `- highlight: true` to an entry or a tag in `content/tags.md`
 to feature it. Each view lays out its own graph and updates the track counts.
+
+The navigation opens dedicated pages for selected work (`/work/`), the full
+timeline (`/timeline/`), writing (`/writing/`), research (`/research/`), the
+stack (`/stack/`) and profiles and contact (`/more/`). The landing page previews
+each collection and links to its full page. Writing is grouped by year;
+writing and research can be searched and filtered by topic.
 
 Add a block to add an entry, delete one to remove it. Order does not
 matter — the graph sorts by date and assigns branch lanes automatically.
@@ -143,7 +150,8 @@ site is served from. It reads that off `seo.url` in `site.config.js`: a
 custom domain makes the base `/`, a project url (`you.github.io/repo`) makes
 it `/repo/`. That one line is the whole configuration; set it before you
 deploy. The build writes `blog/<slug>/index.html` for every post and a
-`404.html` for everything else, so each post is a url a host answers with
+`404.html` for everything else. Dedicated section pages also get their own
+`index.html`, metadata and markdown copy, so each page is a url a host answers with
 `200` and its own `<title>`, and old `#/blog/<slug>` links still land on the
 post.
 
