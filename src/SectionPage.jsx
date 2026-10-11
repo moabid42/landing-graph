@@ -1,3 +1,4 @@
+import { lazy, Suspense } from 'react'
 import config from '../site.config.js'
 import { PAGES } from './pages.js'
 import { homePath, pagePath } from './paths.js'
@@ -9,6 +10,9 @@ import { Pinned, Research, Stack, Contact } from './ProfileSections.jsx'
 import Timeline from './timeline/index.jsx'
 import Writing from './Writing.jsx'
 import ErrorBoundary from './ErrorBoundary.jsx'
+
+// Keep the personal document out of the landing page's first download.
+const Soul = lazy(() => import('./Soul.jsx'))
 
 const facts = {
   work: [`${config.work.length} projects`, 'public & internal'],
@@ -42,11 +46,28 @@ export default function SectionPage({ page }) {
           <div className="readme-body">
             <h1>{info.title}</h1>
             <p className="hero-sub">{info.description}</p>
-            <p className="page-facts">
-              {facts[page].filter(Boolean).map((fact) => (
-                <span key={fact}>{fact}</span>
-              ))}
-            </p>
+            {facts[page] && (
+              <p className="page-facts">
+                {facts[page].filter(Boolean).map((fact) => (
+                  <span key={fact}>{fact}</span>
+                ))}
+              </p>
+            )}
+            {page === 'soul' && (
+              <div className="soul-content">
+                <ErrorBoundary label="This page">
+                  <Suspense
+                    fallback={
+                      <p className="post-status loading" aria-live="polite">
+                        Loading…
+                      </p>
+                    }
+                  >
+                    <Soul />
+                  </Suspense>
+                </ErrorBoundary>
+              </div>
+            )}
           </div>
         </div>
       </section>

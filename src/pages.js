@@ -1,5 +1,12 @@
+import config from '../site.config.js'
+
 // Shared by the router, page headers and static build.
 export const PAGES = {
+  soul: {
+    title: config.soul.title,
+    file: 'soul.md',
+    description: config.soul.description,
+  },
   work: {
     title: 'Selected work',
     file: 'work.md',

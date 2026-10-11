@@ -16,6 +16,7 @@ import {
 
 const sections = [
   { id: 'home', label: 'README', icon: IconBook },
+  { id: 'soul', label: config.soul.title, icon: IconBook },
   { id: 'work', label: 'Pinned', icon: IconRepo, count: config.work.length },
   {
     id: 'timeline',
@@ -42,7 +43,7 @@ const sections = [
 // Keep Timeline and Writing within reach on phones, and retain more tabs
 // as space grows. The menu contains only the sections absent from the bar.
 const overflowRules = [
-  { query: '(max-width: 899px)', ids: ['stack', 'more'] },
+  { query: '(max-width: 999px)', ids: ['soul', 'stack', 'more'] },
   { query: '(max-width: 749px)', ids: ['research'] },
   { query: '(max-width: 699px)', ids: ['home', 'work'] },
 ]

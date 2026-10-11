@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test'
+import config from '../../site.config.js'
 import { POST_LINK, url } from './site.js'
 import { pagePath } from '../../src/paths.js'
 import { checkTimelineViews, checkTrackDimming } from './timeline-views.js'
@@ -164,6 +165,9 @@ test.describe('the mobile section navigation', () => {
     [750, ['README', 'Pinned', 'Timeline', 'Writing', 'Research']],
     [768, ['README', 'Pinned', 'Timeline', 'Writing', 'Research']],
     [899, ['README', 'Pinned', 'Timeline', 'Writing', 'Research']],
+    [900, ['README', 'Pinned', 'Timeline', 'Writing', 'Research']],
+    [920, ['README', 'Pinned', 'Timeline', 'Writing', 'Research']],
+    [999, ['README', 'Pinned', 'Timeline', 'Writing', 'Research']],
   ]) {
     test(`fits the tabs and More menu at ${width}px`, async ({ page }) => {
       await page.setViewportSize({ width, height: 844 })
@@ -178,7 +182,7 @@ test.describe('the mobile section navigation', () => {
       )
       await more(page).click()
       await expect(more(page)).toHaveAttribute('aria-expanded', 'true')
-      await expect(menu(page).getByRole('link')).toHaveCount(7 - labels.length)
+      await expect(menu(page).getByRole('link')).toHaveCount(8 - labels.length)
       const bounds = await menu(page).boundingBox()
       expect(bounds.x).toBeGreaterThanOrEqual(0)
       expect(bounds.x + bounds.width).toBeLessThanOrEqual(width)
@@ -197,6 +201,7 @@ test.describe('the mobile section navigation', () => {
   }) => {
     await page.setViewportSize({ width: 320, height: 844 })
     for (const [label, id] of [
+      [config.soul.title, 'soul'],
       ['Pinned', 'work'],
       ['Research', 'research'],
       ['Stack', 'stack'],
@@ -354,7 +359,7 @@ test.describe('the mobile section navigation', () => {
     await expect(menu(page)).toBeHidden()
     await expect(
       page.getByRole('navigation', { name: 'Sections' }).getByRole('link')
-    ).toHaveCount(7)
+    ).toHaveCount(8)
     await page.setViewportSize({ width: 390, height: 844 })
     await expect(more(page)).toHaveAttribute('aria-expanded', 'false')
   })

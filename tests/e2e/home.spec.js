@@ -27,6 +27,7 @@ test.describe('the README page', () => {
       page.getByRole('button', { name: 'More pages', exact: true })
     ).toBeHidden()
     for (const [tab, route, heading] of [
+      [config.soul.title, 'soul', config.soul.title],
       ['Timeline', 'timeline', 'Timeline'],
       ['Pinned', 'work', 'Selected work'],
       ['Writing', 'writing', 'Writing'],

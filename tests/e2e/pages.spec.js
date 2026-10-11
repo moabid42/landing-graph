@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test'
 import AxeBuilder from '@axe-core/playwright'
+import { readFileSync } from 'node:fs'
 import config from '../../site.config.js'
 import { PAGES } from '../../src/pages.js'
 import { pagePath, absolute } from '../../src/paths.js'
@@ -40,6 +41,44 @@ for (const [route, info] of Object.entries(PAGES)) {
     )
   })
 }
+
+test('soul loads on demand and its authored text reaches the static exports', async ({
+  page,
+  request,
+}) => {
+  const source = readFileSync('content/soul.md', 'utf8')
+  const body = source.replace(/<!--[\s\S]*?-->/g, '').trim()
+  const authoringNote = source.match(/<!--\s*([^\n]+)/)?.[1]
+  const bodyRequests = []
+  page.on('request', (incoming) => {
+    if (/\/assets\/Soul-[^/]+\.js/.test(incoming.url()))
+      bodyRequests.push(incoming.url())
+  })
+
+  await page.goto(url())
+  expect(bodyRequests).toHaveLength(0)
+  await page.locator(`.gh-tabs a[href="${pagePath('soul')}"]`).click()
+  const prose = page.locator('.soul-content .md-body')
+  await expect(prose).toBeVisible()
+  expect((await prose.innerText()).trim()).not.toBe('')
+  expect(bodyRequests).toHaveLength(1)
+
+  const markdown = await (
+    await request.get(url(`${pagePath('soul')}index.md`))
+  ).text()
+  const full = await (await request.get(url('/llms-full.txt'))).text()
+  expect(markdown).toContain(body)
+  expect(full).toContain(body)
+  if (authoringNote) {
+    await expect(prose).not.toContainText(authoringNote)
+    expect(markdown).not.toContain(authoringNote)
+    expect(full).not.toContain(authoringNote)
+  }
+  const schema = JSON.parse(
+    await page.locator('script[type="application/ld+json"]').textContent()
+  )
+  expect(schema['@type']).toBe('AboutPage')
+})
 
 test('landing page contains highlights with working links to the complete collections', async ({
   page,

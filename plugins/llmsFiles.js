@@ -4,6 +4,7 @@ import config from '../site.config.js'
 import { ORIGIN, absolute, postPath, pagePath } from '../src/paths.js'
 import { PAGES } from '../src/pages.js'
 import { postMarkdown, readPosts } from './posts.js'
+import { pageMarkdown } from './pageSnapshot.js'
 
 // Emits llms.txt and llms-full.txt at build time (https://llmstxt.org).
 //
@@ -83,7 +84,11 @@ export function profile(posts, timelineDir) {
     .map((t) => track(timelineDir, t))
     .filter(Boolean)
     .join('\n')
-  return header(posts) + (career ? `\n# Career\n\n${career}` : '')
+  return (
+    header(posts) +
+    `\n${pageMarkdown('soul', posts, timelineDir)}` +
+    (career ? `\n# Career\n\n${career}` : '')
+  )
 }
 
 export default function llmsFiles({

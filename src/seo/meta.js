@@ -146,7 +146,12 @@ export function jsonLd(post, page = null) {
   if (PAGES[page]) {
     return {
       '@context': 'https://schema.org',
-      '@type': ['stack', 'more'].includes(page) ? 'WebPage' : 'CollectionPage',
+      '@type':
+        page === 'soul'
+          ? 'AboutPage'
+          : ['stack', 'more'].includes(page)
+            ? 'WebPage'
+            : 'CollectionPage',
       name: PAGES[page].title,
       description: PAGES[page].description,
       url: canonical(null, page),

@@ -254,6 +254,7 @@ section {
 .page-intro .readme-body { padding-block: 28px; }
 .page-intro .readme-body h1 { font-size: clamp(28px, 4vw, 36px); }
 .page-intro .hero-sub { font-size: 16px; max-width: 56em; }
+.soul-content { margin-top: 28px; max-width: 72ch; }
 .page-facts { display: flex; gap: 8px 20px; flex-wrap: wrap; margin-top: 20px; color: var(--muted); font: 12px var(--mono); }
 .page-facts span + span::before { content: '·'; margin-right: 20px; }
 .section-page > section:not(.page-intro) { --section-pad: 40px; }

@@ -19,7 +19,13 @@ function timelineFile(timelineDir, key) {
 export function pageMarkdown(page, posts, timelineDir) {
   const info = PAGES[page]
   const lines = [`# ${info.title}`, '', info.description, '']
-  if (page === 'writing') {
+  if (page === 'soul') {
+    lines.push(
+      readFileSync(join(timelineDir, '..', 'soul.md'), 'utf8')
+        .replace(/<!--[\s\S]*?-->/g, '')
+        .trim()
+    )
+  } else if (page === 'writing') {
     for (const post of posts) {
       lines.push(
         `## [${post.title}](${absolute(postPath(post.slug))})`,

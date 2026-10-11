@@ -2,9 +2,9 @@
 // site.config.js — everything that makes this site yours.
 //
 // This is the only file you have to edit to put your own name on the site.
-// Your timeline lives in content/timeline/*.md and your posts in
-// content/blog/*.md; everything else — including the lists behind the
-// Pinned, Research and Stack sections — is right here.
+// Your timeline lives in content/timeline/*.md, your posts in content/blog/*.md
+// and your personal philosophy in content/soul.md; everything else — including
+// the lists behind the Pinned, Research and Stack sections — is right here.
 // ============================================================================
 
 export default {
@@ -40,6 +40,14 @@ export default {
     // The repo this site is built from — the header's Fork button. Set it to
     // null to hide the button.
     source: 'https://github.com/moabid42/landing-graph',
+  },
+
+  // -------------------------------------------------------------------- soul
+  // The personal page at /soul/. Its body lives in content/soul.md; these
+  // strings label the page, navigation tab and search/share previews.
+  soul: {
+    title: 'soul.md',
+    description: 'My philosophy, the things I value, and who I am beyond the work.',
   },
 
   // ------------------------------------------------------------------- links

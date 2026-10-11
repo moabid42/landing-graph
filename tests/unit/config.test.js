@@ -32,6 +32,13 @@ describe('identity', () => {
   })
 })
 
+describe('soul', () => {
+  it.each(['title', 'description'])('has a non-empty %s', (field) => {
+    expect(typeof config.soul[field]).toBe('string')
+    expect(config.soul[field].trim()).not.toBe('')
+  })
+})
+
 describe('links', () => {
   it('is a non-empty list', () => {
     expect(Array.isArray(config.links)).toBe(true)
