@@ -156,10 +156,10 @@ test.describe('the mobile section navigation', () => {
   }
 
   for (const [width, labels] of [
-    [320, ['Timeline', 'Writing']],
-    [375, ['Timeline', 'Writing']],
-    [390, ['Timeline', 'Writing']],
-    [699, ['Timeline', 'Writing']],
+    [320, ['README', 'Timeline']],
+    [375, ['README', 'Timeline']],
+    [390, ['README', 'Timeline']],
+    [699, ['README', 'Timeline']],
     [700, ['README', 'Pinned', 'Timeline', 'Writing']],
     [749, ['README', 'Pinned', 'Timeline', 'Writing']],
     [750, ['README', 'Pinned', 'Timeline', 'Writing', 'Research']],
@@ -203,6 +203,7 @@ test.describe('the mobile section navigation', () => {
     for (const [label, id] of [
       [config.soul.title, 'soul'],
       ['Pinned', 'work'],
+      ['Writing', 'writing'],
       ['Research', 'research'],
       ['Stack', 'stack'],
       ['Contact', 'more'],
@@ -232,19 +233,22 @@ test.describe('the mobile section navigation', () => {
     }
   })
 
-  test('reaches Writing directly and returns home through the crumb or menu', async ({
+  test('reaches Writing through More and returns home through the crumb or README tab', async ({
     page,
   }) => {
-    const writing = page.locator(`.gh-tabs > a[href="${pagePath('writing')}"]`)
-    for (const home of ['crumb', 'menu']) {
+    const writing = menu(page).getByRole('link', { name: /^Writing/ })
+    for (const home of ['crumb', 'tab']) {
+      await more(page).click()
       await writing.click()
       await expect(page).toHaveURL(url(pagePath('writing')))
+      await expect(more(page)).toHaveClass(/active/)
+      await more(page).click()
       await expect(writing).toHaveAttribute('aria-current', 'page')
-      await expect(more(page)).not.toHaveClass(/active/)
+      await page.keyboard.press('Escape')
       if (home === 'crumb') await page.locator('.crumb .repo-name').click()
       else {
-        await more(page).click()
-        await menu(page)
+        await page
+          .getByRole('navigation', { name: 'Sections' })
           .getByRole('link', { name: 'README', exact: true })
           .click()
       }
@@ -299,7 +303,7 @@ test.describe('the mobile section navigation', () => {
       menu(page).getByRole('link', { name: /^Research/ })
     ).toHaveAttribute('aria-current', 'page')
     await page.keyboard.press('Escape')
-    await page.locator(`.gh-tabs > a[href="${pagePath('writing')}"]`).click()
+    await page.locator(`.gh-tabs > a[href="${pagePath('timeline')}"]`).click()
     await expect(more(page)).not.toHaveClass(/active/)
     await page.goBack()
     await expect(page).toHaveURL(url(pagePath('research')))
@@ -307,7 +311,7 @@ test.describe('the mobile section navigation', () => {
     await expect(menu(page)).toBeHidden()
     await page.goForward()
     await expect(
-      page.locator(`.gh-tabs > a[href="${pagePath('writing')}"]`)
+      page.locator(`.gh-tabs > a[href="${pagePath('timeline')}"]`)
     ).toHaveAttribute('aria-current', 'page')
   })
 
@@ -336,14 +340,11 @@ test.describe('the mobile section navigation', () => {
   test('returns from a post to a section through More', async ({ page }) => {
     const href = await page.locator(POST_LINK).first().getAttribute('href')
     await page.goto(href)
-    await expect(more(page)).not.toHaveClass(/active/)
-    await expect(
-      page.locator('.gh-tabs > a').filter({ hasText: 'Writing' })
-    ).toHaveAttribute('aria-current', 'page')
+    await expect(more(page)).toHaveClass(/active/)
     await more(page).click()
     await expect(
       menu(page).getByRole('link', { name: /^Writing/ })
-    ).toHaveCount(0)
+    ).toHaveAttribute('aria-current', 'page')
     await menu(page)
       .getByRole('link', { name: /^Research/ })
       .click()

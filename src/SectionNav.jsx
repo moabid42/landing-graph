@@ -41,12 +41,12 @@ const sections = [
   { id: 'more', label: 'Contact', icon: IconMail },
 ]
 
-// Keep Timeline and Writing within reach on phones, and retain more tabs
+// Keep README and Timeline within reach on phones, and retain more tabs
 // as space grows. The menu contains only the sections absent from the bar.
 const overflowRules = [
   { query: '(max-width: 999px)', ids: ['stack', 'soul', 'more'] },
   { query: '(max-width: 749px)', ids: ['research'] },
-  { query: '(max-width: 699px)', ids: ['home', 'work'] },
+  { query: '(max-width: 699px)', ids: ['work', 'writing'] },
 ]
 
 const overflowAtViewport = () =>
@@ -68,6 +68,7 @@ export default function SectionNav({ current }) {
       setOpen(false)
     }
     queries.forEach((query) => query.addEventListener('change', resize))
+    resize()
     return () =>
       queries.forEach((query) => query.removeEventListener('change', resize))
   }, [])
