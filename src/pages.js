@@ -31,7 +31,7 @@ export const PAGES = {
       'The languages, tools and areas I work with, across security engineering, infrastructure and systems programming.',
   },
   more: {
-    title: 'Find more',
+    title: 'Contact',
     file: 'remotes.md',
     description:
       'Code, writing, research and ways to get in touch. These are the remotes where you can find more of my work.',

@@ -328,10 +328,10 @@ export function Stack({ full = false }) {
 
 export function Contact({ full = false }) {
   return (
-    <section id="contact" aria-label="Find more">
+    <section id="contact" aria-label="Contact">
       <div className="sec-head">
         <h2>
-          <IconMail width={16} height={16} /> {full ? 'Remotes' : 'Find more'}
+          <IconMail width={16} height={16} /> {full ? 'Remotes' : 'Contact'}
         </h2>
         {!full && (
           <SectionLink page="more">All profiles &amp; contact</SectionLink>

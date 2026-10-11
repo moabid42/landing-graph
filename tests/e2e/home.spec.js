@@ -32,7 +32,7 @@ test.describe('the README page', () => {
       ['Writing', 'writing', 'Writing'],
       ['Research', 'research', 'Research'],
       ['Stack', 'stack', 'Stack'],
-      ['Find more', 'more', 'Find more'],
+      ['Contact', 'more', 'Contact'],
     ]) {
       await page.locator('.gh-tabs a', { hasText: tab }).click()
       await expect(page).toHaveURL(url(pagePath(route)))

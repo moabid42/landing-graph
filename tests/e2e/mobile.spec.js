@@ -200,7 +200,7 @@ test.describe('the mobile section navigation', () => {
       ['Pinned', 'work'],
       ['Research', 'research'],
       ['Stack', 'stack'],
-      ['Find more', 'more'],
+      ['Contact', 'more'],
     ]) {
       await more(page).click()
       await menu(page)

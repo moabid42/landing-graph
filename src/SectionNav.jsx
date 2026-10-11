@@ -36,7 +36,7 @@ const sections = [
     count: config.research.length || null,
   },
   { id: 'stack', label: 'Stack', icon: IconTag },
-  { id: 'more', label: 'Find more', icon: IconMail },
+  { id: 'more', label: 'Contact', icon: IconMail },
 ]
 
 // Keep Timeline and Writing within reach on phones, and retain more tabs
