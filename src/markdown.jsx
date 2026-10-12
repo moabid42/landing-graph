@@ -5,6 +5,9 @@
 import { createElement, useEffect, useId, useState } from 'react'
 import { BASE } from './paths.js'
 import IMAGE_SIZES from 'virtual:image-sizes'
+import CodeBlock from './markdown/CodeBlock.jsx'
+import ExpandableImage from './markdown/ExpandableImage.jsx'
+import MediaDialog from './markdown/MediaDialog.jsx'
 
 /* ---------------- inline markdown ---------------- */
 const INLINE_RE = new RegExp(
@@ -65,7 +68,7 @@ function inline(text) {
       const im = t.match(/^!\[([^\]]*)\]\(([^)\s]+)(?:\s+"([^"]*)")?\)$/)
       if (im)
         out.push(
-          <img
+          <ExpandableImage
             key={k}
             src={asset(im[2])}
             alt={im[1]}
@@ -142,11 +145,12 @@ const MERMAID_LIGHT = {
 
 let mermaidMod = null
 
-export function Mermaid({ code }) {
+export function Mermaid({ code, expandable = true }) {
   const uid = useId().replace(/[^a-zA-Z0-9]/g, '')
   const [svg, setSvg] = useState(null)
   const [err, setErr] = useState(null)
   const [tick, setTick] = useState(0)
+  const [expanded, setExpanded] = useState(false)
 
   // re-render the diagram when the site theme flips
   useEffect(() => {
@@ -202,16 +206,33 @@ export function Mermaid({ code }) {
         <code>rendering diagram…</code>
       </div>
     )
-  return (
+  const label = `${code.trim().split('\n')[0].trim()} diagram`
+  const diagram = (
     <div
-      className="md-mermaid"
+      className="mermaid-svg"
       role="img"
-      // A role="img" with no name is announced as an unlabelled graphic.
-      // Mermaid's first line names the diagram type, which is the most
-      // useful thing to say without a human-written caption.
-      aria-label={`${code.trim().split('\n')[0].trim()} diagram`}
+      aria-label={label}
       dangerouslySetInnerHTML={{ __html: svg }}
     />
+  )
+  if (!expandable) return diagram
+  return (
+    <div className="md-mermaid">
+      {diagram}
+      <button
+        type="button"
+        className="gh-btn diagram-expand"
+        aria-label={`Expand ${label}`}
+        onClick={() => setExpanded(true)}
+      >
+        Expand <span aria-hidden="true">↗</span>
+      </button>
+      {expanded && (
+        <MediaDialog label={label} onClose={() => setExpanded(false)}>
+          <Mermaid code={code} expandable={false} />
+        </MediaDialog>
+      )}
+    </div>
   )
 }
 
@@ -227,7 +248,7 @@ const slugify = (s) =>
 const unwrap = (nodes) =>
   nodes.length === 1 && nodes[0]?.type === 'p' ? nodes[0].props.children : nodes
 
-function renderList(lines, key) {
+function renderList(lines, key, headingIds) {
   const first = lines.find((l) => !/^\s*$/.test(l))
   const base = first.match(/^(\s*)/)[1].length
   const ordered = /^\s*\d/.test(first)
@@ -254,17 +275,19 @@ function renderList(lines, key) {
           return (
             <li key={idx} className="task">
               <input type="checkbox" disabled checked={task[1] !== ' '} />{' '}
-              {unwrap(blocks(body))}
+              {unwrap(blocks(body, headingIds))}
             </li>
           )
         }
-        return <li key={idx}>{unwrap(blocks(it.lines.join('\n')))}</li>
+        return (
+          <li key={idx}>{unwrap(blocks(it.lines.join('\n'), headingIds))}</li>
+        )
       })}
     </Tag>
   )
 }
 
-function blocks(src) {
+function blocks(src, headingIds = new Set()) {
   const lines = src.replace(/\r\n?/g, '\n').split('\n')
   const out = []
   let i = 0
@@ -286,23 +309,19 @@ function blocks(src) {
       i++
       const code = buf.join('\n')
       if (lang === 'mermaid') out.push(<Mermaid key={k++} code={code} />)
-      else
-        out.push(
-          <pre key={k++} className="md-code" data-lang={lang || undefined}>
-            <code>{code}</code>
-          </pre>
-        )
+      else out.push(<CodeBlock key={k++} code={code} language={lang} />)
       continue
     }
     /* heading */
     const hm = line.match(/^(#{1,6})\s+(.*?)\s*#*\s*$/)
     if (hm) {
+      const base = slugify(hm[2]) || 'section'
+      let id = base
+      let suffix = 1
+      while (headingIds.has(id)) id = `${base}-${suffix++}`
+      headingIds.add(id)
       out.push(
-        createElement(
-          'h' + hm[1].length,
-          { key: k++, id: slugify(hm[2]) },
-          inline(hm[2])
-        )
+        createElement('h' + hm[1].length, { key: k++, id }, inline(hm[2]))
       )
       i++
       continue
@@ -318,7 +337,9 @@ function blocks(src) {
       const buf = []
       while (i < lines.length && /^ {0,3}>/.test(lines[i]))
         buf.push(lines[i++].replace(/^ {0,3}> ?/, ''))
-      out.push(<blockquote key={k++}>{blocks(buf.join('\n'))}</blockquote>)
+      out.push(
+        <blockquote key={k++}>{blocks(buf.join('\n'), headingIds)}</blockquote>
+      )
       continue
     }
     /* table */
@@ -399,7 +420,7 @@ function blocks(src) {
         }
         break
       }
-      out.push(renderList(buf, k++))
+      out.push(renderList(buf, k++, headingIds))
       continue
     }
     /* paragraph */

@@ -10,25 +10,6 @@ source: https://medium.com/@m0ab1d42/surrounded-by-slops-cloud-red-teaming-2bf8f
 
 ![Spider-Man looking at a device displaying No cap detected](./blog/surrounded-by-slops-cloud-red-teaming/01.jpg)
 
-## TL;DR
-
-- Me venting because of all the slop we see today
-- The “too much of everything” problem
-- Welcome to the slop
-- OPSEC safe? What does that even mean?
-- Detection Engineering, or rather, the other side of the same coin
-- IAM is not a feature
-- IAM mentality
-- AWS, or rather JSON, JSON all the way down
-- GCP, inheritance goes BRRRR
-- IAM’s limitation
-- The Seven Questions
-- Conscious, not paranoid
-- Automate the boring shit
-- Attack graphs are better than command lists
-- Where AWS and GCP Get Interesting
-- Conclusion
-
 Hello everyone, it's been a while since I wrote something that wasn’t somehow related to binaries, compilers doing cursed shit, or me staring at a debugger wondering why something that **SHOULD WORK** doesn't work.
 
 This time, unfortunately, there is no .text section to extend.

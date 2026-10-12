@@ -4,8 +4,8 @@ import SectionNav from './SectionNav.jsx'
 import Writing from './Writing.jsx'
 import { Pinned, Research, Stack, Contact } from './ProfileSections.jsx'
 import SectionPage from './SectionPage.jsx'
-import Markdown from './markdown.jsx'
-import { POSTS, loadBody } from './blog/index.js'
+import { POSTS } from './blog/index.js'
+import PostPage from './blog/PostPage.jsx'
 import ErrorBoundary from './ErrorBoundary.jsx'
 import { applyMeta } from './seo/apply.js'
 import { homePath, pagePath } from './paths.js'
@@ -67,70 +67,6 @@ function useTheme() {
     }
   }, [theme])
   return [theme, setTheme]
-}
-
-// The body is a dynamic import (see src/blog/index.js), so it arrives a beat
-// after the heading. Everything above the fold — title, date, topics — comes
-// from the eager index and renders immediately.
-function PostPage({ post }) {
-  const [body, setBody] = useState(null)
-  const [failed, setFailed] = useState(false)
-
-  useEffect(() => {
-    let current = true
-    setBody(null)
-    setFailed(false)
-    loadBody(post.slug).then(
-      (text) => current && setBody(text),
-      () => current && setFailed(true)
-    )
-    // A fast second navigation must not let the first body win the race.
-    return () => {
-      current = false
-    }
-  }, [post.slug])
-
-  return (
-    <section className="post-page" aria-label="Blog post">
-      <p className="post-back">
-        <a {...link(pagePath('writing'))}>← all writing</a>
-      </p>
-      <article className="readme">
-        <div className="readme-head">
-          <IconPencil width={14} height={14} />
-          <span>blog/{post.slug}.md</span>
-          {post.date && <span className="head-date">{post.date}</span>}
-        </div>
-        <div className="readme-body">
-          <div className="md-body">
-            <h1>{post.title}</h1>
-            {post.topics.length > 0 && (
-              <p className="post-tags">
-                {post.topics.map((t, i) => (
-                  <span key={`${t}-${i}`} className="topic">
-                    {t}
-                  </span>
-                ))}
-              </p>
-            )}
-          </div>
-          <ErrorBoundary label="This post">
-            {failed ? (
-              <p className="post-status" role="alert">
-                This post failed to load. Reloading the page usually fixes it.
-              </p>
-            ) : body === null ? (
-              <p className="post-status loading" aria-live="polite">
-                Loading…
-              </p>
-            ) : (
-              <Markdown src={body} />
-            )}
-          </ErrorBoundary>
-        </div>
-      </article>
-    </section>
-  )
 }
 
 export default function App() {
@@ -241,7 +177,7 @@ export default function App() {
 
       <main id="top" tabIndex={-1}>
         {post ? (
-          <PostPage post={post} />
+          <PostPage key={post.slug} post={post} />
         ) : page ? (
           <SectionPage key={page} page={page} />
         ) : (

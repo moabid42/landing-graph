@@ -127,6 +127,14 @@ is grouped by year; writing, research and projects can be searched and
 filtered by topic. The Projects page shows ten entries per page; its search,
 topic and page selection stay in the URL for reloads and shared links.
 
+Articles use a narrower reading column and an **On this page** sidebar built
+from their level-two and level-three headings. It highlights the current
+chapter as you scroll and becomes a collapsible menu on smaller screens.
+Chapter links can be bookmarked or shared. Code blocks have copy buttons and
+syntax highlighting; pictures and Mermaid diagrams open in an expanded,
+zoomable view. Each article ends with related writing and an RSS subscription
+link.
+
 The **soul.md** tab opens `/soul/`, rendered from `content/soul.md` with the
 same Markdown styling as blog posts. Replace the starter text with your own
 writing; its authoring comments stay hidden. The title and short description
