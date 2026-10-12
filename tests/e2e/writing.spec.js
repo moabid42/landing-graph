@@ -36,6 +36,9 @@ test.describe('the writing section', () => {
       .click()
     await expect(page).toHaveURL(url(pagePath('writing')))
     await expect(page.locator(POST_LINK)).toHaveCount(published.length)
+    await expect(page.locator('.archive-count')).toHaveText(
+      `Showing 1–${published.length} of ${published.length}`
+    )
     await page.reload()
     await expect(page.locator(POST_LINK)).toHaveCount(published.length)
     await page.goBack()
@@ -97,12 +100,15 @@ test.describe('the writing section', () => {
     await expect(page.locator('.post-row')).not.toHaveCount(0)
     const matches = await page.locator('.post-row').count()
     await expect(page.locator('.archive-count')).toHaveText(
-      `Showing ${matches} of ${matches} matches (${published.length} total)`
+      `Showing 1–${matches} of ${matches} matches (${published.length} total)`
     )
     for (const row of await page.locator('.post-row').all())
       await expect(row).toContainText(/memory/i)
     await search.fill('no-matching-post-12345')
     await expect(page.locator('.post-row')).toHaveCount(0)
+    await expect(page.locator('.archive-count')).toHaveText(
+      `Showing 0 of 0 matches (${published.length} total)`
+    )
     await expect(page.getByText('No posts match these filters')).toBeVisible()
     await page.getByRole('button', { name: 'Clear filters' }).click()
     await expect(page.locator('.post-row')).toHaveCount(published.length)

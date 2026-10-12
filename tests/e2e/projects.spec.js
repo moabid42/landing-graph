@@ -21,6 +21,9 @@ test.describe('projects', () => {
       pins.map((project) => `${project.title}${project.visibility}`)
     )
     await expect(page.locator('.page-facts')).toContainText(`${total} projects`)
+    await expect(page.locator('.archive-count')).toHaveText(
+      `Showing 1–${Math.min(total, 10)} of ${total}`
+    )
     const titles = []
     const next = page.getByRole('button', { name: 'Next project page' })
     let currentPage = 1
@@ -32,6 +35,9 @@ test.describe('projects', () => {
       await expect(
         page.locator('.archive-pagination [role="status"]')
       ).toHaveText(`Page ${currentPage} of ${Math.ceil(total / 10)}`)
+      await expect(page.locator('.archive-count')).toHaveText(
+        `Showing ${(currentPage - 1) * 10 + 1}–${Math.min(currentPage * 10, total)} of ${total}`
+      )
     } while (currentPage <= Math.ceil(total / 10))
     expect(titles.sort()).toEqual(
       projects.map((project) => project.title).sort()

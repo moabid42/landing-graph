@@ -141,9 +141,8 @@ export function Pinned({ full = false }) {
             topic={topic}
             setTopic={setTopic}
             topics={PROJECT_TOPICS}
-            count={
-              projects.length ? `${pagination.start}–${pagination.end}` : 0
-            }
+            count={pagination.items.length}
+            start={pagination.start}
             matches={projects.length}
             total={PROJECTS.length}
           />

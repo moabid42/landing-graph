@@ -6,9 +6,11 @@ export default function ArchiveControls({
   setTopic,
   topics,
   count,
+  start = 1,
   total,
   matches = total,
 }) {
+  const range = count > 0 ? `${start}–${start + count - 1}` : 0
   return (
     <div className="archive-controls">
       <div className="archive-fields">
@@ -49,7 +51,7 @@ export default function ArchiveControls({
         )}
       </div>
       <p className="archive-count" role="status">
-        Showing {count} of {matches}
+        Showing {range} of {matches}
         {matches !== total && ` matches (${total} total)`}
       </p>
     </div>
