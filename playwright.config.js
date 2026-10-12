@@ -1,7 +1,8 @@
 import { defineConfig, devices } from '@playwright/test'
 import { BASE } from './src/paths.js'
 
-const PORT = 4173
+// Keep browser checks separate from Vite's usual preview port (4173).
+const PORT = Number(process.env.PLAYWRIGHT_PORT || 4174)
 const BASE_URL = `http://localhost:${PORT}`
 // The preview server serves the site under seo.url's path, the same way the
 // deployed site does. tests/e2e/site.js builds paths against it.
