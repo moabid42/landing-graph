@@ -2,7 +2,11 @@ import { test, expect } from '@playwright/test'
 import { url } from './site.js'
 import { pagePath } from '../../src/paths.js'
 import config from '../../site.config.js'
-import { checkTimelineViews, checkTrackDimming } from './timeline-views.js'
+import {
+  checkTimelineEnd,
+  checkTimelineViews,
+  checkTrackDimming,
+} from './timeline-views.js'
 
 // Scroll so that `el` sits in the middle of the viewport, in one jump and
 // without smooth scrolling — the point being to land somewhere without ever
@@ -131,6 +135,24 @@ test.describe('the timeline graph', () => {
     expect(gaps.length).toBeGreaterThan(0)
     for (const gap of gaps) expect(gap).toBeLessThan(1)
   })
+
+  for (const reducedMotion of ['no-preference', 'reduce']) {
+    test(`the white line reaches HEAD at the page bottom with ${reducedMotion} motion`, async ({
+      page,
+    }) => {
+      await page.emulateMedia({ reducedMotion })
+      await page.reload()
+      for (const height of [900, 1200]) {
+        await page.setViewportSize({ width: 1440, height })
+        for (const view of ['Everything', 'Highlights']) {
+          await page
+            .getByRole('button', { name: new RegExp(`^${view}`) })
+            .click()
+          await checkTimelineEnd(page, '.head-node', '.trunk-fill')
+        }
+      }
+    })
+  }
 
   test('reveals the cards that are on screen when you land mid-timeline', async ({
     page,

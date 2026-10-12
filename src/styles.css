@@ -336,6 +336,8 @@ section {
 }
 
 .tl-wrap { position: relative; }
+/* Give HEAD enough room to pass the viewport centre before scrolling ends. */
+.section-page #timeline-graph { padding-bottom: max(80px, calc(50vh - 240px)); }
 .tl-list { list-style: none; }
 .tl-item { position: absolute; }
 .tl-entry { position: static; }

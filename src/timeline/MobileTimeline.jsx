@@ -159,8 +159,9 @@ export default function MobileTimeline({
   useEffect(() => {
     const onScroll = () => {
       const el = wrapRef.current
-      if (!el || !fillRef.current) return
-      const max = el.clientHeight - 34
+      const head = headRef.current
+      if (!el || !head || !fillRef.current) return
+      const max = head.offsetTop + head.offsetHeight / 2
       const fill = reduced
         ? max
         : clamp(window.innerHeight / 2 - el.getBoundingClientRect().top, 0, max)
@@ -169,7 +170,7 @@ export default function MobileTimeline({
     window.addEventListener('scroll', onScroll, { passive: true })
     onScroll()
     return () => window.removeEventListener('scroll', onScroll)
-  }, [reduced])
+  }, [reduced, graph])
 
   /* reveal-once */
   useEffect(() => {

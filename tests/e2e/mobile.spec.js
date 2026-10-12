@@ -2,7 +2,11 @@ import { test, expect } from '@playwright/test'
 import config from '../../site.config.js'
 import { POST_LINK, url } from './site.js'
 import { pagePath } from '../../src/paths.js'
-import { checkTimelineViews, checkTrackDimming } from './timeline-views.js'
+import {
+  checkTimelineEnd,
+  checkTimelineViews,
+  checkTrackDimming,
+} from './timeline-views.js'
 import AxeBuilder from '@axe-core/playwright'
 
 // Under 700px the timeline swaps to the git-log layout: one column, a trunk
@@ -49,6 +53,19 @@ test.describe('the mobile timeline', () => {
     })
     expect(headTop).toBeGreaterThanOrEqual(lastRowBottom - 1)
   })
+
+  for (const reducedMotion of ['no-preference', 'reduce']) {
+    test(`the white line reaches HEAD at the page bottom with ${reducedMotion} motion`, async ({
+      page,
+    }) => {
+      await page.emulateMedia({ reducedMotion })
+      await page.reload()
+      for (const view of ['Everything', 'Highlights']) {
+        await page.getByRole('button', { name: new RegExp(`^${view}`) }).click()
+        await checkTimelineEnd(page, '.mtl-headnode', '.mtl-fill')
+      }
+    })
+  }
 
   for (const width of [320, 375, 390]) {
     test(`fits both views without horizontal scrolling at ${width}px`, async ({

@@ -1,5 +1,24 @@
 import { expect } from '@playwright/test'
 
+export async function checkTimelineEnd(page, head, fill) {
+  await expect
+    .poll(() =>
+      page.evaluate(
+        ({ head, fill }) => {
+          window.scrollTo({
+            top: document.documentElement.scrollHeight,
+            behavior: 'instant',
+          })
+          const target = document.querySelector(head).getBoundingClientRect()
+          const line = document.querySelector(fill).getBoundingClientRect()
+          return Math.abs(line.bottom - (target.top + target.height / 2))
+        },
+        { head, fill }
+      )
+    )
+    .toBeLessThan(1)
+}
+
 export async function checkTrackDimming(page, entries) {
   const other = page.locator(`${entries}.dim`).first()
   const id = await other.getAttribute('data-id')

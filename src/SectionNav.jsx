@@ -17,7 +17,7 @@ import {
 
 const sections = [
   { id: 'home', label: 'README', icon: IconBook },
-  { id: 'work', label: 'Pinned', icon: IconRepo, count: config.work.length },
+  { id: 'work', label: 'Projects', icon: IconRepo, count: config.work.length },
   {
     id: 'timeline',
     label: 'Timeline',
