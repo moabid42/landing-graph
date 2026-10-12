@@ -11,6 +11,7 @@ Tagged commits: one-off wins and milestones pinned to a single date.
 - date: 2020-07
 
 ## Germany · Arc
+- highlight: true
 - date: 2022-02
 
 ## Founded · L3AK
@@ -21,6 +22,7 @@ Tagged commits: one-off wins and milestones pinned to a single date.
 - date: 2023-08
 
 ## finalist · ETHGlobal Brussels Hackathon
+- highlight: true
 - date: 2024-07
 
 ## 5 digits bounty · ETHGlobal Bangkok Hackathon

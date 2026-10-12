@@ -38,6 +38,7 @@ First reality check.
 Intensive peer-to-peer program: C, C++, systems programming, networking, full-stack.
 
 ## B.Sc. Computer Science, dual study
+- highlight: true
 - org: DHBW Mannheim
 - start: 2023-09
 - end: 2026-08
