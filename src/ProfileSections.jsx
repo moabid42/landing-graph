@@ -4,7 +4,13 @@ import { IconRepo, IconFlask, IconTag, IconBook, IconMail } from './icons.jsx'
 import { pagePath } from './paths.js'
 import { link } from './router.js'
 import ArchiveControls from './ArchiveControls.jsx'
-import { PROJECTS, PINNED_PROJECTS, PROJECT_TOPICS } from './projects.js'
+import {
+  PROJECTS,
+  PINNED_PROJECTS,
+  PROJECT_TOPICS,
+  PROJECT_PROBLEMS,
+} from './projects.js'
+import ContentWarnings from './ContentWarnings.jsx'
 import { fmtDate } from './timeline/format.js'
 import useArchiveFilters from './useArchiveFilters.js'
 import { paginate } from './archive.js'
@@ -17,6 +23,9 @@ const {
   languages: LANGUAGES,
 } = config
 const MAILTO = `mailto:${identity.email}`
+const RESEARCH_TOPICS = [
+  ...new Set(RESEARCH.flatMap((paper) => paper.topics || [])),
+].sort()
 const RESEARCHGATE_URL = links.find((l) => l.name === 'researchgate')?.url
 const remoteNotes = {
   origin: 'Questions, ideas and conversations.',
@@ -49,7 +58,7 @@ const paperMeta = (href) => {
 
 export function Pinned({ full = false }) {
   const { query, setQuery, topic, setTopic, currentPage, setCurrentPage } =
-    useArchiveFilters('work', full, true)
+    useArchiveFilters('work', full, PROJECT_TOPICS, true)
   const search = query.trim().toLowerCase()
   const projects = PROJECTS.filter(
     (project) =>
@@ -78,6 +87,7 @@ export function Pinned({ full = false }) {
 
   return (
     <section id="work" aria-label="Projects">
+      {full && <ContentWarnings problems={PROJECT_PROBLEMS} />}
       {PINNED_PROJECTS.length > 0 && (
         <>
           <div className="sec-head">
@@ -134,7 +144,8 @@ export function Pinned({ full = false }) {
             count={
               projects.length ? `${pagination.start}–${pagination.end}` : 0
             }
-            total={projects.length}
+            matches={projects.length}
+            total={PROJECTS.length}
           />
           {projects.length === 0 && (
             <div className="blankslate">
@@ -225,12 +236,10 @@ export function Pinned({ full = false }) {
 export function Research({ full = false }) {
   const { query, setQuery, topic, setTopic } = useArchiveFilters(
     'research',
-    full
+    full,
+    RESEARCH_TOPICS
   )
   const search = query.trim().toLowerCase()
-  const topics = [
-    ...new Set(RESEARCH.flatMap((paper) => paper.topics || [])),
-  ].sort()
   const papers = full
     ? RESEARCH.filter(
         (paper) =>
@@ -267,8 +276,9 @@ export function Research({ full = false }) {
           setQuery={setQuery}
           topic={topic}
           setTopic={setTopic}
-          topics={topics}
+          topics={RESEARCH_TOPICS}
           count={papers.length}
+          matches={papers.length}
           total={RESEARCH.length}
         />
       )}

@@ -77,6 +77,36 @@ describe('parsePost', () => {
   })
 })
 
+describe.each(['date', 'updated'])('%s validation', (field) => {
+  it.each([
+    '2026-13-01',
+    '2026-00-01',
+    '2026-01-00',
+    '2026-02-30',
+    '2026-04-31',
+    '2025-02-29',
+    '1900-02-29',
+    '2026-1-02',
+    'yesterday',
+  ])('rejects %s with the source file and field in the error', (value) => {
+    const raw = withFm(`${field}: ${value}`)
+    for (const parse of [parsePost, postMeta]) {
+      expect(() => parse('content/blog/broken.md', raw)).toThrow(
+        `content/blog/broken.md: invalid ${field} "${value}"`
+      )
+    }
+  })
+
+  it.each(['2024-02-29', '2000-02-29', '2026-02-28', '2026-12-31'])(
+    'preserves the valid calendar date %s',
+    (value) => {
+      expect(parsePost('x/a.md', withFm(`${field}: ${value}`))[field]).toBe(
+        value
+      )
+    }
+  )
+})
+
 // [slug, alt, src] for every image embedded in a shipped post.
 async function images() {
   const out = []

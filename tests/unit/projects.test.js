@@ -87,13 +87,22 @@ describe('project migration', () => {
     )
   })
 
-  it('replaces the projects track with an empty, usable trainings track', () => {
+  it('replaces the projects track with trainings and supports empty or populated content', () => {
     expect(TRACKS).not.toHaveProperty('projects')
     expect(ENTRIES.some((entry) => entry.track === 'projects')).toBe(false)
     expect(TRACKS).toHaveProperty('trainings')
     expect(
-      parseTrack(TRACK_SOURCES.trainings, 'trainings', 'trainings.md')
+      parseTrack('<!-- Add trainings here. -->', 'trainings', 'trainings.md')
     ).toEqual([])
+    expect(
+      ENTRIES.filter((entry) => entry.track === 'trainings').map(
+        (entry) => entry.id
+      )
+    ).toEqual(
+      parseTrack(TRACK_SOURCES.trainings, 'trainings', 'trainings.md')
+        .sort((a, b) => a.start - b.start)
+        .map((entry) => entry.id)
+    )
     expect(
       parseTrack(
         '## Course\n- date: 2026-10\nCompleted a course.',

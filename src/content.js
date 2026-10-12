@@ -6,7 +6,13 @@
 // Which tracks exist, what they are called and what color they run in is
 // site.config.js. Nothing here is hardcoded to a particular track.
 import config from '../site.config.js'
-import { parseBlocks, parseDate, slug, problem } from './contentParsing.js'
+import {
+  parseBlocks,
+  parseDate,
+  slug,
+  problem,
+  PROBLEMS,
+} from './contentParsing.js'
 export { parseBlocks, parseDate, slug, PROBLEMS } from './contentParsing.js'
 import {
   TRACK_SOURCES,
@@ -248,3 +254,7 @@ export const POINTS = parseBlocks(TAGS_SOURCE)
     }
   })
   .filter(Boolean)
+
+export const TIMELINE_PROBLEMS = PROBLEMS.filter(
+  (p) => p.file === TAGS_FILE || p.file.startsWith('content/timeline/')
+)

@@ -66,6 +66,9 @@ test.describe('projects', () => {
     await expect(rows).toHaveCount(Math.min(total, 10))
     await topic.selectOption('caching')
     await expect(rows).toHaveCount(2)
+    await expect(history.locator('.archive-count')).toHaveText(
+      `Showing 1–2 of 2 matches (${total} total)`
+    )
     await search.fill('gCp')
     await expect(rows).toHaveCount(1)
     await expect(rows.first()).toContainText('L3AK CTF 2025 Infra')
@@ -110,6 +113,61 @@ test.describe('projects', () => {
     await expect(page.locator('.project-list > li')).toHaveCount(1)
     await page.getByRole('button', { name: 'Clear filters' }).click()
     await expect(page).toHaveURL(url(pagePath('work')))
+  })
+
+  test('clears an unsupported bookmarked topic while preserving the project search', async ({
+    page,
+  }) => {
+    await page.goto(
+      url(`${pagePath('work')}?q=redteam-copilot&topic=unknown-topic&page=999`)
+    )
+    await expect(
+      page.getByRole('searchbox', { name: 'Search projects' })
+    ).toHaveValue('redteam-copilot')
+    await expect(
+      page.getByRole('combobox', { name: 'Filter projects by topic' })
+    ).toHaveValue('')
+    await expect(page.locator('.project-list > li')).toHaveCount(1)
+    await expect(page.locator('.archive-count')).toHaveText(
+      `Showing 1–1 of 1 matches (${total} total)`
+    )
+    await expect(page).toHaveURL(url(`${pagePath('work')}?q=redteam-copilot`))
+    await page.reload()
+    await expect(page.locator('.project-list > li')).toHaveCount(1)
+    await expect(page.locator('.post-row')).toHaveCount(0)
+  })
+
+  test('keeps project and writing collections and filters on their corresponding pages', async ({
+    page,
+  }) => {
+    await page
+      .getByRole('combobox', { name: 'Filter projects by topic' })
+      .selectOption('caching')
+    await expect(page.locator('.post-row')).toHaveCount(0)
+    const navigation = page.getByRole('navigation', { name: 'Sections' })
+    await navigation.getByRole('link', { name: /^Writing/ }).click()
+    await expect(page).toHaveURL(url(pagePath('writing')))
+    await expect(
+      page.getByRole('combobox', { name: 'Filter writing by topic' })
+    ).toHaveValue('')
+    await expect(page.locator('.post-row')).not.toHaveCount(0)
+    await expect(page.locator('#work')).toHaveCount(0)
+    await page.getByRole('searchbox', { name: 'Search writing' }).fill('memory')
+    await navigation.getByRole('link', { name: /^Projects/ }).click()
+    await expect(page).toHaveURL(url(pagePath('work')))
+    await expect(
+      page.getByRole('searchbox', { name: 'Search projects' })
+    ).toHaveValue('')
+    await expect(page.locator('.project-list > li')).toHaveCount(
+      Math.min(total, 10)
+    )
+    await expect(page.locator('.post-row')).toHaveCount(0)
+    await page.goBack()
+    await expect(
+      page.getByRole('searchbox', { name: 'Search writing' })
+    ).toHaveValue('memory')
+    await expect(page.locator('.post-row')).not.toHaveCount(0)
+    await expect(page.locator('#work')).toHaveCount(0)
   })
 
   test('keeps the filter controls inside narrow viewports', async ({

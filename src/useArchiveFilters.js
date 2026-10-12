@@ -1,13 +1,14 @@
 import { useCallback, useEffect, useState } from 'react'
 import { pageFromPath } from './paths.js'
 
-function readFilters(enabled, paginated) {
+function readFilters(enabled, topics, paginated) {
   if (!enabled) return { query: '', topic: '', currentPage: 1 }
   const params = new URLSearchParams(window.location.search)
   const requestedPage = paginated ? Number(params.get('page')) : 1
+  const topic = params.get('topic') || ''
   return {
     query: params.get('q') || '',
-    topic: params.get('topic') || '',
+    topic: topics.includes(topic) ? topic : '',
     currentPage:
       Number.isSafeInteger(requestedPage) && requestedPage > 0
         ? requestedPage
@@ -17,15 +18,22 @@ function readFilters(enabled, paginated) {
 
 // Keep filters in the URL so reloads, shared links and returning from a post
 // restore the same collection. Typing replaces this entry in browser history.
-export default function useArchiveFilters(page, enabled, paginated = false) {
-  const [filters, setFilters] = useState(() => readFilters(enabled, paginated))
+export default function useArchiveFilters(
+  page,
+  enabled,
+  topics,
+  paginated = false
+) {
+  const [filters, setFilters] = useState(() =>
+    readFilters(enabled, topics, paginated)
+  )
 
   useEffect(() => {
     if (!enabled) return
-    const restore = () => setFilters(readFilters(enabled, paginated))
+    const restore = () => setFilters(readFilters(enabled, topics, paginated))
     window.addEventListener('popstate', restore)
     return () => window.removeEventListener('popstate', restore)
-  }, [enabled, paginated])
+  }, [enabled, topics, paginated])
 
   useEffect(() => {
     if (!enabled || pageFromPath(window.location.pathname) !== page) return

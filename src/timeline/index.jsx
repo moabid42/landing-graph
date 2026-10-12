@@ -1,11 +1,18 @@
 import { useEffect, useState } from 'react'
-import { BRANCHES, ENTRIES, POINTS, PROBLEMS, TRACKS } from '../content.js'
+import {
+  BRANCHES,
+  ENTRIES,
+  POINTS,
+  TIMELINE_PROBLEMS,
+  TRACKS,
+} from '../content.js'
 import { TRACK_CSS, trackVar } from './tracks.js'
 import DesktopTimeline from './DesktopTimeline.jsx'
 import MobileTimeline from './MobileTimeline.jsx'
 import { selectTimeline } from './views.js'
 import { IconBranch } from '../icons.jsx'
 import { SectionLink } from '../ProfileSections.jsx'
+import ContentWarnings from '../ContentWarnings.jsx'
 
 const history = { entries: ENTRIES, branches: BRANCHES, points: POINTS }
 const VIEWS = {
@@ -66,20 +73,7 @@ export default function Timeline({ full = false }) {
           <SectionLink page="timeline">View full timeline</SectionLink>
         )}
       </div>
-      {PROBLEMS.length > 0 && (
-        <div className="tl-problems" role="alert">
-          <strong>
-            ⚠ content warnings — some entries may be missing below
-          </strong>
-          <ul>
-            {PROBLEMS.map((p, i) => (
-              <li key={i}>
-                <code>{p.file}</code> · {p.title}: {p.msg}
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
+      <ContentWarnings problems={TIMELINE_PROBLEMS} />
       <div className="tl-controls">
         <div
           className="tl-legend"

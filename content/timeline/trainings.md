@@ -15,3 +15,10 @@ This file is intentionally empty until you add your entries.
 
   What you learned or completed.
 -->
+
+## COAE (Certified Offensive AI Expert)
+- org: HackTheBox
+- start: 2026-04
+- end: 2026-07
+- topics: ai, redteam
+

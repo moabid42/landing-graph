@@ -95,6 +95,10 @@ test.describe('the writing section', () => {
     const search = page.getByRole('searchbox', { name: 'Search writing' })
     await search.fill('memory')
     await expect(page.locator('.post-row')).not.toHaveCount(0)
+    const matches = await page.locator('.post-row').count()
+    await expect(page.locator('.archive-count')).toHaveText(
+      `Showing ${matches} of ${matches} matches (${published.length} total)`
+    )
     for (const row of await page.locator('.post-row').all())
       await expect(row).toContainText(/memory/i)
     await search.fill('no-matching-post-12345')
@@ -111,6 +115,23 @@ test.describe('the writing section', () => {
     )
     await page.getByRole('button', { name: 'Clear filters' }).click()
     await expect(page.locator('.post-row')).toHaveCount(published.length)
+  })
+
+  test('clears an unsupported bookmarked topic while preserving the article search', async ({
+    page,
+  }) => {
+    await page.goto(url(`${pagePath('writing')}?q=memory&topic=unknown-topic`))
+    await expect(
+      page.getByRole('searchbox', { name: 'Search writing' })
+    ).toHaveValue('memory')
+    await expect(
+      page.getByRole('combobox', { name: 'Filter writing by topic' })
+    ).toHaveValue('')
+    await expect(page.locator('.post-row')).not.toHaveCount(0)
+    await expect(page).toHaveURL(url(`${pagePath('writing')}?q=memory`))
+    await page.reload()
+    await expect(page.locator('.post-row')).not.toHaveCount(0)
+    await expect(page.locator('#work')).toHaveCount(0)
   })
 
   test('opens a post from its link and shows the body', async ({ page }) => {

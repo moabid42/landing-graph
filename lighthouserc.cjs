@@ -19,13 +19,18 @@ const PORT = 4174
 // Which pages those are lives in site.config.js and content/blog, which are
 // ESM and so cannot be required from here. The sitemap the build just wrote
 // says the same thing in a form this file can read: the README first, then
-// the posts newest first. Budget the README and whatever a fresh link most
-// likely points at. Run `npm run build` first; both callers do.
+// section pages and posts newest first. Budget the README and the newest
+// post explicitly, so adding a section cannot displace article coverage.
+// Run `npm run build` first; both callers do.
 const pages = () => {
   const xml = readFileSync('./dist/sitemap.xml', 'utf8')
-  return [...xml.matchAll(/<loc>https?:\/\/[^/]+([^<]*)<\/loc>/g)]
-    .slice(0, 2)
-    .map((m) => `http://localhost:${PORT}${m[1]}`)
+  const paths = [...xml.matchAll(/<loc>https?:\/\/[^/]+([^<]*)<\/loc>/g)].map(
+    (m) => m[1]
+  )
+  const post = paths.find((path) => /\/blog\/[^/]+\/$/.test(path))
+  return [paths[0], post]
+    .filter(Boolean)
+    .map((path) => `http://localhost:${PORT}${path}`)
 }
 
 // True of both routes. Only the payload budget differs, because a post

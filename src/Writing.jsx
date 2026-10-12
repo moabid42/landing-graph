@@ -12,14 +12,15 @@ const monthYear = new Intl.DateTimeFormat('en', {
   year: 'numeric',
   timeZone: 'UTC',
 })
+const TOPICS = [...new Set(POSTS.flatMap((post) => post.topics))].sort()
 
 export default function Writing({ mediumUrl, full = false }) {
   const { query, setQuery, topic, setTopic } = useArchiveFilters(
     'writing',
-    full
+    full,
+    TOPICS
   )
   const search = query.trim().toLowerCase()
-  const topics = [...new Set(POSTS.flatMap((post) => post.topics))].sort()
   const posts = full
     ? POSTS.filter(
         (post) =>
@@ -92,8 +93,9 @@ export default function Writing({ mediumUrl, full = false }) {
               setQuery={setQuery}
               topic={topic}
               setTopic={setTopic}
-              topics={topics}
+              topics={TOPICS}
               count={posts.length}
+              matches={posts.length}
               total={POSTS.length}
             />
           )}

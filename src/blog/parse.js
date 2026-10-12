@@ -18,6 +18,21 @@
 // function on the raw file to get the body. One parser, so an index can never
 // disagree with the post it points at.
 
+function calendarDate(value, field, path) {
+  if (!value) return ''
+  const date = new Date(`${value}T00:00:00Z`)
+  if (
+    !/^\d{4}-\d{2}-\d{2}$/.test(value) ||
+    !Number.isFinite(date.getTime()) ||
+    date.toISOString().slice(0, 10) !== value
+  ) {
+    throw new Error(
+      `${path}: invalid ${field} "${value}" — expected a calendar date in YYYY-MM-DD format`
+    )
+  }
+  return value
+}
+
 // One file in, one post out.
 export function parsePost(path, raw) {
   const slug = path.split('/').pop().replace(/\.md$/, '')
@@ -47,8 +62,8 @@ export function parsePost(path, raw) {
   return {
     slug,
     title: meta.title || slug,
-    date: meta.date || '',
-    updated: meta.updated || '',
+    date: calendarDate(meta.date, 'date', path),
+    updated: calendarDate(meta.updated, 'updated', path),
     summary: meta.summary || '',
     readingMinutes: Math.max(1, Math.ceil(words / 200)),
     draft: (meta.draft || '').toLowerCase() === 'true',

@@ -7,6 +7,7 @@ export default function ArchiveControls({
   topics,
   count,
   total,
+  matches = total,
 }) {
   return (
     <div className="archive-controls">
@@ -48,7 +49,8 @@ export default function ArchiveControls({
         )}
       </div>
       <p className="archive-count" role="status">
-        Showing {count} of {total}
+        Showing {count} of {matches}
+        {matches !== total && ` matches (${total} total)`}
       </p>
     </div>
   )

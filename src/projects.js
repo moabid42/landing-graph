@@ -1,7 +1,9 @@
 import { PROJECTS_SOURCE, PROJECTS_FILE } from './loadContent.js'
 import { parseProjects } from './projects/parse.js'
+import { PROBLEMS } from './contentParsing.js'
 
 const projects = parseProjects(PROJECTS_SOURCE, PROJECTS_FILE)
+export const PROJECT_PROBLEMS = PROBLEMS.filter((p) => p.file === PROJECTS_FILE)
 
 // Pins keep the author's order; the complete collection is newest first,
 // followed by projects whose dates have not been supplied.
