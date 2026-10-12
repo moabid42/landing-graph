@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import config from '../site.config.js'
 import { ENTRIES } from './content.js'
+import { PROJECTS } from './projects.js'
 import { POSTS } from './blog/index.js'
 import { homePath, pagePath } from './paths.js'
 import { link } from './router.js'
@@ -17,7 +18,7 @@ import {
 
 const sections = [
   { id: 'home', label: 'README', icon: IconBook },
-  { id: 'work', label: 'Projects', icon: IconRepo, count: config.work.length },
+  { id: 'work', label: 'Projects', icon: IconRepo, count: PROJECTS.length },
   {
     id: 'timeline',
     label: 'Timeline',

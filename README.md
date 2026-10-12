@@ -4,7 +4,7 @@ A personal site that renders a career as a git graph. This is the template
 I use for my own site, and you are welcome to fork it and put your own data
 in.
 
-One trunk. Every job, degree, project and startup is a branch that forks
+One trunk. Every job, degree, training and startup is a branch that forks
 out and merges back. Milestones are tagged commits. Everything still
 running merges into `HEAD → now`. Desktop gets a proportional two-sided
 graph; mobile gets an ordinal `git log --graph` flow.
@@ -29,12 +29,13 @@ npm run dev
 
 Then, in order:
 
-1. **`site.config.js`** — your name, handle, hero copy, links, pinned repos,
+1. **`site.config.js`** — your name, handle, hero copy, links,
    research, stack, footer.
 2. **`content/timeline/*.md`** — your timeline, one file per track.
-3. **`content/blog/*.md`** — your posts, one file each; the filename is the url.
-4. **`content/soul.md`** — your philosophy, values and who you are outside your work.
-5. **`public/favicon-default.svg`** — swap the graph mark for your own; it
+3. **`content/projects.md`** — all projects; add `- pinned: true` to feature one.
+4. **`content/blog/*.md`** — your posts, one file each; the filename is the url.
+5. **`content/soul.md`** — your philosophy, values and who you are outside your work.
+6. **`public/favicon-default.svg`** — swap the graph mark for your own; it
    is the icon `index.html` points at, and what `npm run og` draws the share
    card from.
 
@@ -52,6 +53,28 @@ Everything that identifies you lives in `site.config.js`. Deleting a link
 from `links[]` removes it from the Contact table and from whichever section
 used it — drop `researchgate` and the Research section stops linking out.
 
+## Editing projects
+
+All projects live in `content/projects.md`, independently of the timeline.
+Each project is a `## Title` block with a description and optional fields:
+
+```markdown
+## My project
+
+- pinned: true
+- topics: security, systems
+- visibility: Public
+- link: https://github.com/you/project
+
+What it does and why it matters.
+```
+
+`- pinned: true` features a project in Pinned; omit it or set it to `false`
+to leave the project in the full collection. Pins follow the file's order,
+with the first two shown on the README. Optional `org`, `start` / `end` or
+`date` fields add context and dates. Dated projects sort newest first, then
+undated projects. Adding a project never adds it to the timeline.
+
 ## Editing the timeline
 
 One markdown file per track:
@@ -59,8 +82,11 @@ One markdown file per track:
 ```
 content/timeline/work.md        content/timeline/startups.md
 content/timeline/education.md   content/timeline/speaking.md
-content/timeline/projects.md    content/tags.md   (milestones on the trunk)
+content/timeline/trainings.md    content/tags.md   (milestones on the trunk)
 ```
+
+`content/timeline/trainings.md` is ready for your trainings; add entries
+when you have them.
 
 Each entry is a `## Title` block with `- key: value` fields and a
 description paragraph:
@@ -93,12 +119,12 @@ on **Everything**, with every entry and milestone, and can switch back to
 highlights. Add `- highlight: true` to an entry or a tag in `content/tags.md`
 to feature it. Each view lays out its own graph and updates the track counts.
 
-The navigation opens dedicated pages for selected work (`/work/`), the full
+The navigation opens dedicated pages for projects (`/work/`), the full
 timeline (`/timeline/`), writing (`/writing/`), research (`/research/`), the
 stack (`/stack/`), contact (`/more/`) and your personal philosophy (`/soul/`).
 The landing page previews each collection and links to its full page. Writing
-is grouped by year; writing, research and project history can be searched and
-filtered by topic. Project history shows ten entries per page; its search,
+is grouped by year; writing, research and projects can be searched and
+filtered by topic. The Projects page shows ten entries per page; its search,
 topic and page selection stay in the URL for reloads and shared links.
 
 The **soul.md** tab opens `/soul/`, rendered from `content/soul.md` with the

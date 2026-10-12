@@ -4,6 +4,7 @@ import { PAGES } from './pages.js'
 import { homePath, pagePath } from './paths.js'
 import { link } from './router.js'
 import { ENTRIES, POINTS } from './content.js'
+import { PROJECTS } from './projects.js'
 import { POSTS } from './blog/index.js'
 import { IconBook, IconFingerprint } from './icons.jsx'
 import { Pinned, Research, Stack, Contact } from './ProfileSections.jsx'
@@ -15,7 +16,7 @@ import ErrorBoundary from './ErrorBoundary.jsx'
 const Soul = lazy(() => import('./Soul.jsx'))
 
 const facts = {
-  work: [`${config.work.length} projects`, 'public & internal'],
+  work: [`${PROJECTS.length} projects`, 'public & internal'],
   timeline: [
     `${ENTRIES.length} entries`,
     `${POINTS.length} milestones`,

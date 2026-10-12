@@ -49,7 +49,9 @@ export async function checkTimelineViews(page, entries, points) {
   await highlights.click()
   await expect(highlights).toHaveAttribute('aria-pressed', 'true')
   await expect(
-    page.locator(`${entries} .tl-card h3`, { hasText: 'Decnique' })
+    page.locator(`${entries} .tl-card h3`, {
+      hasText: 'Offensive Security Engineer',
+    })
   ).toHaveCount(1)
   await expect(
     page.locator(`${entries} .tl-card h3`, { hasText: 'FSTT, MIP' })

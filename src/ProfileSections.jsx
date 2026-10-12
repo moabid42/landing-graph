@@ -4,7 +4,7 @@ import { IconRepo, IconFlask, IconTag, IconBook, IconMail } from './icons.jsx'
 import { pagePath } from './paths.js'
 import { link } from './router.js'
 import ArchiveControls from './ArchiveControls.jsx'
-import { ENTRIES } from './content.js'
+import { PROJECTS, PINNED_PROJECTS, PROJECT_TOPICS } from './projects.js'
 import { fmtDate } from './timeline/format.js'
 import useArchiveFilters from './useArchiveFilters.js'
 import { paginate } from './archive.js'
@@ -12,20 +12,12 @@ import { paginate } from './archive.js'
 const {
   identity,
   links,
-  work: WORK,
   research: RESEARCH,
   stack: STACK,
   languages: LANGUAGES,
 } = config
 const MAILTO = `mailto:${identity.email}`
 const RESEARCHGATE_URL = links.find((l) => l.name === 'researchgate')?.url
-const PROJECTS = ENTRIES.filter((entry) => entry.track === 'projects')
-  .sort((a, b) => b.start - a.start)
-  .map((project) => ({
-    ...project,
-    topics: [...new Set(project.meta.split(' · ').filter(Boolean))],
-  }))
-const PROJECT_TOPICS = [...new Set(PROJECTS.flatMap((p) => p.topics))].sort()
 const remoteNotes = {
   origin: 'Questions, ideas and conversations.',
   github: 'Public projects and source code.',
@@ -82,47 +74,55 @@ export function Pinned({ full = false }) {
     })
   }
 
+  if (!full && PINNED_PROJECTS.length === 0) return null
+
   return (
-    <section id="work" aria-label="Selected work">
-      <div className="sec-head">
-        <h2>
-          <IconRepo width={16} height={16} /> Pinned
-        </h2>
-        {!full && <SectionLink page="work">View all work</SectionLink>}
-        {full && <span className="sec-note">{WORK.length} projects</span>}
-      </div>
-      <div className="pin-grid">
-        {(full ? WORK : WORK.slice(0, 2)).map((w) => (
-          <article key={w.title} className="pin-card">
-            <h3>
-              <IconRepo width={14} height={14} />
-              {w.href ? (
-                <a href={w.href} target="_blank" rel="noopener noreferrer">
-                  {w.title}
-                </a>
-              ) : (
-                <span className="no-link">{w.title}</span>
-              )}
-              <span className="vis-badge">{w.visibility}</span>
-            </h3>
-            <p className="pin-desc">{w.text}</p>
-            <div className="pin-topics">
-              {w.topics.map((t, i) => (
-                <span key={`${t}-${i}`} className="topic">
-                  {t}
-                </span>
-              ))}
-            </div>
-          </article>
-        ))}
-      </div>
+    <section id="work" aria-label="Projects">
+      {PINNED_PROJECTS.length > 0 && (
+        <>
+          <div className="sec-head">
+            <h2>
+              <IconRepo width={16} height={16} /> Pinned
+            </h2>
+            {!full && <SectionLink page="work">View all projects</SectionLink>}
+            {full && (
+              <span className="sec-note">{PINNED_PROJECTS.length} pinned</span>
+            )}
+          </div>
+          <div className="pin-grid">
+            {(full ? PINNED_PROJECTS : PINNED_PROJECTS.slice(0, 2)).map((w) => (
+              <article key={w.id} className="pin-card">
+                <h3>
+                  <IconRepo width={14} height={14} />
+                  {w.link ? (
+                    <a href={w.link} target="_blank" rel="noopener noreferrer">
+                      {w.title}
+                    </a>
+                  ) : (
+                    <span className="no-link">{w.title}</span>
+                  )}
+                  <span className="vis-badge">{w.visibility}</span>
+                </h3>
+                <p className="pin-desc">{w.text}</p>
+                <div className="pin-topics">
+                  {w.topics.map((t, i) => (
+                    <span key={`${t}-${i}`} className="topic">
+                      {t}
+                    </span>
+                  ))}
+                </div>
+              </article>
+            ))}
+          </div>
+        </>
+      )}
       {full && PROJECTS.length > 0 && (
         <div className="project-history">
           <div className="sec-head">
             <h2 id="project-history-heading">
-              <IconRepo width={16} height={16} /> Project history
+              <IconRepo width={16} height={16} /> All projects
             </h2>
-            <span className="sec-note">from the graph</span>
+            <span className="sec-note">{PROJECTS.length} projects</span>
           </div>
           <ArchiveControls
             label="projects"
@@ -148,11 +148,13 @@ export function Pinned({ full = false }) {
           <ul className="project-list" id="project-history-list">
             {pagination.items.map((project) => (
               <li key={project.id} className="pin-card">
-                <p className="project-date">
-                  {fmtDate(project.start)}
-                  {!project.single &&
-                    ` — ${project.end ? fmtDate(project.end) : 'now'}`}
-                </p>
+                {project.start !== null && (
+                  <p className="project-date">
+                    {fmtDate(project.start)}
+                    {!project.single &&
+                      ` — ${project.end ? fmtDate(project.end) : 'now'}`}
+                  </p>
+                )}
                 <h3>{project.title}</h3>
                 {project.org && <p className="project-org">{project.org}</p>}
                 <p className="pin-desc">{project.text}</p>
@@ -187,7 +189,7 @@ export function Pinned({ full = false }) {
           {pagination.pageCount > 1 && (
             <nav
               className="archive-pagination"
-              aria-label="Project history pagination"
+              aria-label="Projects pagination"
             >
               <button
                 type="button"

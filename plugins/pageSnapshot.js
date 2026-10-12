@@ -50,16 +50,12 @@ export function pageMarkdown(page, posts, timelineDir) {
         ''
       )
   } else if (page === 'work') {
-    for (const project of config.work)
-      lines.push(
-        `## ${project.href ? `[${project.title}](${project.href})` : project.title}`,
-        '',
-        project.text,
-        '',
-        project.topics.join(' · '),
-        ''
-      )
-    lines.push('## Project history', '', timelineFile(timelineDir, 'projects'))
+    lines.push(
+      readFileSync(join(timelineDir, '..', 'projects.md'), 'utf8')
+        .replace(/<!--[\s\S]*?-->/g, '')
+        .replace(/^# .*\n/, '')
+        .trim()
+    )
   } else if (page === 'timeline') {
     for (const track of config.tracks)
       lines.push(

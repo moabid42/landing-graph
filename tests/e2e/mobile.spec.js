@@ -177,14 +177,14 @@ test.describe('the mobile section navigation', () => {
     [375, ['README', 'Timeline']],
     [390, ['README', 'Timeline']],
     [699, ['README', 'Timeline']],
-    [700, ['README', 'Pinned', 'Timeline', 'Writing']],
-    [749, ['README', 'Pinned', 'Timeline', 'Writing']],
-    [750, ['README', 'Pinned', 'Timeline', 'Writing', 'Research']],
-    [768, ['README', 'Pinned', 'Timeline', 'Writing', 'Research']],
-    [899, ['README', 'Pinned', 'Timeline', 'Writing', 'Research']],
-    [900, ['README', 'Pinned', 'Timeline', 'Writing', 'Research']],
-    [920, ['README', 'Pinned', 'Timeline', 'Writing', 'Research']],
-    [999, ['README', 'Pinned', 'Timeline', 'Writing', 'Research']],
+    [700, ['README', 'Projects', 'Timeline', 'Writing']],
+    [749, ['README', 'Projects', 'Timeline', 'Writing']],
+    [750, ['README', 'Projects', 'Timeline', 'Writing', 'Research']],
+    [768, ['README', 'Projects', 'Timeline', 'Writing', 'Research']],
+    [899, ['README', 'Projects', 'Timeline', 'Writing', 'Research']],
+    [900, ['README', 'Projects', 'Timeline', 'Writing', 'Research']],
+    [920, ['README', 'Projects', 'Timeline', 'Writing', 'Research']],
+    [999, ['README', 'Projects', 'Timeline', 'Writing', 'Research']],
   ]) {
     test(`fits the tabs and More menu at ${width}px`, async ({ page }) => {
       await page.setViewportSize({ width, height: 844 })
@@ -219,7 +219,7 @@ test.describe('the mobile section navigation', () => {
     await page.setViewportSize({ width: 320, height: 844 })
     for (const [label, id] of [
       [config.soul.title, 'soul'],
-      ['Pinned', 'work'],
+      ['Projects', 'work'],
       ['Writing', 'writing'],
       ['Research', 'research'],
       ['Stack', 'stack'],

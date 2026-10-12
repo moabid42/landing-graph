@@ -29,7 +29,7 @@ test.describe('the README page', () => {
     for (const [tab, route, heading] of [
       [config.soul.title, 'soul', config.soul.title],
       ['Timeline', 'timeline', 'Timeline'],
-      ['Pinned', 'work', 'Selected work'],
+      ['Projects', 'work', 'Projects'],
       ['Writing', 'writing', 'Writing'],
       ['Research', 'research', 'Research'],
       ['Stack', 'stack', 'Stack'],

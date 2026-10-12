@@ -5,6 +5,7 @@ import { ORIGIN, absolute, postPath, pagePath } from '../src/paths.js'
 import { PAGES } from '../src/pages.js'
 import { postMarkdown, readPosts } from './posts.js'
 import { pageMarkdown } from './pageSnapshot.js'
+import { parseProjects } from '../src/projects/parse.js'
 
 // Emits llms.txt and llms-full.txt at build time (https://llmstxt.org).
 //
@@ -15,7 +16,7 @@ import { pageMarkdown } from './pageSnapshot.js'
 // fetch. Both are built from the files the page itself renders, so they
 // cannot drift from it.
 
-const { identity, seo, links, research = [], work = [], stack = [] } = config
+const { identity, seo, links, research = [], stack = [] } = config
 
 // A timeline file is already readable markdown once its editing notes and
 // its "# Work — timeline entries" heading are gone.
@@ -34,7 +35,10 @@ function track(dir, { key, label }) {
   return entries ? `## ${label ?? key}\n\n${entries}\n` : ''
 }
 
-export function header(posts) {
+export function header(posts, timelineDir = 'content/timeline') {
+  const projects = parseProjects(
+    readFileSync(join(timelineDir, '..', 'projects.md'), 'utf8')
+  )
   const lines = [
     `# ${identity.name}`,
     '',
@@ -62,11 +66,13 @@ export function header(posts) {
     lines.push('', '## Research', '')
     for (const r of research) lines.push(`- [${r.title}](${r.href}): ${r.tldr}`)
   }
-  if (work.length) {
+  if (projects.length) {
     lines.push('', '## Projects', '')
-    for (const w of work) {
-      const name = w.href ? `[${w.title}](${w.href})` : w.title
-      lines.push(`- ${name}: ${w.text}`)
+    for (const project of projects) {
+      const name = project.link
+        ? `[${project.title}](${project.link})`
+        : project.title
+      lines.push(`- ${name}: ${project.text}`)
     }
   }
   if (stack.length) {
@@ -85,7 +91,8 @@ export function profile(posts, timelineDir) {
     .filter(Boolean)
     .join('\n')
   return (
-    header(posts) +
+    header(posts, timelineDir) +
+    `\n${pageMarkdown('work', posts, timelineDir)}` +
     `\n${pageMarkdown('soul', posts, timelineDir)}` +
     (career ? `\n# Career\n\n${career}` : '')
   )
@@ -106,7 +113,7 @@ export default function llmsFiles({
       const posts = readPosts(blogDir, { body: true })
 
       const index =
-        header(posts) +
+        header(posts, timelineDir) +
         '\n## Optional\n\n' +
         `- [Everything above, plus the full career timeline and every post in full](${ORIGIN}/llms-full.txt)\n`
 

@@ -53,6 +53,22 @@ test.describe('the timeline graph', () => {
     await expect(page.locator('.head-node')).toHaveCount(1)
   })
 
+  test('offers trainings and excludes projects from the graph', async ({
+    page,
+  }) => {
+    await expect(page.locator('.tl-legend .tl-filter.trainings')).toContainText(
+      'trainings'
+    )
+    await expect(page.locator('.tl-legend .tl-filter.projects')).toHaveCount(0)
+    await expect(
+      page.locator('.tl-card h3', { hasText: 'Decnique' })
+    ).toHaveCount(0)
+    await expect(
+      page.locator('.tl-card h3', { hasText: 'ft_minishell' })
+    ).toHaveCount(0)
+    await expect(page.locator('.tl-problems')).toHaveCount(0)
+  })
+
   test('switches between highlights and the complete history', async ({
     page,
   }) => {

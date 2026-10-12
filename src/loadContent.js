@@ -23,3 +23,6 @@ export const trackFile = (key) => `content/timeline/${key}.md`
 
 export { default as TAGS_SOURCE } from '../content/tags.md?raw'
 export const TAGS_FILE = 'content/tags.md'
+
+export { default as PROJECTS_SOURCE } from '../content/projects.md?raw'
+export const PROJECTS_FILE = 'content/projects.md'

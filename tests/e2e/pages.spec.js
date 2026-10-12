@@ -6,6 +6,10 @@ import { PAGES } from '../../src/pages.js'
 import { pagePath, absolute } from '../../src/paths.js'
 import { absoluteImages, readPosts } from '../../plugins/posts.js'
 import { url } from './site.js'
+import { parseProjects } from '../../src/projects/parse.js'
+
+const projects = parseProjects(readFileSync('content/projects.md', 'utf8'))
+const pins = projects.filter((project) => project.pinned)
 
 for (const [route, info] of Object.entries(PAGES)) {
   test(`${route} opens directly, survives a reload and has its own static metadata`, async ({
@@ -90,7 +94,7 @@ test('landing page contains highlights with working links to the complete collec
 }) => {
   await page.goto(url())
   await expect(page.locator('#work .pin-card')).toHaveCount(
-    Math.min(2, config.work.length)
+    Math.min(2, pins.length)
   )
   await expect(page.locator('.post-row')).toHaveCount(
     Math.min(3, readPosts('content/blog').length)

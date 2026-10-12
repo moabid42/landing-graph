@@ -6,6 +6,8 @@
 // Which tracks exist, what they are called and what color they run in is
 // site.config.js. Nothing here is hardcoded to a particular track.
 import config from '../site.config.js'
+import { parseBlocks, parseDate, slug, problem } from './contentParsing.js'
+export { parseBlocks, parseDate, slug, PROBLEMS } from './contentParsing.js'
 import {
   TRACK_SOURCES,
   TAGS_SOURCE,
@@ -36,37 +38,6 @@ const CONTINUOUS = new Set(
 // merge-back curve never blends into the next branch-out in the same lane.
 const LANE_CLEARANCE = 0.05
 
-// Parse problems that would otherwise be silent skips. The Timeline
-// renders these in a warning banner so a typo in a content file is
-// impossible to miss.
-export const PROBLEMS = []
-const problem = (file, title, msg) => {
-  PROBLEMS.push({ file, title, msg })
-  console.warn(`[content] ${file} · ${title}: ${msg}`)
-}
-
-// "YYYY-MM" -> decimal year (mid-month); "now" -> null (ongoing).
-// Anything else is reported instead of silently misparsing.
-export function parseDate(s, ctx, field) {
-  if (!s || s.trim().toLowerCase() === 'now') return null
-  const m = s.trim().match(/^(\d{4})(?:-(\d{1,2}))?$/)
-  if (!m) {
-    if (ctx)
-      problem(
-        ctx.file,
-        ctx.title,
-        `unreadable ${field} "${s}" — use YYYY-MM or "now"`
-      )
-    return null
-  }
-  const mo = m[2] ? +m[2] : 6
-  if (mo < 1 || mo > 12) {
-    if (ctx) problem(ctx.file, ctx.title, `bad month in ${field} "${s}"`)
-    return null
-  }
-  return +m[1] + (mo - 0.5) / 12
-}
-
 // A track configured with no file, or a file with no configured track, is
 // a typo either way — both are silent no-ops otherwise.
 for (const t of config.tracks)
@@ -83,34 +54,6 @@ for (const key of Object.keys(TRACK_SOURCES))
       key,
       'file has no track in site.config.js — not rendered'
     )
-
-export const slug = (s) =>
-  s
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-|-$/g, '')
-
-// Split a markdown file into "## Title" blocks with `- key: value` fields
-// and a free-text body.
-export function parseBlocks(md) {
-  const src = md.replace(/<!--[\s\S]*?-->/g, '')
-  return src
-    .split(/\n(?=## )/)
-    .filter((b) => b.trim().startsWith('## '))
-    .map((b) => {
-      const lines = b.trim().split('\n')
-      const title = lines[0].replace(/^## /, '').trim()
-      const fields = {}
-      const body = []
-      for (const ln of lines.slice(1)) {
-        // tolerate a forgotten colon after the field name
-        const m = ln.match(/^- *([a-z]+):? *(.+)$/)
-        if (m) fields[m[1]] = m[2].trim()
-        else if (ln.trim() && !ln.startsWith('#')) body.push(ln.trim())
-      }
-      return { title, fields, body: body.join(' ') }
-    })
-}
 
 export function parseTrack(md, track, file) {
   return parseBlocks(md)

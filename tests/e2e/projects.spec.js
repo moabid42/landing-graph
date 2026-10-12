@@ -1,19 +1,46 @@
 import { test, expect } from '@playwright/test'
 import AxeBuilder from '@axe-core/playwright'
 import { readFileSync } from 'node:fs'
-import config from '../../site.config.js'
+import { parseProjects } from '../../src/projects/parse.js'
 import { pagePath } from '../../src/paths.js'
 import { url } from './site.js'
 
-const source = readFileSync('content/timeline/projects.md', 'utf8').replace(
-  /<!--[\s\S]*?-->/g,
-  ''
-)
-const total = [...source.matchAll(/^## /gm)].length
+const projects = parseProjects(readFileSync('content/projects.md', 'utf8'))
+const total = projects.length
+const pins = projects.filter((project) => project.pinned)
 
-test.describe('project history', () => {
+test.describe('projects', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto(url(pagePath('work')))
+  })
+
+  test('shows flagged pins and includes every project across the archive pages', async ({
+    page,
+  }) => {
+    await expect(page.locator('.pin-grid .pin-card h3')).toHaveText(
+      pins.map((project) => `${project.title}${project.visibility}`)
+    )
+    await expect(page.locator('.page-facts')).toContainText(`${total} projects`)
+    const titles = []
+    const next = page.getByRole('button', { name: 'Next project page' })
+    let currentPage = 1
+    do {
+      titles.push(...(await page.locator('.project-list h3').allTextContents()))
+      if (!(await next.count()) || (await next.isDisabled())) break
+      await next.click()
+      currentPage++
+      await expect(
+        page.locator('.archive-pagination [role="status"]')
+      ).toHaveText(`Page ${currentPage} of ${Math.ceil(total / 10)}`)
+    } while (currentPage <= Math.ceil(total / 10))
+    expect(titles.sort()).toEqual(
+      projects.map((project) => project.title).sort()
+    )
+    await page
+      .getByRole('searchbox', { name: 'Search projects' })
+      .fill('redteam-copilot')
+    await expect(page.locator('.project-list > li')).toHaveCount(1)
+    await expect(page.locator('.project-list .project-date')).toHaveCount(0)
   })
 
   test('combines search and topic filters, toggles tags, and clears empty results', async ({
@@ -44,7 +71,7 @@ test.describe('project history', () => {
     await expect(rows.first()).toContainText('L3AK CTF 2025 Infra')
     await history.getByRole('button', { name: 'Clear filters' }).click()
     await rows
-      .first()
+      .filter({ hasText: 'Landing Graph' })
       .getByRole('button', { name: 'react', exact: true })
       .click()
     await expect(topic).toHaveValue('react')
@@ -55,9 +82,7 @@ test.describe('project history', () => {
       .click()
     await expect(topic).toHaveValue('')
     await expect(rows).toHaveCount(Math.min(total, 10))
-    await expect(page.locator('.pin-grid .pin-card')).toHaveCount(
-      config.work.length
-    )
+    await expect(page.locator('.pin-grid .pin-card')).toHaveCount(pins.length)
   })
 
   test('restores filters on reload and browser history and clamps an out-of-range page', async ({

@@ -3,8 +3,8 @@ import config from '../site.config.js'
 // Shared by the router, page headers and static build.
 export const PAGES = {
   work: {
-    title: 'Selected work',
-    file: 'work.md',
+    title: 'Projects',
+    file: 'projects.md',
     description:
       'Tools and infrastructure I have built, from detection engineering and cloud security to CTF platforms and red-team automation.',
   },
@@ -12,7 +12,7 @@ export const PAGES = {
     title: 'Timeline',
     file: 'timeline.md',
     description:
-      'The full graph: work, education, projects, startups and speaking. Follow each branch from its first commit to where it merges, or filter by track.',
+      'The full graph: work, education, trainings, startups and speaking. Follow each branch from its first commit to where it merges, or filter by track.',
   },
   writing: {
     title: 'Writing',

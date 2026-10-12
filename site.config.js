@@ -3,8 +3,8 @@
 //
 // This is the only file you have to edit to put your own name on the site.
 // Your timeline lives in content/timeline/*.md, your posts in content/blog/*.md
-// and your personal philosophy in content/soul.md; everything else — including
-// the lists behind the Pinned, Research and Stack sections — is right here.
+// your projects in content/projects.md, and your personal philosophy in
+// content/soul.md; the Research and Stack sections are configured here.
 // ============================================================================
 
 export default {
@@ -94,7 +94,7 @@ export default {
 
     description:
       'Mouad Abid — software security engineer. Career rendered as git log ' +
-      '--graph --all: every job, degree and project as a branch.',
+      '--graph --all: every job, degree and training as a branch.',
 
     // The picture shown when a link is posted to LinkedIn, X or Slack.
     // A path under public/, or a full url. 1200x630 is the safe size.
@@ -131,7 +131,7 @@ export default {
   tracks: [
     { key: 'work', label: 'work', color: '#3fb950', colorLight: '#1a7f37' },
     { key: 'education', label: 'education', color: '#58a6ff', colorLight: '#0969da' },
-    { key: 'projects', label: 'projects', color: '#a371f7', colorLight: '#8250df' },
+    { key: 'trainings', label: 'trainings', color: '#a371f7', colorLight: '#8250df' },
     { key: 'startups', label: 'startups', color: '#f0883e', colorLight: '#bc4c00' },
     {
       key: 'speaking',
@@ -140,47 +140,6 @@ export default {
       colorLight: '#bf3989',
       continuous: true,
     },
-  ],
-
-  // -------------------------------------------------------------------- work
-  // The cards in the Pinned section, in this order. The count in the header
-  // tab follows the length of this list.
-  //
-  //   title      repo name on the card
-  //   text       one paragraph, what it is and why it mattered
-  //   topics     the little grey pills under the text
-  //   href       where the title links; null renders it as plain text, for
-  //              work that has no public url
-  //   visibility the badge on the right of the title, e.g. Public, Internal
-  work: [
-  {
-    title: 'decnique',
-      text: 'A formal language and evaluation framework for measuring SIEM detection coverage against adversarial techniques over a common event model using nothing but pure math.',
-    topics: ['dsl', 'smt', 'sigma', 'elastic', 'panther'],
-    href: 'https://github.com/moabid42/decnique',
-    visibility: 'Public',
-  },
-  {
-    title: 'mals3scan',
-    text: 'Serverless AWS security pipeline that scans every file uploaded to S3 with YARA rules for malware and sensitive data, firing real-time alerts for incident response.',
-    topics: ['aws', 'lambda', 'yara', 'terraform'],
-    href: 'https://github.com/moabid42/mals3scan',
-    visibility: 'Public',
-  },
-  {
-    title: 'l3ak-ctf-infra',
-    text: 'The infrastructure behind L3AK CTF events, handling more than 10k concurrent users and millions of requests.',
-    topics: ['high-load', 'GCP', 'monitoring', 'distributed systems'],
-    href: null,
-    visibility: 'Internal',
-  },
-  {
-    title: 'redteam-copilot',
-    text: 'A GCP IAM red-teaming harness, with a deterministic propose-then-verify architecture.',
-    topics: ['llm', 'red-team', 'automation'],
-    href: null,
-    visibility: 'Internal',
-  },
   ],
 
   // -------------------------------------------------------------------- note
