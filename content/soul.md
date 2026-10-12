@@ -3,13 +3,11 @@ This is a living document. The original notes are in soul.notes.md.
 The page title and description live in site.config.js.
 -->
 
-Hello everyone.
-
-Usually, when I write something this long, I noticed something cursed and I need to tell someone about it.
+Usually, when I write something this long, it is because I noticed something cursed and I need to tell someone about it.
 
 This time, the question is a little closer to home.
 
-**Who am I, once you get past the job title?**
+So, **Who am I, once you get past the job title?**
 
 Apparently my own documentation could use some work too :)
 
@@ -21,19 +19,24 @@ I started working at thirteen, right after finishing primary school. I spent my 
 
 And honestly, you learn quite a bit about people when you work in their homes.
 
-Some respected the work and appreciated that you knew how to fix their problem. Others treated you like you were beneath them because you worked with your hands.
+Some respected the work and appreciated that you knew how to fix their problem. Others treated you like they are doing you a FAVOR by calling YOU for help.
 
-Their AC still needed installing, tho.
+Like dude you called me for help. HELLO???
 
-Then there were the ones who wanted the whole job done, cleaned and sometimes with additional can you check my refrigerator but somehow find it suddenly inconvinient and expensive to pay for the agreed installation.
+Then there were the ones who wanted the whole job done, cleaned and sometimes with an additional "can you check my refrigerator" task but somehow find it suddenly **very** inconvinient and **expensive** to pay for the agreed installation.
 
-Some people feel like NPCs fr :)
+This was my first interaction with NPCs fr :\
 
-You learn pretty quickly that doing the job and dealing with the client are two separate skills. I had to learn both. And along the way, I started understanding what it actually takes to earn money.
+You quickly learn that doing the job and dealing with the client are two separate skills. I had to learn both. And along the way, I started understanding what it actually takes to earn money, and thus value money.
 
-My family always made sure I had food, clothes, and everything I needed. My father also made sure I understood that wanting something did not automatically mean someone else was going to buy it for me.
+Don't get the wrong idea tho.
 
-Toys. My first phone. My first laptop. My first PC.
+My family always made sure I had a warm meal, clothes, and everything I "needed".
+
+It is true we never had the luxuary to get every fish in the ocean.
+BUT! My father made sure we learned how to fish ourselves.
+
+Toys. My first phone. My first laptop. My first PC. Trips. Going outs.
 
 Summer jobs, errands, good grades. That was how I earned them.
 
@@ -41,9 +44,15 @@ And I'm glad he raised me that way. I learned to manage my money, take responsib
 
 So yes, **I am still proud that I can install an AC.**
 
-Whenever I go back to Morocco, I still go out on jobs with my uncle. It brings back a lot of good memories, and I get to spend that time with him. That matters to me.
+AH! And whenever I go back to Morocco, I still go out on jobs with my uncle. It brings back a lot of memories, and I get to spend that time with him. 
+
+Life wasn't as pink as I am trying to paint it. But you know what they say.
+
+> Don't let a few bad apples spoil the whole bunch.
 
 ![beninging](./soul/termin-to-ac.png)
+
+*Eren and Torfin showed me that Freedom can be either "Destructive & External" or "Constructive & Internal"*
 
 ## Germany Arc
 
@@ -51,13 +60,13 @@ I came to Germany on my own at nineteen.
 
 That sentence is easy to put on a timeline. The parts underneath it take a little more space.
 
-There were nights sleeping on the street. Nights sleeping at school. Surviving with whatever I available. Working around three hundred hours a month and continuing to support myself without turning back to ask for money or help.
+There were nights sleeping on the street. Nights sleeping at school. Surviving on whatever was available. Working more than three hundred hours a month and continuing to support myself without turning back to ask for money or help.
 
 Those are parts of my story too.
 
-For me, God's plans come first. And only when you zoom out, you see how all the pieces fit together.
+It was indeed God's plans. And only when you zoom out, you see how all the pieces fit together.
 
-When I look back, I see how much my childhood had prepared me for what came next. I had already learned to work, to adapt, to deal with difficult situations, and to begin with what I had available.
+When I look back, I see how much my childhood had prepared me for what came next. I had already learned to work, to adapt, to deal with difficult situations, and all only with what I had available.
 
 Without that upbringing, I honestly think I would have given up in my first month.
 
@@ -66,6 +75,8 @@ That is probably why I trust my ability to adapt so much. I learn quickly, and I
 What matters to me is being able to change with the situation while keeping hold of who I am.
 
 ![sabr](./soul/germany-arc.png)
+
+*"sabr" is the only word without an opposite* 
 
 ## Curiosity built this mind
 
@@ -83,11 +94,13 @@ That curiosity reaches well beyond my work. I read and write about life and deat
 
 Writing is how I work through a lot of those thoughts. Putting something into words makes me sit with it a little longer. It gives me a chance to see what I actually mean, and where I still have questions.
 
-So yes, **curiosity built this mind.** I would like to keep giving it room to do that.
+So yes, **curiosity built this mind.**
+
+And, I would like to keep giving it room to do that.
 
 ![canon abstraction](./soul/improvisation-30.webp)
 
-*Vasily Kandinsky, [Improvisation No. 30 (Cannons)](https://www.artic.edu/artworks/8991/improvisation-no-30-cannons), 1913. Image courtesy of the Art Institute of Chicago, public domain.*
+*Vasily Kandinsky, [Improvisation No. 30 (Cannons)](https://www.artic.edu/artworks/8991/improvisation-no-30-cannons), 1913. Image courtesy of the Art Institute of Chicago*
 
 ## Beginner. Again.
 
@@ -108,6 +121,8 @@ I want to keep doing that in as many parts of my life as I can. Learning, changi
 And football has been there for as long as I can remember. I still play with friends every week. After all those new beginnings, it is good to have something I keep coming back to as well.
 
 ![beginner again](./soul/beginner-again.png)
+
+*This guy is THE representation of Beginner and Again*
 
 ## Sweat is the prize
 
@@ -148,6 +163,8 @@ I love the field I work in. My work and my hobbies have always overlapped, and I
 There are other things I want to make room for too.
 
 ![AboutTime](./soul/about-time.png)
+
+*I think it is "AboutTime" you watch this masterpiece if you haven't*
 
 ## The things I come back to
 

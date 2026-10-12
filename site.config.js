@@ -46,7 +46,7 @@ export default {
   // The personal page at /soul/. Its body lives in content/soul.md; these
   // strings label the page, navigation tab and search/share previews.
   soul: {
-    title: 'Soul',
+    title: 'WhoAmI?',
     description: 'My philosophy, the things I value, und co.',
   },
 
