@@ -184,6 +184,8 @@ test.describe('projects', () => {
       await page
         .getByRole('combobox', { name: 'Filter projects by topic' })
         .selectOption('distributed-systems')
+      // A reserved scrollbar gutter can make this negative. Only a positive
+      // difference means the page is wider than the viewport.
       await expect
         .poll(() =>
           page.evaluate(
@@ -192,7 +194,7 @@ test.describe('projects', () => {
               document.documentElement.clientWidth
           )
         )
-        .toBe(0)
+        .toBeLessThanOrEqual(0)
       await page.getByRole('button', { name: 'Clear filters' }).click()
     }
   })

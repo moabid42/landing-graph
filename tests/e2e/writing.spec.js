@@ -74,6 +74,7 @@ test.describe('the writing section', () => {
     await page.setViewportSize({ width: 320, height: 700 })
     for (const route of [url(), url(pagePath('writing'))]) {
       await page.goto(route)
+      // Allow the space reserved for a classic scrollbar, but no overflow.
       await expect
         .poll(() =>
           page.evaluate(
@@ -82,7 +83,7 @@ test.describe('the writing section', () => {
               document.documentElement.clientWidth
           )
         )
-        .toBe(0)
+        .toBeLessThanOrEqual(0)
       for (const row of await page.locator('.post-row').all()) {
         const bounds = await row.boundingBox()
         expect(bounds.x).toBeGreaterThanOrEqual(0)

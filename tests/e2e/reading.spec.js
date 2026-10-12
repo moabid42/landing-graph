@@ -193,13 +193,14 @@ for (const width of [320, 390, 768, 1024]) {
     const header = await page.locator('.gh-header').boundingBox()
     expect(position.y).toBeGreaterThan(header.height)
     expect(position.y).toBeLessThan(header.height + 60)
+    // Classic scrollbars can reserve a gutter and produce a negative delta.
     expect(
       await page.evaluate(
         () =>
           document.documentElement.scrollWidth -
           document.documentElement.clientWidth
       )
-    ).toBe(0)
+    ).toBeLessThanOrEqual(0)
     const prose = await page
       .locator('.post-body .md-body')
       .evaluate((node) => ({
