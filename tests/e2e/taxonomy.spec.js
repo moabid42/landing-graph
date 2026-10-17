@@ -106,6 +106,32 @@ test('quoted filters, exclusions and update-date ranges work together', async ({
   await expect(page.locator('.project-list > li')).toHaveCount(0)
 })
 
+test('sidebars list domains, topics and languages and scroll with the page', async ({
+  page,
+}) => {
+  for (const collection of collections) {
+    await page.goto(url(pagePath(collection.page)))
+    const sidebar = page.getByRole('complementary', {
+      name: `${collection.label} filters`,
+    })
+    await expect(sidebar.getByRole('heading')).toHaveText([
+      'Domains',
+      'Topics',
+      'Languages',
+    ])
+    await expect(sidebar).toHaveCSS('position', 'sticky')
+    await sidebar.scrollIntoViewIfNeeded()
+    const scrollBefore = await page.evaluate(() => window.scrollY)
+    await sidebar.hover({ position: { x: 50, y: 100 } })
+    await page.mouse.wheel(0, 200)
+    await expect
+      .poll(() => page.evaluate(() => window.scrollY))
+      .toBeGreaterThan(scrollBefore)
+    expect(await sidebar.evaluate((element) => element.scrollTop)).toBe(0)
+    await expect(sidebar).toHaveCSS('overflow-y', 'visible')
+  }
+})
+
 test('recently updated sorting uses real dates and persists in the URL', async ({
   page,
 }) => {
@@ -154,11 +180,11 @@ test('short filtered results stay below search when the sidebar is taller', asyn
 test('legacy topic links become visible search qualifiers', async ({
   page,
 }) => {
-  await page.goto(url(`${pagePath('work')}?q=keyless&topic=GCP&page=999`))
+  await page.goto(url(`${pagePath('work')}?q=vector&topic=C%2B%2B&page=999`))
   await expect(
     page.getByRole('searchbox', { name: 'Search projects' })
-  ).toHaveValue('keyless technology:gcp')
-  await expect(page.locator('.project-list h3')).toHaveText('GCPdvi')
+  ).toHaveValue('vector language:C++')
+  await expect(page.locator('.project-list h3')).toHaveText('ft_containers')
   expect(new URL(page.url()).searchParams.has('topic')).toBe(false)
   expect(new URL(page.url()).searchParams.has('page')).toBe(false)
 })
@@ -175,6 +201,12 @@ test('mobile filters expand, select a language and return to results without ove
     await expect(sidebar).toBeHidden()
     await page.getByRole('button', { name: /^Filters/ }).click()
     await expect(sidebar).toBeVisible()
+    await expect(sidebar.getByRole('heading')).toHaveText([
+      'Domains',
+      'Topics',
+      'Languages',
+    ])
+    await expect(sidebar).toHaveCSS('overflow-y', 'visible')
     await sidebar
       .getByRole('button', {
         name: collection.page === 'work' ? 'Language: Python' : 'Language: C',

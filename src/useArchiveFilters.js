@@ -30,6 +30,7 @@ export default function useArchiveFilters(
     for (const [key, value] of [
       ['q', filters.query],
       ...FACETS.map(({ param }) => [param, '']),
+      ['technology', ''],
       ['sort', filters.sort === 'updated' ? 'updated' : ''],
     ]) {
       if (value) url.searchParams.set(key, value)

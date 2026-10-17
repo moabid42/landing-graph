@@ -2,7 +2,7 @@
 title: Makefile or make me a file
 date: 2023-03-30
 domains: systems-programming
-technologies: c, make
+languages: c
 topics: build-automation
 summary: Makefiles from zero: rules, variables, pattern rules, and the tricks that make them useful beyond compiling C.
 source: https://medium.com/@m0ab1d42/makefile-or-make-me-a-file-fca04a7bfcc2

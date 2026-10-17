@@ -12,27 +12,19 @@ export const LANGUAGES = {
 
 export const SEARCH_FACETS = [
   { param: 'domain', key: 'domains', title: 'Domain', heading: 'Domains' },
+  { param: 'topic', key: 'topics', title: 'Topic', heading: 'Topics' },
   {
     param: 'language',
-    key: 'technologies',
+    key: 'languages',
     title: 'Language',
     heading: 'Languages',
   },
-  {
-    param: 'technology',
-    key: 'technologies',
-    title: 'Technology',
-    heading: 'Technologies',
-  },
-  { param: 'topic', key: 'topics', title: 'Topic', heading: 'Topics' },
 ]
 
 const KEYS = {
   domain: 'domain',
   language: 'language',
   lang: 'language',
-  technology: 'technology',
-  tech: 'technology',
   topic: 'topic',
   updated: 'updated',
 }
@@ -46,14 +38,12 @@ export function parseQuery(query = '') {
   for (const raw of tokens) {
     const match = raw.match(/^(-?)([a-z]+):(.*)$/i)
     const name = match?.[2].toLowerCase()
-    let key = name && Object.hasOwn(KEYS, name) ? KEYS[name] : null
+    const key = name && Object.hasOwn(KEYS, name) ? KEYS[name] : null
     if (!key) {
       terms.push(unquote(raw).toLowerCase())
       continue
     }
     const value = unquote(match[3])
-    if (key === 'technology' && Object.hasOwn(LANGUAGES, canonicalTag(value)))
-      key = 'language'
     if (!value) errors.push(`Add a value after ${key}:`)
     else if (key === 'updated' && !dateCondition(value))
       errors.push(
@@ -112,7 +102,7 @@ export function qualifierMatches(item, qualifier) {
 }
 
 export function qualifierToken(key, value, negative = false) {
-  const label = key === 'language' ? tagLabel('technologies', value) : value
+  const label = key === 'language' ? tagLabel('languages', value) : value
   return `${negative ? '-' : ''}${key}:${/\s/.test(label) ? JSON.stringify(label) : label}`
 }
 

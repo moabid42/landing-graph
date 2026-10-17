@@ -11,27 +11,27 @@ const items = [
   {
     title: 'Cloud IAM lab',
     domains: ['cloud-security'],
-    technologies: ['python', 'gcp'],
+    languages: ['python'],
     topics: ['iam'],
     updated: '2026-10-01',
   },
   {
     title: 'Cloud scanner',
     domains: ['cloud-security'],
-    technologies: ['javascript', 'aws'],
+    languages: ['javascript'],
     topics: ['detection-engineering'],
     updated: '2026-08-12',
   },
   {
     title: 'Tree implementation',
     domains: ['systems-programming'],
-    technologies: ['cpp'],
+    languages: ['cpp'],
     topics: ['data-structures'],
   },
   {
     title: 'Memory guide',
     domains: ['systems-programming'],
-    technologies: ['c'],
+    languages: ['c'],
     topics: ['memory-management'],
     date: '2023-04-03',
   },
@@ -40,11 +40,9 @@ const matches = (query) =>
   filterContent(items, { query }).map((item) => item.title)
 
 describe('qualified search', () => {
-  it('combines text and case-insensitive language, domain, technology and topic qualifiers', () => {
+  it('combines text and case-insensitive language, domain and topic qualifiers', () => {
     expect(
-      matches(
-        'cloud language:PYTHON domain:Cloud-Security technology:GCP topic:IAM'
-      )
+      matches('cloud language:PYTHON domain:Cloud-Security topic:IAM')
     ).toEqual(['Cloud IAM lab'])
     expect(matches('language:JavaScript')).toEqual(['Cloud scanner'])
     expect(matches('language:C++')).toEqual(['Tree implementation'])
@@ -53,7 +51,7 @@ describe('qualified search', () => {
   })
 
   it('supports quoted phrases and category aliases', () => {
-    expect(matches('"cloud IAM" domain:"Cloud Security" tech:gcp')).toEqual([
+    expect(matches('"cloud IAM" domain:"Cloud Security" lang:Python')).toEqual([
       'Cloud IAM lab',
     ])
     expect(matches('lang:"C++"')).toEqual(['Tree implementation'])

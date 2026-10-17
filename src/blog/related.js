@@ -1,6 +1,6 @@
 import { FACETS } from '../taxonomy.js'
 
-// Give each shared topic more weight than a shared domain or technology.
+// Give each shared topic more weight than a shared domain or language.
 // The current article is excluded; recent writing fills remaining places.
 export function relatedPosts(post, posts, limit = 3) {
   const overlap = (candidate) =>

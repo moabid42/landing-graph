@@ -45,7 +45,7 @@ export function parseProjects(md, file = 'content/projects.md') {
         link: link && /^https?:\/\//.test(link) ? link : null,
         visibility: fields.visibility || (link ? 'Public' : 'Internal'),
         domains: parseTags(fields.domains),
-        technologies: parseTags(fields.technologies),
+        languages: parseTags(fields.languages),
         topics: parseTags(fields.topics),
       }
     })

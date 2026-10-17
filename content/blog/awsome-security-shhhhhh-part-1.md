@@ -2,7 +2,6 @@
 title: AWSome Security (Shhhhhh !!) (Part 1)
 date: 2023-07-14
 domains: cloud-security, offensive-security
-technologies: aws
 topics: iam, penetration-testing
 summary: AWS pentesting from an attacker's seat — IAM, credentials, enumeration, and the misconfigurations that hand you the cloud.
 source: https://medium.com/@m0ab1d42/awsome-security-shhhhhh-part-1-936f8daaf20b

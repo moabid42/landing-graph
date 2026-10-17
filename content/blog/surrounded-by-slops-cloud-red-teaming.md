@@ -2,7 +2,6 @@
 title: Surrounded by Slops: Cloud Red Teaming
 date: 2026-10-04
 domains: cloud-security, offensive-security
-technologies: aws, gcp
 topics: iam, red-teaming, opsec, privilege-escalation, language-models
 summary: On AI slop, Cloud IAM, OPSEC, attack graphs, and why knowing the command is not the same as knowing what the fuck you’re doing.
 source: https://medium.com/@m0ab1d42/surrounded-by-slops-cloud-red-teaming-2bf8fff15425

@@ -2,11 +2,10 @@ import { useId, useState } from 'react'
 import { tagLabel } from './taxonomy.js'
 import { facetOptions, filterContent } from './archive.js'
 import { LANGUAGES, SEARCH_FACETS } from './searchQuery.js'
-import { IconGlobe, IconTools, IconTag } from './icons.jsx'
+import { IconGlobe, IconTag } from './icons.jsx'
 
 const FILTER_ICONS = {
   domain: IconGlobe,
-  technology: IconTools,
   topic: IconTag,
 }
 
@@ -19,13 +18,7 @@ function SidebarGroup({ facet, items, filters, available }) {
   for (const item of candidates)
     for (const value of item[key] || [])
       counts.set(value, (counts.get(value) || 0) + 1)
-  const values = available[key].filter((value) =>
-    param === 'language'
-      ? Object.hasOwn(LANGUAGES, value)
-      : param === 'technology'
-        ? !Object.hasOwn(LANGUAGES, value)
-        : true
-  )
+  const values = available[key]
   const totals = new Map()
   for (const item of items)
     for (const value of item[key] || [])

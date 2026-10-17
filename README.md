@@ -63,7 +63,7 @@ Each project is a `## Title` block with a description and optional fields:
 
 - pinned: true
 - domains: cloud-security
-- technologies: python, aws
+- languages: python
 - topics: detection-engineering
 - visibility: Public
 - link: https://github.com/you/project
@@ -84,22 +84,24 @@ All three collections share the vocabulary in `src/taxonomy.js`:
 
 - **Domain** is the broad field, such as Cloud Security, Offensive Security,
   Systems Programming or Cryptography.
-- **Technology** is a language, platform or tool, such as C++, GCP, Terraform
-  or Neo4j. Leave it empty when no specific technology applies.
 - **Topic** is the subject or technique, such as IAM, Detection Engineering,
   Memory Management or Attack Planning.
+- **Language** is a programming language used in the work, such as Python,
+  C++ or JavaScript. Leave it empty when none apply.
 
-Use lowercase IDs from that file in `domains`, `technologies` and `topics`.
+Use lowercase IDs from that file in `domains`, `topics` and `languages`.
 Project fields use comma-separated lists; blog frontmatter uses the same
 fields without the list marker; research entries in `site.config.js` use
 arrays. Add vocabulary there when a new subject needs it. Labels, including
-acronyms such as AWS and C++, are defined once and displayed consistently.
+acronyms such as IAM and C++, are defined once and displayed consistently.
 Avoid generic tags like programming, security or research, narrative labels,
 and project status tags. A tag should help a reader find related work.
+Capture the work's purpose through domains and topics, such as Detection
+Engineering, Formal Methods or Build Automation.
 
-Archive pages use a sidebar with domains, colored programming languages,
-technologies and topics. Languages come from the technology tags; language
-colors are defined in `src/searchQuery.js`. Clicking an option or a result tag
+Archive pages use a sticky sidebar with domains, topics and colored programming
+languages, in that order. It scrolls with the page without an internal scrollbar.
+Language colors are defined in `src/searchQuery.js`. Clicking an option or a result tag
 adds a qualifier to the search bar; clicking again removes it. Sidebar counts
 reflect the other active categories. Filters collapse behind a button on mobile.
 
@@ -107,7 +109,7 @@ Search accepts plain words, quoted phrases and these qualifiers:
 
 ```text
 language:JavaScript
-domain:cloud-security technology:GCP topic:iam
+domain:cloud-security topic:iam
 "memory management" language:C
 domain:"Cloud Security" -language:Python
 updated:>=2026-01-01
@@ -116,7 +118,7 @@ updated:2026-01-01..2026-12-31
 
 Repeated values in one category match any of those values; different categories
 combine. Date comparisons combine as a range. Search and sorting stay in the URL
-and reset project pagination when changed. Older topic/domain/technology links
+and reset project pagination when changed. Older topic/domain/language links
 become visible search qualifiers.
 
 Set `updated: YYYY-MM-DD` on a project, article or research entry to show its

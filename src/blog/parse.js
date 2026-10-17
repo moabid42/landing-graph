@@ -6,7 +6,7 @@
 //   title: Human-readable title
 //   date: YYYY-MM-DD
 //   domains: cloud-security, offensive-security
-//   technologies: aws, python
+//   languages: python
 //   topics: comma, separated
 //   summary: one line for search results and share cards
 //   updated: YYYY-MM-DD    (optional — the last real edit, for search engines)
@@ -72,7 +72,7 @@ export function parsePost(path, raw) {
     readingMinutes: Math.max(1, Math.ceil(words / 200)),
     draft: (meta.draft || '').toLowerCase() === 'true',
     domains: parseTags(meta.domains),
-    technologies: parseTags(meta.technologies),
+    languages: parseTags(meta.languages),
     topics: parseTags(meta.topics),
     image,
     body,

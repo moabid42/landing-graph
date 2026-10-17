@@ -1,18 +1,11 @@
 import { FACETS, tagLabel } from './taxonomy.js'
-import { LANGUAGES } from './searchQuery.js'
 
 export default function ContentTags({ item, filters, className = '' }) {
   return (
     <div className={`content-tags ${className}`}>
-      {FACETS.flatMap(({ key, param, label }) =>
-        (item[key] || [])
-          .filter(
-            (value) =>
-              !filters ||
-              key !== 'technologies' ||
-              !Object.hasOwn(LANGUAGES, value)
-          )
-          .map((value) =>
+      {FACETS.filter(({ key }) => !filters || key !== 'languages').flatMap(
+        ({ key, param, label }) =>
+          (item[key] || []).map((value) =>
             filters ? (
               <button
                 key={`${key}-${value}`}

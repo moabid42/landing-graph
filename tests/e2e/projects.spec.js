@@ -75,19 +75,19 @@ test.describe('projects', () => {
     await expect(rows.first()).toContainText('L3AK CTF 2025 Infra')
     await history.getByRole('button', { name: 'Clear filters' }).click()
     await search.fill('Landing Graph')
-    const reactProjects = projects.filter((project) =>
-      project.technologies.includes('react')
+    const publishingProjects = projects.filter((project) =>
+      project.topics.includes('content-publishing')
     )
     await rows
       .filter({ hasText: 'Landing Graph' })
-      .getByRole('button', { name: 'React', exact: true })
+      .getByRole('button', { name: 'Content Publishing', exact: true })
       .click()
-    await expect(search).toHaveValue('Landing Graph technology:react')
-    await search.fill('technology:react')
-    await expect(rows).toHaveCount(Math.min(reactProjects.length, 10))
+    await expect(search).toHaveValue('Landing Graph topic:content-publishing')
+    await search.fill('topic:content-publishing')
+    await expect(rows).toHaveCount(Math.min(publishingProjects.length, 10))
     await rows
       .filter({ hasText: 'Landing Graph' })
-      .getByRole('button', { name: 'React', exact: true })
+      .getByRole('button', { name: 'Content Publishing', exact: true })
       .click()
     await expect(search).toHaveValue('')
     await expect(rows).toHaveCount(Math.min(total, 10))

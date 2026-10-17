@@ -2,7 +2,7 @@
 title: C from another perspective
 date: 2023-03-27
 domains: systems-programming
-technologies: c
+languages: c
 topics: secure-coding, code-quality
 summary: How I actually write C — the conventions, habits, and safety rules that keep the code readable and sane.
 source: https://medium.com/@m0ab1d42/c-from-another-prespective-dc33462be53b

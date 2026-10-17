@@ -24,7 +24,7 @@ function relative(value) {
 }
 
 export default function ResultMeta({ item, children }) {
-  const language = item.technologies?.find((id) => Object.hasOwn(LANGUAGES, id))
+  const language = item.languages?.find((id) => Object.hasOwn(LANGUAGES, id))
   const date = updatedDate(item)
   if (!language && !date && !children) return null
   return (
@@ -36,7 +36,7 @@ export default function ResultMeta({ item, children }) {
             style={{ backgroundColor: LANGUAGES[language] }}
             aria-hidden="true"
           />
-          {tagLabel('technologies', language)}
+          {tagLabel('languages', language)}
         </span>
       )}
       {children}

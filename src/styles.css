@@ -276,7 +276,7 @@ section {
 .archive-active-filters { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 12px; }
 .archive-active-filters button { display: inline-flex; gap: 8px; align-items: center; border: 1px solid var(--border); border-radius: 6px; padding: 4px 8px; color: var(--fg); background: var(--bg-subtle); font: 11px var(--sans); cursor: pointer; overflow-wrap: anywhere; }
 .archive-active-filters button:hover { border-color: var(--link); }
-.archive-sidebar { grid-area: filters; position: sticky; top: calc(var(--header-height, 96px) + 20px); max-height: calc(100dvh - var(--header-height, 96px) - 40px); overflow-y: auto; scrollbar-width: thin; border-right: 1px solid var(--border); padding-right: 18px; }
+.archive-sidebar { grid-area: filters; position: sticky; top: calc(var(--header-height, 96px) + 20px); border-right: 1px solid var(--border); padding-right: 18px; }
 .archive-filter-group { padding: 0 0 20px; margin-bottom: 20px; border-bottom: 1px solid var(--border-muted); }
 .archive-filter-group:last-of-type { border-bottom: 0; margin-bottom: 0; }
 .archive-filter-group h3 { font-size: 13px; color: var(--muted); margin: 0 0 10px 8px; font-weight: 600; }
@@ -328,10 +328,10 @@ html[data-theme='light'] .archive-results .content-tags .topic { color: #0550ae;
 .archive-results .release-summary { font-size: 13px; margin-top: 12px; }
 @media (max-width: 799px) {
   .archive-browser { grid-template-columns: minmax(0, 1fr); grid-template-rows: max-content max-content max-content; grid-template-areas: "query" "filters" "results"; }
-  .archive-sidebar { display: none; position: static; border-right: 0; border-bottom: 1px solid var(--border); padding: 12px; margin: 0 0 20px; max-height: 60dvh; background: var(--bg-subtle); border-radius: 6px; }
+  .archive-sidebar { display: none; position: static; border-right: 0; border-bottom: 1px solid var(--border); padding: 12px; margin: 0 0 20px; background: var(--bg-subtle); border-radius: 6px; }
   .archive-sidebar.is-open { display: block; }
   .archive-mobile-toggle { display: inline-flex; flex: none; min-height: 42px; }
-  .archive-mobile-done { display: flex; position: sticky; bottom: 0; width: 100%; justify-content: center; background: var(--bg-subtle); }
+  .archive-mobile-done { display: flex; width: 100%; justify-content: center; background: var(--bg-subtle); }
   .archive-result-toolbar { gap: 10px; }
   .archive-result-toolbar > div { min-width: 100%; }
   .archive-sort { margin-right: auto; }

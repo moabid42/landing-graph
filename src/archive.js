@@ -62,8 +62,8 @@ export function readFilters(search, available, paginated = false) {
   const filters = {
     query: params.get('q') || '',
     domain: '',
-    technology: '',
     topic: '',
+    language: '',
     currentPage:
       Number.isSafeInteger(requestedPage) && requestedPage > 0
         ? requestedPage
@@ -74,7 +74,7 @@ export function readFilters(search, available, paginated = false) {
     if (available[key]?.includes(value)) filters[param] = value
   }
   // Old links put every kind of tag in ?topic=. Move recognized values to
-  // their category, keeping any explicit domain/technology selection.
+  // their category, keeping any explicit domain/language selection.
   const legacy = canonicalTag(params.get('topic') || '')
   if (legacy && !filters.topic) {
     const facet = FACETS.find(

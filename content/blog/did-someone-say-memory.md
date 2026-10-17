@@ -2,7 +2,7 @@
 title: Did someone say Memory?
 date: 2023-04-03
 domains: systems-programming
-technologies: c, linux
+languages: c
 topics: memory-management
 summary: The memory layout of a C program: stack, heap, data, text — and what actually happens when you allocate.
 source: https://medium.com/@m0ab1d42/did-someone-say-memory-1a8cc5bbe1c1

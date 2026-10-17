@@ -33,18 +33,21 @@ describe('shared content taxonomy', () => {
   })
 
   it('normalizes spelling, aliases and duplicates without losing C++', () => {
-    expect(parseTags(' C++, CPP, GCP, gcp, , ')).toEqual(['cpp', 'gcp'])
+    expect(parseTags(' C++, CPP, Python, python, , ')).toEqual([
+      'cpp',
+      'python',
+    ])
     expect(parseTags('red team, red-team, pentesting')).toEqual([
       'red-teaming',
       'penetration-testing',
     ])
-    expect(tagLabel('technologies', 'cpp')).toBe('C++')
-    expect(tagLabel('technologies', 'gcp')).toBe('GCP')
+    expect(tagLabel('languages', 'cpp')).toBe('C++')
+    expect(tagLabel('languages', 'python')).toBe('Python')
   })
 
   it('uses the same category parsing in project and article metadata', () => {
     const fields =
-      'domains: Cloud Security\ntechnologies: C++, GCP, gcp\ntopics: IAM'
+      'domains: Cloud Security\nlanguages: C++, Python, python\ntopics: IAM'
     const project = parseProjects(
       `## Tool\n${fields.replace(/^/gm, '- ')}\nDescription.`
     )[0]
@@ -58,28 +61,28 @@ describe('faceted archive filtering', () => {
     {
       title: 'IAM lab',
       domains: ['cloud-security'],
-      technologies: ['gcp', 'terraform'],
+      languages: ['python'],
       topics: ['iam'],
     },
     {
       title: 'Bucket scanner',
       domains: ['cloud-security'],
-      technologies: ['aws', 'python'],
+      languages: ['javascript'],
       topics: ['detection-engineering'],
     },
     {
       title: 'Tree implementation',
       domains: ['systems-programming'],
-      technologies: ['cpp'],
+      languages: ['cpp'],
       topics: ['data-structures'],
     },
   ]
   const available = facetOptions(items)
 
-  it('intersects domain, technology, topic and text rather than matching any tag', () => {
+  it('intersects domain, language, topic and text rather than matching any tag', () => {
     const filters = {
       domain: 'cloud-security',
-      technology: 'gcp',
+      language: 'python',
       topic: 'iam',
     }
     expect(filterContent(items, filters)).toEqual([items[0]])
@@ -87,7 +90,9 @@ describe('faceted archive filtering', () => {
       items[0],
     ])
     expect(filterContent(items, { ...filters, query: 'scanner' })).toEqual([])
-    expect(filterContent(items, { ...filters, technology: 'aws' })).toEqual([])
+    expect(
+      filterContent(items, { ...filters, language: 'javascript' })
+    ).toEqual([])
   })
 
   it('searches display labels and permits counts that exclude only the current facet', () => {
@@ -96,8 +101,8 @@ describe('faceted archive filtering', () => {
     expect(
       filterContent(
         items,
-        { domain: 'cloud-security', technology: 'gcp' },
-        'technology'
+        { domain: 'cloud-security', language: 'python' },
+        'language'
       )
     ).toEqual(items.slice(0, 2))
     expect(available.domains).toEqual(['cloud-security', 'systems-programming'])
@@ -107,28 +112,25 @@ describe('faceted archive filtering', () => {
   it('restores all filters and pagination from a shared URL', () => {
     expect(
       readFilters(
-        '?q=lab&domain=cloud-security&technology=GCP&topic=iam&page=2',
+        '?q=lab&domain=cloud-security&language=Python&topic=iam&page=2',
         available,
         true
       )
     ).toEqual({
-      query: 'lab domain:cloud-security technology:gcp topic:iam',
+      query: 'lab domain:cloud-security topic:iam language:Python',
       currentPage: 2,
       sort: 'default',
     })
   })
 
-  it('migrates old technology and domain topic links and clears unsupported values', () => {
-    expect(readFilters('?topic=GCP', available).query).toBe('technology:gcp')
+  it('migrates old language and domain topic links and clears unsupported values', () => {
     expect(readFilters('?topic=cloud-security', available).query).toBe(
       'domain:cloud-security'
     )
-    expect(readFilters('?topic=C%2B%2B', available).query).toBe(
-      'technology:cpp'
-    )
+    expect(readFilters('?topic=C%2B%2B', available).query).toBe('language:C++')
     expect(
       readFilters(
-        '?q=lab&domain=unknown&technology=unknown&topic=unknown&page=999',
+        '?q=lab&domain=unknown&language=unknown&topic=unknown&page=999',
         available
       )
     ).toEqual({
@@ -136,8 +138,6 @@ describe('faceted archive filtering', () => {
       currentPage: 1,
       sort: 'default',
     })
-    expect(readFilters('?technology=aws&topic=gcp', available).query).toBe(
-      'technology:aws'
-    )
+    expect(readFilters('?technology=aws&topic=gcp', available).query).toBe('')
   })
 })

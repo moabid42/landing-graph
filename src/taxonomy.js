@@ -2,13 +2,13 @@
 // content and URLs; labels keep acronyms and product names readable.
 export const FACETS = [
   { key: 'domains', param: 'domain', label: 'Domain', plural: 'domains' },
-  {
-    key: 'technologies',
-    param: 'technology',
-    label: 'Technology',
-    plural: 'technologies',
-  },
   { key: 'topics', param: 'topic', label: 'Topic', plural: 'topics' },
+  {
+    key: 'languages',
+    param: 'language',
+    label: 'Language',
+    plural: 'languages',
+  },
 ]
 
 export const TAXONOMY = {
@@ -22,32 +22,14 @@ export const TAXONOMY = {
     'systems-programming': 'Systems Programming',
     'web-development': 'Web Development',
   },
-  technologies: {
-    'active-directory': 'Active Directory',
+  languages: {
     assembly: 'Assembly',
-    aws: 'AWS',
     c: 'C',
     cpp: 'C++',
-    docker: 'Docker',
-    elastic: 'Elastic',
-    gcp: 'GCP',
-    gdb: 'GDB',
-    ghidra: 'Ghidra',
     go: 'Go',
     javascript: 'JavaScript',
-    linux: 'Linux',
-    make: 'Make',
-    neo4j: 'Neo4j',
-    panther: 'Panther',
     python: 'Python',
-    react: 'React',
-    sigma: 'Sigma',
     solidity: 'Solidity',
-    terraform: 'Terraform',
-    vlayer: 'vlayer',
-    windows: 'Windows',
-    yara: 'YARA',
-    z3: 'Z3',
   },
   topics: {
     'anti-debugging': 'Anti-debugging',
@@ -97,7 +79,7 @@ const ALIASES = {
   'red-team': 'red-teaming',
   redteam: 'red-teaming',
   pentesting: 'penetration-testing',
-  makefile: 'make',
+  makefile: 'build-automation',
   memories: 'memory-management',
   'pointers-in-c': 'memory-management',
   pointers: 'memory-management',
