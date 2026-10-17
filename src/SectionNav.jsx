@@ -12,7 +12,6 @@ import {
   IconRepo,
   IconPencil,
   IconFlask,
-  IconTag,
   IconMail,
 } from './icons.jsx'
 
@@ -37,7 +36,6 @@ const sections = [
     icon: IconFlask,
     count: config.research.length || null,
   },
-  { id: 'stack', label: 'Stack', icon: IconTag },
   { id: 'soul', label: config.soul.title, icon: IconFingerprint },
   { id: 'more', label: 'Contact', icon: IconMail },
 ]
@@ -45,7 +43,7 @@ const sections = [
 // Keep README and Timeline within reach on phones, and retain more tabs
 // as space grows. The menu contains only the sections absent from the bar.
 const overflowRules = [
-  { query: '(max-width: 999px)', ids: ['stack', 'soul', 'more'] },
+  { query: '(max-width: 999px)', ids: ['soul', 'more'] },
   { query: '(max-width: 749px)', ids: ['research'] },
   { query: '(max-width: 699px)', ids: ['work', 'writing'] },
 ]

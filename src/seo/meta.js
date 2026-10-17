@@ -150,7 +150,7 @@ export function jsonLd(post, page = null) {
       '@type':
         page === 'soul'
           ? 'AboutPage'
-          : ['stack', 'more'].includes(page)
+          : page === 'more'
             ? 'WebPage'
             : 'CollectionPage',
       name: PAGES[page].title,

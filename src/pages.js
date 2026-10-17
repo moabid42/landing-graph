@@ -26,12 +26,6 @@ export const PAGES = {
     description:
       'Papers on how systems fail and how to reason about their security, covering attack planning, anti-debugging and cryptographic randomness.',
   },
-  stack: {
-    title: 'Stack',
-    file: 'stack.md',
-    description:
-      'The languages, tools and areas I work with, across security engineering, infrastructure and systems programming.',
-  },
   soul: {
     title: config.soul.title,
     file: 'soul.md',

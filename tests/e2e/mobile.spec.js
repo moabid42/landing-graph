@@ -199,7 +199,7 @@ test.describe('the mobile section navigation', () => {
       )
       await more(page).click()
       await expect(more(page)).toHaveAttribute('aria-expanded', 'true')
-      await expect(menu(page).getByRole('link')).toHaveCount(8 - labels.length)
+      await expect(menu(page).getByRole('link')).toHaveCount(7 - labels.length)
       const bounds = await menu(page).boundingBox()
       expect(bounds.x).toBeGreaterThanOrEqual(0)
       expect(bounds.x + bounds.width).toBeLessThanOrEqual(width)
@@ -222,7 +222,6 @@ test.describe('the mobile section navigation', () => {
       ['Projects', 'work'],
       ['Writing', 'writing'],
       ['Research', 'research'],
-      ['Stack', 'stack'],
       ['Contact', 'more'],
     ]) {
       await more(page).click()
@@ -377,7 +376,7 @@ test.describe('the mobile section navigation', () => {
     await expect(menu(page)).toBeHidden()
     await expect(
       page.getByRole('navigation', { name: 'Sections' }).getByRole('link')
-    ).toHaveCount(8)
+    ).toHaveCount(7)
     await page.setViewportSize({ width: 390, height: 844 })
     await expect(more(page)).toHaveAttribute('aria-expanded', 'false')
   })

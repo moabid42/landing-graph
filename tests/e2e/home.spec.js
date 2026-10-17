@@ -32,7 +32,6 @@ test.describe('the README page', () => {
       ['Projects', 'work', 'Projects'],
       ['Writing', 'writing', 'Writing'],
       ['Research', 'research', 'Research'],
-      ['Stack', 'stack', 'Stack'],
       ['Contact', 'more', 'Contact'],
     ]) {
       await page.locator('.gh-tabs a', { hasText: tab }).click()
@@ -49,14 +48,7 @@ test.describe('the README page', () => {
   test('keeps README selected while scrolling through landing highlights', async ({
     page,
   }) => {
-    for (const id of [
-      'work',
-      'timeline',
-      'blog',
-      'research',
-      'stack',
-      'contact',
-    ]) {
+    for (const id of ['work', 'timeline', 'blog', 'research', 'contact']) {
       await page
         .locator(`#${id}`)
         .evaluate((el) => el.scrollIntoView({ behavior: 'instant' }))
@@ -74,7 +66,7 @@ test.describe('the README page', () => {
   }) => {
     for (const width of [320, 390, 768, 1440]) {
       await page.setViewportSize({ width, height: 900 })
-      for (const id of ['work', 'timeline', 'stack']) {
+      for (const id of ['work', 'timeline', 'contact']) {
         await page
           .locator(`#${id}`)
           .evaluate((el) => el.scrollIntoView({ behavior: 'instant' }))

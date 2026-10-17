@@ -16,7 +16,7 @@ import { parseProjects } from '../src/projects/parse.js'
 // fetch. Both are built from the files the page itself renders, so they
 // cannot drift from it.
 
-const { identity, seo, links, research = [], stack = [] } = config
+const { identity, seo, links, research = [], spokenLanguages = [] } = config
 
 // A timeline file is already readable markdown once its editing notes and
 // its "# Work — timeline entries" heading are gone.
@@ -75,9 +75,10 @@ export function header(posts, timelineDir = 'content/timeline') {
       lines.push(`- ${name}: ${project.text}`)
     }
   }
-  if (stack.length) {
-    lines.push('', '## Skills', '')
-    for (const s of stack) lines.push(`- ${s.cat}: ${s.items}`)
+  if (spokenLanguages.length) {
+    lines.push('', '## Languages I speak', '')
+    for (const language of spokenLanguages)
+      lines.push(`- ${language.name}: ${language.level}`)
   }
   lines.push('', '## Profiles', '')
   for (const l of links) lines.push(`- [${l.name}](${l.url})`)

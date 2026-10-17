@@ -78,19 +78,15 @@ export function pageMarkdown(page, posts, timelineDir) {
     } catch {
       /* Milestones are optional. */
     }
-  } else if (page === 'stack') {
-    lines.push(
-      '## Languages',
-      '',
-      config.languages.map((language) => language.name).join(' · '),
-      ''
-    )
-    for (const category of config.stack)
-      lines.push(`## ${category.cat}`, '', category.items, '')
   } else if (page === 'more') {
     for (const remote of config.links)
       lines.push(`- [${remote.name}](${remote.url})`)
     if (config.identity.location) lines.push('', config.identity.location)
+    if (config.spokenLanguages.length) {
+      lines.push('', '## Languages I speak', '')
+      for (const language of config.spokenLanguages)
+        lines.push(`- ${language.name}: ${language.level}`)
+    }
   }
   return lines.join('\n') + '\n'
 }

@@ -7,7 +7,7 @@ import { ENTRIES, POINTS } from './content.js'
 import { PROJECTS } from './projects.js'
 import { POSTS } from './blog/index.js'
 import { IconBook, IconFingerprint } from './icons.jsx'
-import { Pinned, Research, Stack, Contact } from './ProfileSections.jsx'
+import { Pinned, Research, Contact } from './ProfileSections.jsx'
 import Timeline from './timeline/index.jsx'
 import Writing from './Writing.jsx'
 import ErrorBoundary from './ErrorBoundary.jsx'
@@ -27,7 +27,6 @@ const facts = {
     `${config.research.length} publications`,
     'full texts linked below',
   ],
-  stack: [`${config.languages.length} languages`, 'security & infrastructure'],
   more: [`${config.links.length} remotes`, config.identity.location],
 }
 
@@ -88,7 +87,6 @@ export default function SectionPage({ page }) {
         />
       )}
       {page === 'research' && <Research full />}
-      {page === 'stack' && <Stack full />}
       {page === 'more' && <Contact full />}
       <nav className="page-explore" aria-label="Explore more pages">
         <span>Keep exploring</span>

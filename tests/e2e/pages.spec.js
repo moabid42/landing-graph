@@ -93,6 +93,10 @@ test('landing page contains highlights with working links to the complete collec
   page,
 }) => {
   await page.goto(url())
+  await expect(page.locator('#stack')).toHaveCount(0)
+  await expect(
+    page.getByRole('link', { name: 'Stack', exact: true })
+  ).toHaveCount(0)
   await expect(page.locator('#work .pin-card')).toHaveCount(
     Math.min(2, pins.length)
   )

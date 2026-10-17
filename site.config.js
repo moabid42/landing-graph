@@ -4,7 +4,7 @@
 // This is the only file you have to edit to put your own name on the site.
 // Your timeline lives in content/timeline/*.md, your posts in content/blog/*.md
 // your projects in content/projects.md, and your personal philosophy in
-// content/soul.md; the Research and Stack sections are configured here.
+// content/soul.md; research and spoken languages are configured here.
 // ============================================================================
 
 export default {
@@ -200,33 +200,13 @@ export default {
     // },
   ],
 
-  // ------------------------------------------------------------------- stack
-  // The Stack section: a GitHub-style language bar, then one row per
-  // category. Both lists render in the order written here.
-  //
-  // languages fill the bar in equal segments — name plus the colour GitHub
-  // uses for that language.
-  languages: [
-  { name: 'Python', color: '#3572A5' },
-  { name: 'C', color: '#555555' },
-  { name: 'C++', color: '#f34b7d' },
-  { name: 'TypeScript', color: '#3178c6' },
-  { name: 'Assembly', color: '#6E4C13' },
-  ],
-
-  // stack rows are free text: `cat` is the label on the left, `items` the
-  // line on the right. Add or drop a row and the list follows.
-  stack: [
-  {
-    cat: 'security',
-    items:
-      'red teaming · detection engineering · cloud security · threat modeling · code review · reverse engineering · binary exploitation · cryptography',
-  },
-  {
-    cat: 'infrastructure',
-    items: 'AWS · GCP · Docker · Podman · Terraform · Ansible · GitHub Actions · GitLab CI',
-  },
-  { cat: 'spoken', items: 'Arabic (native) · English, German, French (C1)' },
+  // -------------------------------------------------------- spoken languages
+  // Shown in Contact. The coloured segments are decorative; levels are text.
+  spokenLanguages: [
+    { name: 'Arabic', level: 'native', color: '#555555' },
+    { name: 'English', level: 'C1', color: '#3572A5' },
+    { name: 'German', level: 'C1', color: '#f34b7d' },
+    { name: 'French', level: 'C1', color: '#6E4C13' },
   ],
 
   // ------------------------------------------------------------------ footer

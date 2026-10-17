@@ -30,7 +30,7 @@ npm run dev
 Then, in order:
 
 1. **`site.config.js`** — your name, handle, hero copy, links,
-   research, stack, footer.
+   research, spoken languages, footer.
 2. **`content/timeline/*.md`** — your timeline, one file per track.
 3. **`content/projects.md`** — all projects; add `- pinned: true` to feature one.
 4. **`content/blog/*.md`** — your posts, one file each; the filename is the url.
@@ -171,9 +171,10 @@ highlights. Add `- highlight: true` to an entry or a tag in `content/tags.md`
 to feature it. Each view lays out its own graph and updates the track counts.
 
 The navigation opens dedicated pages for projects (`/work/`), the full
-timeline (`/timeline/`), writing (`/writing/`), research (`/research/`), the
-stack (`/stack/`), contact (`/more/`) and your personal philosophy (`/soul/`).
-The landing page previews each collection and links to its full page. Writing
+timeline (`/timeline/`), writing (`/writing/`), research (`/research/`),
+contact (`/more/`) and your personal philosophy (`/soul/`).
+The landing page previews selected collections and links to their full pages.
+Contact includes the spoken languages configured in `site.config.js`. Writing
 is grouped by year; writing, research and projects can be searched and
 filtered by topic. The Projects page shows ten entries per page; its search,
 topic and page selection stay in the URL for reloads and shared links.

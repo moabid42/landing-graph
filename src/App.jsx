@@ -2,7 +2,7 @@ import { Fragment, useEffect, useLayoutEffect, useState } from 'react'
 import Timeline from './timeline/index.jsx'
 import SectionNav from './SectionNav.jsx'
 import Writing from './Writing.jsx'
-import { Pinned, Research, Stack, Contact } from './ProfileSections.jsx'
+import { Pinned, Research, Contact } from './ProfileSections.jsx'
 import SectionPage from './SectionPage.jsx'
 import { POSTS } from './blog/index.js'
 import PostPage from './blog/PostPage.jsx'
@@ -250,8 +250,6 @@ export default function App() {
             <Writing mediumUrl={MEDIUM_URL} />
 
             <Research />
-
-            <Stack />
 
             <Contact />
           </>

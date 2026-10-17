@@ -26,8 +26,7 @@ const {
   identity,
   links,
   research: RESEARCH,
-  stack: STACK,
-  languages: LANGUAGES,
+  spokenLanguages: SPOKEN_LANGUAGES,
 } = config
 const MAILTO = `mailto:${identity.email}`
 const RESEARCH_FACETS = facetOptions(RESEARCH)
@@ -328,63 +327,6 @@ export function Research({ full = false }) {
   )
 }
 
-export function Stack({ full = false }) {
-  return (
-    <section id="stack" aria-label="Stack">
-      <div className="sec-head">
-        <h2>
-          <IconTag width={16} height={16} />{' '}
-          {full ? 'Languages & tools' : 'Stack'}
-        </h2>
-        {!full && <SectionLink page="stack">Explore the stack</SectionLink>}
-        {full && <span className="sec-note">languages &amp; tools</span>}
-      </div>
-      <div className="lang-bar" aria-hidden="true">
-        {LANGUAGES.map((l) => (
-          <span
-            key={l.name}
-            className="lang-seg"
-            style={{ background: l.color }}
-            title={l.name}
-          />
-        ))}
-      </div>
-      <ul className="lang-list">
-        {LANGUAGES.map((l) => (
-          <li key={l.name}>
-            <span
-              className="lang-dot"
-              style={{ background: l.color }}
-              aria-hidden="true"
-            />
-            {l.name}
-          </li>
-        ))}
-      </ul>
-      <dl className="stack-list">
-        {(full ? STACK : STACK.slice(0, 1)).map((s) => (
-          <div key={s.cat} className="stack-row">
-            <dt>{s.cat}</dt>
-            <dd>
-              {full ? (
-                <div className="stack-items">
-                  {s.items.split(' · ').map((item) => (
-                    <span key={item} className="topic">
-                      {item}
-                    </span>
-                  ))}
-                </div>
-              ) : (
-                s.items
-              )}
-            </dd>
-          </div>
-        ))}
-      </dl>
-    </section>
-  )
-}
-
 export function Contact({ full = false }) {
   return (
     <section id="contact" aria-label="Contact">
@@ -431,6 +373,36 @@ export function Contact({ full = false }) {
           </tbody>
         </table>
       </div>
+      {SPOKEN_LANGUAGES.length > 0 && (
+        <div className="spoken-languages">
+          {/* <h3>Languages I speak</h3> */}
+          <div className="spoken-language-bar" aria-hidden="true">
+            {SPOKEN_LANGUAGES.map((language) => (
+              <span
+                key={language.name}
+                style={{ background: language.color }}
+              />
+            ))}
+          </div>
+          <ul className="spoken-language-list">
+            {SPOKEN_LANGUAGES.map((language) => (
+              <li key={language.name}>
+                <span
+                  className="language-dot"
+                  style={{ background: language.color }}
+                  aria-hidden="true"
+                />
+                <span>
+                  {language.name}{' '}
+                  <span className="spoken-language-level">
+                    {language.level}
+                  </span>
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
       <a className="gh-btn primary big-cta" href={MAILTO}>
         <IconMail width={14} height={14} /> Email me
       </a>
