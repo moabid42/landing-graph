@@ -91,6 +91,20 @@ export const IconTag = (p) => (
   </svg>
 )
 
+export const IconGlobe = (p) => (
+  <svg {...base} {...p}>
+    <circle cx="8" cy="8" r="6.25" />
+    <ellipse cx="8" cy="8" rx="2.75" ry="6.25" />
+    <path d="M1.75 8h12.5" />
+  </svg>
+)
+
+export const IconTools = (p) => (
+  <svg {...base} viewBox="0 0 24 24" strokeWidth="1.8" {...p}>
+    <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94Z" />
+  </svg>
+)
+
 export const IconMail = (p) => (
   <svg {...base} {...p}>
     <rect x="1.75" y="3.25" width="12.5" height="9.5" rx="1.5" />

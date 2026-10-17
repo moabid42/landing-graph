@@ -6,35 +6,29 @@ import { sha } from './timeline/format.js'
 import { SectionLink } from './ProfileSections.jsx'
 import ArchiveControls from './ArchiveControls.jsx'
 import useArchiveFilters from './useArchiveFilters.js'
+import { facetOptions, filterContent, sortContent } from './archive.js'
+import { tagLabel } from './taxonomy.js'
+import ContentTags from './ContentTags.jsx'
+import ResultMeta from './ResultMeta.jsx'
 
 const monthYear = new Intl.DateTimeFormat('en', {
   month: 'short',
   year: 'numeric',
   timeZone: 'UTC',
 })
-const TOPICS = [...new Set(POSTS.flatMap((post) => post.topics))].sort()
+const WRITING_FACETS = facetOptions(POSTS)
 
 export default function Writing({ mediumUrl, full = false }) {
-  const { query, setQuery, topic, setTopic } = useArchiveFilters(
-    'writing',
-    full,
-    TOPICS
-  )
-  const search = query.trim().toLowerCase()
+  const filters = useArchiveFilters('writing', full, WRITING_FACETS)
   const posts = full
-    ? POSTS.filter(
-        (post) =>
-          (!topic || post.topics.includes(topic)) &&
-          (!search ||
-            [post.title, post.summary, ...post.topics]
-              .join(' ')
-              .toLowerCase()
-              .includes(search))
-      )
+    ? sortContent(filterContent(POSTS, filters), filters.sort)
     : POSTS.slice(0, 3)
   const groups = []
   for (const post of posts) {
-    const year = full ? post.date?.slice(0, 4) || 'Undated' : 'latest'
+    const year =
+      full && filters.sort !== 'updated'
+        ? post.date?.slice(0, 4) || 'Undated'
+        : 'latest'
     if (groups.at(-1)?.year !== year) groups.push({ year, posts: [] })
     groups.at(-1).posts.push(post)
   }
@@ -86,79 +80,66 @@ export default function Writing({ mediumUrl, full = false }) {
         </div>
       ) : (
         <>
-          {full && (
-            <ArchiveControls
-              label="writing"
-              query={query}
-              setQuery={setQuery}
-              topic={topic}
-              setTopic={setTopic}
-              topics={TOPICS}
-              count={posts.length}
-              matches={posts.length}
-              total={POSTS.length}
-            />
-          )}
-          {posts.length === 0 && (
-            <div className="blankslate">
-              <IconPencil width={22} height={22} />
-              <p className="bs-title">No posts match these filters</p>
-              <p className="bs-text">
-                Try another search or clear the filters above.
-              </p>
-            </div>
-          )}
-          {groups.map((group) => (
-            <div className="writing-year" key={group.year}>
-              {full && (
-                <h3 className="archive-year">
-                  {group.year}
-                  <span className="counter">{group.posts.length}</span>
-                </h3>
-              )}
-              <ul className="post-list">
-                {group.posts.map((post) => (
-                  <li key={post.slug} className="post-row">
-                    <span className="post-sha" aria-hidden="true">
-                      {sha(post.slug)}
-                    </span>
-                    <a className="post-title" {...link(postPath(post.slug))}>
-                      {post.title}
-                    </a>
-                    {post.summary && (
-                      <p className="post-summary">{post.summary}</p>
-                    )}
-                    <p className="post-meta">
-                      <span>{post.readingMinutes} min read</span>
-                      {!full && post.topics[0] && <span>{post.topics[0]}</span>}
-                      {post.date && (
-                        <time dateTime={post.date}>
-                          {monthYear.format(new Date(`${post.date}T00:00:00Z`))}
-                        </time>
+          <ArchiveControls
+            enabled={full}
+            defaultSort="Newest published"
+            label="writing"
+            filters={filters}
+            items={POSTS}
+            count={posts.length}
+            matches={posts.length}
+            total={POSTS.length}
+          >
+            {posts.length === 0 && (
+              <div className="blankslate">
+                <IconPencil width={22} height={22} />
+                <p className="bs-title">No posts match these filters</p>
+                <p className="bs-text">
+                  Try another search or clear the filters above.
+                </p>
+              </div>
+            )}
+            {groups.map((group) => (
+              <div className="writing-year" key={group.year}>
+                {full && group.year !== 'latest' && (
+                  <h3 className="archive-year">
+                    {group.year}
+                    <span className="counter">{group.posts.length}</span>
+                  </h3>
+                )}
+                <ul className="post-list">
+                  {group.posts.map((post) => (
+                    <li key={post.slug} className="post-row">
+                      <span className="post-sha" aria-hidden="true">
+                        {sha(post.slug)}
+                      </span>
+                      <a className="post-title" {...link(postPath(post.slug))}>
+                        {post.title}
+                      </a>
+                      {post.summary && (
+                        <p className="post-summary">{post.summary}</p>
                       )}
-                    </p>
-                    {full && post.topics.length > 0 && (
-                      <div className="archive-topics">
-                        {post.topics.map((value) => (
-                          <button
-                            key={value}
-                            type="button"
-                            className="topic"
-                            aria-pressed={topic === value}
-                            onClick={() =>
-                              setTopic(topic === value ? '' : value)
-                            }
-                          >
-                            {value}
-                          </button>
-                        ))}
-                      </div>
-                    )}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+                      <p className="post-meta">
+                        <span>{post.readingMinutes} min read</span>
+                        {!full && post.domains[0] && (
+                          <span>{tagLabel('domains', post.domains[0])}</span>
+                        )}
+                        {post.date && !full && (
+                          <time dateTime={post.date}>
+                            {monthYear.format(
+                              new Date(`${post.date}T00:00:00Z`)
+                            )}
+                          </time>
+                        )}
+                      </p>
+                      {full && <ContentTags item={post} filters={filters} />}
+                      {full && <ResultMeta item={post} />}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </ArchiveControls>
         </>
       )}
     </section>

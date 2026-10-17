@@ -114,9 +114,7 @@ test.describe('the writing section', () => {
     await page.getByRole('button', { name: 'Clear filters' }).click()
     await expect(page.locator('.post-row')).toHaveCount(published.length)
     const topic = published[0].topics[0]
-    await page
-      .getByRole('combobox', { name: 'Filter writing by topic' })
-      .selectOption(topic)
+    await search.fill(`topic:${topic}`)
     await expect(page.locator('.post-row')).toHaveCount(
       published.filter((post) => post.topics.includes(topic)).length
     )
@@ -131,9 +129,7 @@ test.describe('the writing section', () => {
     await expect(
       page.getByRole('searchbox', { name: 'Search writing' })
     ).toHaveValue('memory')
-    await expect(
-      page.getByRole('combobox', { name: 'Filter writing by topic' })
-    ).toHaveValue('')
+    await expect(page.locator('.archive-active-filters')).toHaveCount(0)
     await expect(page.locator('.post-row')).not.toHaveCount(0)
     await expect(page).toHaveURL(url(`${pagePath('writing')}?q=memory`))
     await page.reload()

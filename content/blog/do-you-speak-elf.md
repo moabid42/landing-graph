@@ -1,7 +1,9 @@
 ---
 title: Do you speak ELF?
 date: 2023-10-25
-topics: binary, programming, elf, kernel, linux
+domains: systems-programming, offensive-security
+technologies: c, linux
+topics: binary-formats, reverse-engineering
 summary: The ELF binary format from the inside: headers, sections vs segments, and how the Linux kernel loads your program.
 source: https://medium.com/@m0ab1d42/do-you-speak-elf-82600820772d
 ---

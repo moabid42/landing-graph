@@ -1,7 +1,9 @@
 ---
 title: PE Hell
 date: 2025-09-04
-topics: parsing, malware, reverse-engineering, malware-analysis
+domains: offensive-security
+technologies: windows, c
+topics: binary-formats, malware-analysis, reverse-engineering
 summary: A walk through the Windows PE file format — headers, sections, imports — and why parsing it by hand is the first step in malware analysis.
 source: https://medium.com/@m0ab1d42/pe-hell-5b39bce5a8bc
 ---

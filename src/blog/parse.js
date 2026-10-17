@@ -5,6 +5,8 @@
 //   ---
 //   title: Human-readable title
 //   date: YYYY-MM-DD
+//   domains: cloud-security, offensive-security
+//   technologies: aws, python
 //   topics: comma, separated
 //   summary: one line for search results and share cards
 //   updated: YYYY-MM-DD    (optional — the last real edit, for search engines)
@@ -17,6 +19,8 @@
 // Node at build time to produce the post index, and the browser runs the same
 // function on the raw file to get the body. One parser, so an index can never
 // disagree with the post it points at.
+
+import { parseTags } from '../taxonomy.js'
 
 function calendarDate(value, field, path) {
   if (!value) return ''
@@ -67,10 +71,9 @@ export function parsePost(path, raw) {
     summary: meta.summary || '',
     readingMinutes: Math.max(1, Math.ceil(words / 200)),
     draft: (meta.draft || '').toLowerCase() === 'true',
-    topics: (meta.topics || '')
-      .split(',')
-      .map((s) => s.trim())
-      .filter(Boolean),
+    domains: parseTags(meta.domains),
+    technologies: parseTags(meta.technologies),
+    topics: parseTags(meta.topics),
     image,
     body,
   }

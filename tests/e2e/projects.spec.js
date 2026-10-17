@@ -53,9 +53,6 @@ test.describe('projects', () => {
     const history = page.locator('.project-history')
     const rows = history.locator('.project-list > li')
     const search = history.getByRole('searchbox', { name: 'Search projects' })
-    const topic = history.getByRole('combobox', {
-      name: 'Filter projects by topic',
-    })
     await expect(rows).toHaveCount(Math.min(total, 10))
     await search.fill('42 Heilbronn')
     await expect(rows).not.toHaveCount(0)
@@ -68,31 +65,31 @@ test.describe('projects', () => {
     ).toBeVisible()
     await history.getByRole('button', { name: 'Clear filters' }).click()
     await expect(rows).toHaveCount(Math.min(total, 10))
-    await topic.selectOption('caching')
+    await search.fill('topic:caching')
     await expect(rows).toHaveCount(2)
     await expect(history.locator('.archive-count')).toHaveText(
       `Showing 1–2 of 2 matches (${total} total)`
     )
-    await search.fill('gCp')
+    await search.fill('gCp topic:caching')
     await expect(rows).toHaveCount(1)
     await expect(rows.first()).toContainText('L3AK CTF 2025 Infra')
     await history.getByRole('button', { name: 'Clear filters' }).click()
     await search.fill('Landing Graph')
     const reactProjects = projects.filter((project) =>
-      project.topics.includes('react')
+      project.technologies.includes('react')
     )
     await rows
       .filter({ hasText: 'Landing Graph' })
-      .getByRole('button', { name: 'react', exact: true })
+      .getByRole('button', { name: 'React', exact: true })
       .click()
-    await expect(topic).toHaveValue('react')
-    await search.fill('')
+    await expect(search).toHaveValue('Landing Graph technology:react')
+    await search.fill('technology:react')
     await expect(rows).toHaveCount(Math.min(reactProjects.length, 10))
     await rows
       .filter({ hasText: 'Landing Graph' })
-      .getByRole('button', { name: 'react', exact: true })
+      .getByRole('button', { name: 'React', exact: true })
       .click()
-    await expect(topic).toHaveValue('')
+    await expect(search).toHaveValue('')
     await expect(rows).toHaveCount(Math.min(total, 10))
     await expect(page.locator('.pin-grid .pin-card')).toHaveCount(pins.length)
   })
@@ -102,23 +99,22 @@ test.describe('projects', () => {
   }) => {
     await page.goto(url(`${pagePath('work')}?q=GCP&topic=caching&page=999`))
     const search = page.getByRole('searchbox', { name: 'Search projects' })
-    const topic = page.getByRole('combobox', {
-      name: 'Filter projects by topic',
-    })
-    await expect(search).toHaveValue('GCP')
-    await expect(topic).toHaveValue('caching')
+    await expect(search).toHaveValue('GCP topic:caching')
     await expect(page.locator('.project-list > li')).toHaveCount(1)
-    await expect(page).toHaveURL(url(`${pagePath('work')}?q=GCP&topic=caching`))
+    await expect
+      .poll(() => new URL(page.url()).searchParams.get('q'))
+      .toBe('GCP topic:caching')
+    await expect
+      .poll(() => new URL(page.url()).searchParams.has('page'))
+      .toBe(false)
     await page.reload()
-    await expect(search).toHaveValue('GCP')
-    await expect(topic).toHaveValue('caching')
+    await expect(search).toHaveValue('GCP topic:caching')
     await page
       .getByRole('navigation', { name: 'Sections' })
       .getByRole('link', { name: /^Writing/ })
       .click()
     await page.goBack()
-    await expect(search).toHaveValue('GCP')
-    await expect(topic).toHaveValue('caching')
+    await expect(search).toHaveValue('GCP topic:caching')
     await expect(page.locator('.project-list > li')).toHaveCount(1)
     await page.getByRole('button', { name: 'Clear filters' }).click()
     await expect(page).toHaveURL(url(pagePath('work')))
@@ -133,9 +129,7 @@ test.describe('projects', () => {
     await expect(
       page.getByRole('searchbox', { name: 'Search projects' })
     ).toHaveValue('redteam-copilot')
-    await expect(
-      page.getByRole('combobox', { name: 'Filter projects by topic' })
-    ).toHaveValue('')
+    await expect(page.locator('.archive-active-filters')).toHaveCount(0)
     await expect(page.locator('.project-list > li')).toHaveCount(1)
     await expect(page.locator('.archive-count')).toHaveText(
       `Showing 1–1 of 1 matches (${total} total)`
@@ -150,14 +144,14 @@ test.describe('projects', () => {
     page,
   }) => {
     await page
-      .getByRole('combobox', { name: 'Filter projects by topic' })
-      .selectOption('caching')
+      .getByRole('searchbox', { name: 'Search projects' })
+      .fill('topic:caching')
     await expect(page.locator('.post-row')).toHaveCount(0)
     const navigation = page.getByRole('navigation', { name: 'Sections' })
     await navigation.getByRole('link', { name: /^Writing/ }).click()
     await expect(page).toHaveURL(url(pagePath('writing')))
     await expect(
-      page.getByRole('combobox', { name: 'Filter writing by topic' })
+      page.getByRole('searchbox', { name: 'Search writing' })
     ).toHaveValue('')
     await expect(page.locator('.post-row')).not.toHaveCount(0)
     await expect(page.locator('#work')).toHaveCount(0)
@@ -185,8 +179,8 @@ test.describe('projects', () => {
     for (const width of [320, 390, 768]) {
       await page.setViewportSize({ width, height: 844 })
       await page
-        .getByRole('combobox', { name: 'Filter projects by topic' })
-        .selectOption('distributed-systems')
+        .getByRole('searchbox', { name: 'Search projects' })
+        .fill('topic:distributed-systems')
       // A reserved scrollbar gutter can make this negative. Only a positive
       // difference means the page is wider than the viewport.
       await expect
@@ -211,8 +205,8 @@ test.describe('projects', () => {
           .getByRole('button', { name: 'Switch to light theme' })
           .click()
       await page
-        .getByRole('combobox', { name: 'Filter projects by topic' })
-        .selectOption('caching')
+        .getByRole('searchbox', { name: 'Search projects' })
+        .fill('topic:caching')
       const { violations } = await new AxeBuilder({ page })
         .include('#work')
         .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])

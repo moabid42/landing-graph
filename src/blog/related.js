@@ -1,9 +1,17 @@
-// Prefer shared topics, then the newest posts. The current article is never
-// recommended, and recent writing fills any remaining places.
+import { FACETS } from '../taxonomy.js'
+
+// Give each shared topic more weight than a shared domain or technology.
+// The current article is excluded; recent writing fills remaining places.
 export function relatedPosts(post, posts, limit = 3) {
-  const topics = new Set(post.topics)
   const overlap = (candidate) =>
-    candidate.topics.filter((topic) => topics.has(topic)).length
+    FACETS.reduce(
+      (score, { key }) =>
+        score +
+        (candidate[key] || []).filter((value) => post[key]?.includes(value))
+          .length *
+          (key === 'topics' ? 3 : 1),
+      0
+    )
   return posts
     .filter((candidate) => candidate.slug !== post.slug && !candidate.draft)
     .sort(

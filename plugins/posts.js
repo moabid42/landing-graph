@@ -6,6 +6,7 @@ import { readdirSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { parsePost, postMeta } from '../src/blog/parse.js'
 import { BASE, absolute, postPath } from '../src/paths.js'
+import { taxonomyLines } from '../src/taxonomy.js'
 
 /**
  * Every publishable post in a directory, newest first. The bodies stay behind
@@ -40,7 +41,9 @@ export function postMarkdown(p) {
     `# ${p.title}\n\n` +
     `Source: ${absolute(postPath(p.slug))}\n` +
     (p.date ? `Published: ${p.date}\n` : '') +
-    (p.topics.length ? `Topics: ${p.topics.join(', ')}\n` : '') +
+    taxonomyLines(p)
+      .map((line) => `${line}\n`)
+      .join('') +
     `\n${absoluteImages(p.body).trim()}\n`
   )
 }

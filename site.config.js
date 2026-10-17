@@ -160,7 +160,8 @@ export default {
   //
   //   title   the paper title, as published
   //   tldr    the finding in a sentence or two, not the abstract
-  //   topics  the pills under the tl;dr, like a repo's topics
+  //   domains / technologies / topics  IDs from src/taxonomy.js, shared
+  //                                    with projects and writing
   //   href    where the box opens — the ResearchGate publication url. The
   //           card footer is read off this url: the archive it is hosted on,
   //           and the publication number, shown like a commit sha.
@@ -168,25 +169,33 @@ export default {
     {
       title: 'Recon as a First-Class Planning Action under Partial Observability',
       tldr: 'Attack-path planners almost all assume they already know the network. Modelling reconnaissance as a planning action with its own OPSEC cost and information gain reaches the goal in 80.3% of randomised Active Directory graphs against 52.3% for a two-phase baseline — but only once the pursuit is directed and multi-step.',
-      topics: ['attack planning', 'partial observability', 'math'],
+      domains: ['offensive-security'],
+      technologies: ['active-directory'],
+      topics: ['attack-planning', 'partial-observability', 'reconnaissance'],
       href: 'https://www.researchgate.net/publication/405230754_Recon_as_a_First-Class_Planning_Action_under_Partial_Observability',
     },
     {
       title: 'HOP: Hook Oriented Programming',
       tldr: 'Licence checks fall to debuggers, and anti-debugging in turn falls to whatever an attacker can patch out. HOP is a Linux anti-debugging design that claims the one debugger slot a process is allowed to have, so the protection has to be evicted before a debugger can attach at all.',
-      topics: ['anti-debugging', 'linux', 'reverse engineering'],
+      domains: ['offensive-security', 'systems-programming'],
+      technologies: ['linux', 'c', 'assembly'],
+      topics: ['anti-debugging', 'reverse-engineering'],
       href: 'https://www.researchgate.net/publication/396647415_HOP_-Hook_Oriented_Programming',
     },
     {
       title: 'RCPRNG: Robust Complete PRNG',
       tldr: 'Cryptographic PRNG models assume unlimited compute and clean entropy; embedded systems have neither, and there entropy accumulation and generation share the same scarce resources. RCPRNG folds both into one security model whose completeness property carries guarantees across arbitrary state transitions, and shows the Gaži-Tessaro sponge construction satisfies it.',
-      topics: ['cryptography', 'prng', 'IoT'],
+      domains: ['cryptography'],
+      technologies: [],
+      topics: ['pseudo-randomness', 'entropy', 'formal-methods'],
       href: 'https://www.researchgate.net/publication/396647163_RCPRNG_-_Robust_Complete_Pseudo_Random_Number_Generator',
     },
     // {
     //   title: 'Paper title, as published',
     //   tldr: 'What it found, in a sentence or two.',
-    //   topics: ['topic', 'topic'],
+    //   domains: ['offensive-security'],
+    //   technologies: [],
+    //   topics: ['attack-planning'],
     //   href: 'https://www.researchgate.net/publication/...',
     // },
   ],

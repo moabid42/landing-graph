@@ -1,7 +1,9 @@
 ---
 title: Pointers need painters
 date: 2023-04-07
-topics: pointers, programming, pointers-in-c, c
+domains: systems-programming
+technologies: c
+topics: memory-management
 summary: Pointers in C explained with pictures — addresses, dereferencing, arrays, and the mistakes that bite beginners.
 source: https://medium.com/@m0ab1d42/pointers-need-painters-354edc8fe6f2
 ---

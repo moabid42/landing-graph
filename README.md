@@ -62,7 +62,9 @@ Each project is a `## Title` block with a description and optional fields:
 ## My project
 
 - pinned: true
-- topics: security, systems
+- domains: cloud-security
+- technologies: python, aws
+- topics: detection-engineering
 - visibility: Public
 - link: https://github.com/you/project
 
@@ -75,6 +77,52 @@ with the first two shown on the README. The full collection also follows the
 file's order, so put your strongest work first. Optional `org`, `start` / `end`
 or `date` fields add context and dates without changing that order. Adding a
 project never adds it to the timeline.
+
+## Classifying projects, writing and research
+
+All three collections share the vocabulary in `src/taxonomy.js`:
+
+- **Domain** is the broad field, such as Cloud Security, Offensive Security,
+  Systems Programming or Cryptography.
+- **Technology** is a language, platform or tool, such as C++, GCP, Terraform
+  or Neo4j. Leave it empty when no specific technology applies.
+- **Topic** is the subject or technique, such as IAM, Detection Engineering,
+  Memory Management or Attack Planning.
+
+Use lowercase IDs from that file in `domains`, `technologies` and `topics`.
+Project fields use comma-separated lists; blog frontmatter uses the same
+fields without the list marker; research entries in `site.config.js` use
+arrays. Add vocabulary there when a new subject needs it. Labels, including
+acronyms such as AWS and C++, are defined once and displayed consistently.
+Avoid generic tags like programming, security or research, narrative labels,
+and project status tags. A tag should help a reader find related work.
+
+Archive pages use a sidebar with domains, colored programming languages,
+technologies and topics. Languages come from the technology tags; language
+colors are defined in `src/searchQuery.js`. Clicking an option or a result tag
+adds a qualifier to the search bar; clicking again removes it. Sidebar counts
+reflect the other active categories. Filters collapse behind a button on mobile.
+
+Search accepts plain words, quoted phrases and these qualifiers:
+
+```text
+language:JavaScript
+domain:cloud-security technology:GCP topic:iam
+"memory management" language:C
+domain:"Cloud Security" -language:Python
+updated:>=2026-01-01
+updated:2026-01-01..2026-12-31
+```
+
+Repeated values in one category match any of those values; different categories
+combine. Date comparisons combine as a range. Search and sorting stay in the URL
+and reset project pagination when changed. Older topic/domain/technology links
+become visible search qualifiers.
+
+Set `updated: YYYY-MM-DD` on a project, article or research entry to show its
+last update date and support the Recently updated sort. Public project dates
+record the repository's GitHub `pushed_at` activity. Articles without an explicit
+update show their publication date. Missing dates are omitted and sort last.
 
 ## Editing the timeline
 

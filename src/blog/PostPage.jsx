@@ -7,6 +7,7 @@ import Markdown from '../markdown.jsx'
 import { POSTS, loadBody } from './index.js'
 import { relatedPosts } from './related.js'
 import Contents from './Contents.jsx'
+import ContentTags from '../ContentTags.jsx'
 
 export default function PostPage({ post }) {
   const [body, setBody] = useState(null)
@@ -64,15 +65,7 @@ export default function PostPage({ post }) {
                 {post.date && <time dateTime={post.date}>{post.date}</time>}
                 <span>{post.readingMinutes} min read</span>
               </p>
-              {post.topics.length > 0 && (
-                <p className="post-tags">
-                  {post.topics.map((topic) => (
-                    <span key={topic} className="topic">
-                      {topic}
-                    </span>
-                  ))}
-                </p>
-              )}
+              <ContentTags item={post} className="post-tags" />
             </div>
             <div className="post-body" ref={articleRef}>
               <ErrorBoundary label="This post">

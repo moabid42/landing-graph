@@ -7,13 +7,20 @@ import ArchiveControls from './ArchiveControls.jsx'
 import {
   PROJECTS,
   PINNED_PROJECTS,
-  PROJECT_TOPICS,
+  PROJECT_FACETS,
   PROJECT_PROBLEMS,
 } from './projects.js'
 import ContentWarnings from './ContentWarnings.jsx'
 import { fmtDate } from './timeline/format.js'
 import useArchiveFilters from './useArchiveFilters.js'
-import { paginate } from './archive.js'
+import {
+  paginate,
+  facetOptions,
+  filterContent,
+  sortContent,
+} from './archive.js'
+import ContentTags from './ContentTags.jsx'
+import ResultMeta from './ResultMeta.jsx'
 
 const {
   identity,
@@ -23,9 +30,7 @@ const {
   languages: LANGUAGES,
 } = config
 const MAILTO = `mailto:${identity.email}`
-const RESEARCH_TOPICS = [
-  ...new Set(RESEARCH.flatMap((paper) => paper.topics || [])),
-].sort()
+const RESEARCH_FACETS = facetOptions(RESEARCH)
 const RESEARCHGATE_URL = links.find((l) => l.name === 'researchgate')?.url
 const remoteNotes = {
   origin: 'Questions, ideas and conversations.',
@@ -57,18 +62,9 @@ const paperMeta = (href) => {
 }
 
 export function Pinned({ full = false }) {
-  const { query, setQuery, topic, setTopic, currentPage, setCurrentPage } =
-    useArchiveFilters('work', full, PROJECT_TOPICS, true)
-  const search = query.trim().toLowerCase()
-  const projects = PROJECTS.filter(
-    (project) =>
-      (!topic || project.topics.includes(topic)) &&
-      (!search ||
-        [project.title, project.org, project.text, ...project.topics]
-          .join(' ')
-          .toLowerCase()
-          .includes(search))
-  )
+  const filters = useArchiveFilters('work', full, PROJECT_FACETS, true)
+  const { currentPage, setCurrentPage } = filters
+  const projects = sortContent(filterContent(PROJECTS, filters), filters.sort)
   const pagination = paginate(projects, currentPage)
 
   useEffect(() => {
@@ -114,13 +110,7 @@ export function Pinned({ full = false }) {
                   <span className="vis-badge">{w.visibility}</span>
                 </h3>
                 <p className="pin-desc">{w.text}</p>
-                <div className="pin-topics">
-                  {w.topics.map((t, i) => (
-                    <span key={`${t}-${i}`} className="topic">
-                      {t}
-                    </span>
-                  ))}
-                </div>
+                <ContentTags item={w} />
               </article>
             ))}
           </div>
@@ -136,96 +126,84 @@ export function Pinned({ full = false }) {
           </div>
           <ArchiveControls
             label="projects"
-            query={query}
-            setQuery={setQuery}
-            topic={topic}
-            setTopic={setTopic}
-            topics={PROJECT_TOPICS}
+            filters={filters}
+            items={PROJECTS}
             count={pagination.items.length}
             start={pagination.start}
             matches={projects.length}
             total={PROJECTS.length}
-          />
-          {projects.length === 0 && (
-            <div className="blankslate">
-              <IconRepo width={22} height={22} />
-              <p className="bs-title">No projects match these filters</p>
-              <p className="bs-text">
-                Try another search or clear the filters above.
-              </p>
-            </div>
-          )}
-          <ul className="project-list" id="project-history-list">
-            {pagination.items.map((project) => (
-              <li key={project.id} className="pin-card">
-                {project.start !== null && (
-                  <p className="project-date">
-                    {fmtDate(project.start)}
-                    {!project.single &&
-                      ` — ${project.end ? fmtDate(project.end) : 'now'}`}
-                  </p>
-                )}
-                <h3>{project.title}</h3>
-                {project.org && <p className="project-org">{project.org}</p>}
-                <p className="pin-desc">{project.text}</p>
-                {project.topics.length > 0 && (
-                  <div className="pin-topics archive-topics">
-                    {project.topics.map((value) => (
-                      <button
-                        key={value}
-                        type="button"
-                        className="topic"
-                        aria-pressed={topic === value}
-                        onClick={() => setTopic(topic === value ? '' : value)}
+          >
+            {projects.length === 0 && (
+              <div className="blankslate">
+                <IconRepo width={22} height={22} />
+                <p className="bs-title">No projects match these filters</p>
+                <p className="bs-text">
+                  Try another search or clear the filters above.
+                </p>
+              </div>
+            )}
+            <ul className="project-list" id="project-history-list">
+              {pagination.items.map((project) => (
+                <li key={project.id} className="pin-card">
+                  {project.start !== null && (
+                    <p className="project-date">
+                      {fmtDate(project.start)}
+                      {!project.single &&
+                        ` — ${project.end ? fmtDate(project.end) : 'now'}`}
+                    </p>
+                  )}
+                  <h3 className="project-result-title">
+                    <IconRepo width={16} height={16} />
+                    {project.link ? (
+                      <a
+                        href={project.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
                       >
-                        {value}
-                      </button>
-                    ))}
-                  </div>
-                )}
-                {project.link && (
-                  <a
-                    className="project-link"
-                    href={project.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Learn more <span aria-hidden="true">↗</span>
-                  </a>
-                )}
-              </li>
-            ))}
-          </ul>
-          {pagination.pageCount > 1 && (
-            <nav
-              className="archive-pagination"
-              aria-label="Projects pagination"
-            >
-              <button
-                type="button"
-                className="gh-btn"
-                aria-label="Previous project page"
-                aria-controls="project-history-list"
-                disabled={pagination.page === 1}
-                onClick={() => changePage(pagination.page - 1)}
+                        {project.title}
+                      </a>
+                    ) : (
+                      project.title
+                    )}
+                  </h3>
+                  {project.org && <p className="project-org">{project.org}</p>}
+                  <p className="pin-desc">{project.text}</p>
+                  <ContentTags item={project} filters={filters} />
+                  <ResultMeta item={project} />
+                </li>
+              ))}
+            </ul>
+            {pagination.pageCount > 1 && (
+              <nav
+                className="archive-pagination"
+                aria-label="Projects pagination"
               >
-                ← Previous
-              </button>
-              <span role="status">
-                Page {pagination.page} of {pagination.pageCount}
-              </span>
-              <button
-                type="button"
-                className="gh-btn"
-                aria-label="Next project page"
-                aria-controls="project-history-list"
-                disabled={pagination.page === pagination.pageCount}
-                onClick={() => changePage(pagination.page + 1)}
-              >
-                Next →
-              </button>
-            </nav>
-          )}
+                <button
+                  type="button"
+                  className="gh-btn"
+                  aria-label="Previous project page"
+                  aria-controls="project-history-list"
+                  disabled={pagination.page === 1}
+                  onClick={() => changePage(pagination.page - 1)}
+                >
+                  ← Previous
+                </button>
+                <span role="status">
+                  Page {pagination.page} of {pagination.pageCount}
+                </span>
+                <button
+                  type="button"
+                  className="gh-btn"
+                  aria-label="Next project page"
+                  aria-controls="project-history-list"
+                  disabled={pagination.page === pagination.pageCount}
+                  onClick={() => changePage(pagination.page + 1)}
+                >
+                  Next →
+                </button>
+              </nav>
+            )}
+          </ArchiveControls>
         </div>
       )}
     </section>
@@ -233,22 +211,9 @@ export function Pinned({ full = false }) {
 }
 
 export function Research({ full = false }) {
-  const { query, setQuery, topic, setTopic } = useArchiveFilters(
-    'research',
-    full,
-    RESEARCH_TOPICS
-  )
-  const search = query.trim().toLowerCase()
+  const filters = useArchiveFilters('research', full, RESEARCH_FACETS)
   const papers = full
-    ? RESEARCH.filter(
-        (paper) =>
-          (!topic || paper.topics?.includes(topic)) &&
-          (!search ||
-            [paper.title, paper.tldr, ...(paper.topics || [])]
-              .join(' ')
-              .toLowerCase()
-              .includes(search))
-      )
+    ? sortContent(filterContent(RESEARCH, filters), filters.sort)
     : RESEARCH.slice(0, 1)
   return (
     <section id="research" aria-label="Research">
@@ -268,103 +233,97 @@ export function Research({ full = false }) {
           </a>
         )}
       </div>
-      {full && RESEARCH.length > 0 && (
-        <ArchiveControls
-          label="research"
-          query={query}
-          setQuery={setQuery}
-          topic={topic}
-          setTopic={setTopic}
-          topics={RESEARCH_TOPICS}
-          count={papers.length}
-          matches={papers.length}
-          total={RESEARCH.length}
-        />
-      )}
-      {RESEARCH.length > 0 && papers.length === 0 && (
-        <div className="blankslate">
-          <IconFlask width={22} height={22} />
-          <p className="bs-title">No papers match these filters</p>
-          <p className="bs-text">
-            Try another search or clear the filters above.
-          </p>
-        </div>
-      )}
-      {RESEARCH.length === 0 ? (
-        <div className="blankslate">
-          <IconFlask width={22} height={22} />
-          <p className="bs-title">Papers are being indexed</p>
-          <p className="bs-text">
-            Titles and a short tl;dr will be listed here, each opening the full
-            text on ResearchGate.
-          </p>
-          {RESEARCHGATE_URL && (
-            <a
-              className="gh-btn"
-              href={RESEARCHGATE_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              View on ResearchGate <span aria-hidden="true">↗</span>
-            </a>
-          )}
-        </div>
-      ) : (
-        <ul className="research-releases" aria-label="Research publications">
-          {papers.map((paper) => {
-            const { host, id } = paperMeta(paper.href)
-            return (
-              <li key={paper.title} className="research-release">
-                <div className="release-meta">
-                  <span className="release-label">Publication</span>
-                  {id && (
-                    <span className="release-tag" title="Publication ID">
-                      <IconTag width={14} height={14} /> #{id}
-                    </span>
-                  )}
-                  {host && <span className="release-host">{host}</span>}
-                </div>
-                <article className="release-card">
-                  <div className="release-body">
-                    <h3>
+      <ArchiveControls
+        enabled={full && RESEARCH.length > 0}
+        label="research"
+        filters={filters}
+        items={RESEARCH}
+        count={papers.length}
+        matches={papers.length}
+        total={RESEARCH.length}
+      >
+        {RESEARCH.length > 0 && papers.length === 0 && (
+          <div className="blankslate">
+            <IconFlask width={22} height={22} />
+            <p className="bs-title">No papers match these filters</p>
+            <p className="bs-text">
+              Try another search or clear the filters above.
+            </p>
+          </div>
+        )}
+        {RESEARCH.length === 0 ? (
+          <div className="blankslate">
+            <IconFlask width={22} height={22} />
+            <p className="bs-title">Papers are being indexed</p>
+            <p className="bs-text">
+              Titles and a short tl;dr will be listed here, each opening the
+              full text on ResearchGate.
+            </p>
+            {RESEARCHGATE_URL && (
+              <a
+                className="gh-btn"
+                href={RESEARCHGATE_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                View on ResearchGate <span aria-hidden="true">↗</span>
+              </a>
+            )}
+          </div>
+        ) : (
+          <ul className="research-releases" aria-label="Research publications">
+            {papers.map((paper) => {
+              const { host, id } = paperMeta(paper.href)
+              return (
+                <li key={paper.title} className="research-release">
+                  <div className="release-meta">
+                    <span className="release-label">Publication</span>
+                    {id && (
+                      <span className="release-tag" title="Publication ID">
+                        <IconTag width={14} height={14} /> #{id}
+                      </span>
+                    )}
+                    {host && <span className="release-host">{host}</span>}
+                  </div>
+                  <article className="release-card">
+                    <div className="release-body">
+                      <h3>
+                        <a
+                          href={paper.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {paper.title}
+                        </a>
+                      </h3>
+                      <p className="release-summary">{paper.tldr}</p>
+                      <ContentTags
+                        item={paper}
+                        filters={full ? filters : undefined}
+                        className="release-topics"
+                      />
+                      {full && <ResultMeta item={paper} />}
+                    </div>
+                    <div className="release-footer">
                       <a
                         href={paper.href}
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        {paper.title}
+                        <IconBook width={16} height={16} />
+                        Read paper
+                        <span className="release-arrow" aria-hidden="true">
+                          ↗
+                        </span>
                       </a>
-                    </h3>
-                    <p className="release-summary">{paper.tldr}</p>
-                    {paper.topics?.length > 0 && (
-                      <div className="release-topics">
-                        {paper.topics.map((topic, i) => (
-                          <span key={`${topic}-${i}`} className="topic">
-                            {topic}
-                          </span>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                  <div className="release-footer">
-                    <a
-                      href={paper.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <IconBook width={16} height={16} />
-                      Read paper
-                      <span className="release-arrow" aria-hidden="true">
-                        ↗
-                      </span>
-                    </a>
-                  </div>
-                </article>
-              </li>
-            )
-          })}
-        </ul>
-      )}
+                    </div>
+                  </article>
+                </li>
+              )
+            })}
+          </ul>
+        )}
+      </ArchiveControls>
     </section>
   )
 }

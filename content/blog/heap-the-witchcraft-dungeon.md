@@ -1,7 +1,9 @@
 ---
 title: Heap, The Witchcraft Dungeon
 date: 2023-05-21
-topics: binary-exploitation, gdb, heap, ctf, c
+domains: offensive-security, systems-programming
+technologies: c, linux, gdb
+topics: binary-exploitation, memory-management
 summary: How the glibc heap really works — chunks, bins, malloc/free — and how that turns into heap exploitation in CTFs.
 source: https://medium.com/@m0ab1d42/heap-the-witchcraft-dungeon-ac08e782fb49
 ---

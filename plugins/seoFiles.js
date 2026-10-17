@@ -1,4 +1,5 @@
 import config from '../site.config.js'
+import { allTags } from '../src/taxonomy.js'
 import {
   ORIGIN,
   absolute,
@@ -63,7 +64,7 @@ function feed(posts) {
       (p.summary
         ? `      <description>${escape(p.summary)}</description>\n`
         : '') +
-      p.topics
+      allTags(p)
         .map((t) => `      <category>${escape(t)}</category>\n`)
         .join('') +
       '    </item>'

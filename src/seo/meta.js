@@ -15,6 +15,7 @@ import {
   postPath,
 } from '../paths.js'
 import { PAGES } from '../pages.js'
+import { allTags } from '../taxonomy.js'
 
 const { identity, seo, links } = config
 
@@ -62,7 +63,7 @@ export function metaFor(post, page = null) {
     type: post ? 'article' : 'website',
     publishedTime: post?.date || null,
     modifiedTime: post?.updated || null,
-    topics: post?.topics || [],
+    topics: post ? allTags(post) : [],
   }
 }
 
@@ -170,7 +171,7 @@ export function jsonLd(post, page = null) {
       url: canonical(post.slug),
       datePublished: post.date || undefined,
       dateModified: post.updated || post.date || undefined,
-      keywords: post.topics?.length ? post.topics.join(', ') : undefined,
+      keywords: allTags(post).length ? allTags(post).join(', ') : undefined,
       inLanguage: 'en',
       // Search results show the post's own picture; the share card, which
       // needs a fixed 1200x630, stays the site's.

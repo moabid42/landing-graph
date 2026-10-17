@@ -4,6 +4,7 @@ import config from '../site.config.js'
 import { PAGES } from '../src/pages.js'
 import { absolute, postPath } from '../src/paths.js'
 import { absoluteImages } from './posts.js'
+import { taxonomyLines } from '../src/taxonomy.js'
 
 function timelineFile(timelineDir, key) {
   try {
@@ -31,9 +32,10 @@ export function pageMarkdown(page, posts, timelineDir) {
       lines.push(
         `## [${post.title}](${absolute(postPath(post.slug))})`,
         '',
-        [post.date, `${post.readingMinutes} min read`, ...(post.topics || [])]
+        [post.date, `${post.readingMinutes} min read`]
           .filter(Boolean)
           .join(' · '),
+        ...taxonomyLines(post),
         '',
         post.summary || '',
         ''
@@ -46,7 +48,7 @@ export function pageMarkdown(page, posts, timelineDir) {
         '',
         paper.tldr,
         '',
-        ...(paper.topics || []),
+        ...taxonomyLines(paper),
         ''
       )
   } else if (page === 'work') {

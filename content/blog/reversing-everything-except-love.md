@@ -1,7 +1,9 @@
 ---
 title: Reverse everything except Love
 date: 2023-05-08
-topics: c, reverse-engineering, fairy-tale, programming
+domains: offensive-security, systems-programming
+technologies: c, assembly, ghidra
+topics: reverse-engineering
 summary: A fairy-tale style intro to reverse engineering: from source to assembly and back, with the tools that make it click.
 source: https://medium.com/@m0ab1d42/reversing-everything-except-love-27fe7a3d9e76
 ---
