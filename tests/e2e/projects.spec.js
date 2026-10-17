@@ -14,7 +14,7 @@ test.describe('projects', () => {
     await page.goto(url(pagePath('work')))
   })
 
-  test('shows flagged pins and includes every project across the archive pages', async ({
+  test('shows flagged pins and preserves curated order across the archive pages', async ({
     page,
   }) => {
     await expect(page.locator('.pin-grid .pin-card h3')).toHaveText(
@@ -39,9 +39,7 @@ test.describe('projects', () => {
         `Showing ${(currentPage - 1) * 10 + 1}–${Math.min(currentPage * 10, total)} of ${total}`
       )
     } while (currentPage <= Math.ceil(total / 10))
-    expect(titles.sort()).toEqual(
-      projects.map((project) => project.title).sort()
-    )
+    expect(titles).toEqual(projects.map((project) => project.title))
     await page
       .getByRole('searchbox', { name: 'Search projects' })
       .fill('redteam-copilot')
@@ -79,14 +77,19 @@ test.describe('projects', () => {
     await expect(rows).toHaveCount(1)
     await expect(rows.first()).toContainText('L3AK CTF 2025 Infra')
     await history.getByRole('button', { name: 'Clear filters' }).click()
+    await search.fill('Landing Graph')
+    const reactProjects = projects.filter((project) =>
+      project.topics.includes('react')
+    )
     await rows
       .filter({ hasText: 'Landing Graph' })
       .getByRole('button', { name: 'react', exact: true })
       .click()
     await expect(topic).toHaveValue('react')
-    await expect(rows).toHaveCount(1)
+    await search.fill('')
+    await expect(rows).toHaveCount(Math.min(reactProjects.length, 10))
     await rows
-      .first()
+      .filter({ hasText: 'Landing Graph' })
       .getByRole('button', { name: 'react', exact: true })
       .click()
     await expect(topic).toHaveValue('')

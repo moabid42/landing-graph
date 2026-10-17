@@ -79,11 +79,9 @@ describe('project migration', () => {
     }
   })
 
-  it('sorts dated projects newest first and leaves undated ones at the end', () => {
-    const dates = PROJECTS.filter((p) => p.start !== null).map((p) => p.start)
-    expect(dates).toEqual([...dates].sort((a, b) => b - a))
-    expect(PROJECTS.slice(dates.length).every((p) => p.start === null)).toBe(
-      true
+  it('preserves the curated order regardless of project dates or pins', () => {
+    expect(PROJECTS.map((project) => project.id)).toEqual(
+      parseProjects(PROJECTS_SOURCE).map((project) => project.id)
     )
   })
 

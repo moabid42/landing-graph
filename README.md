@@ -71,9 +71,10 @@ What it does and why it matters.
 
 `- pinned: true` features a project in Pinned; omit it or set it to `false`
 to leave the project in the full collection. Pins follow the file's order,
-with the first two shown on the README. Optional `org`, `start` / `end` or
-`date` fields add context and dates. Dated projects sort newest first, then
-undated projects. Adding a project never adds it to the timeline.
+with the first two shown on the README. The full collection also follows the
+file's order, so put your strongest work first. Optional `org`, `start` / `end`
+or `date` fields add context and dates without changing that order. Adding a
+project never adds it to the timeline.
 
 ## Editing the timeline
 
