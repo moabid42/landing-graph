@@ -3,6 +3,7 @@ import { tagLabel } from './taxonomy.js'
 import { facetOptions, filterContent } from './archive.js'
 import { LANGUAGES, SEARCH_FACETS } from './searchQuery.js'
 import { IconGlobe, IconTag } from './icons.jsx'
+import ArchiveSort from './ArchiveSort.jsx'
 
 const FILTER_ICONS = {
   domain: IconGlobe,
@@ -195,17 +196,12 @@ export default function ArchiveControls({
               {matches !== total && ` matches (${total} total)`}
             </p>
           </div>
-          <label className="archive-sort">
-            <span className="sr-only">Sort {label}</span>
-            <span aria-hidden="true">Sort by:</span>
-            <select
-              value={filters.sort}
-              onChange={(event) => filters.setSort(event.target.value)}
-            >
-              <option value="default">{defaultSort}</option>
-              <option value="updated">Recently updated</option>
-            </select>
-          </label>
+          <ArchiveSort
+            label={label}
+            value={filters.sort}
+            onChange={filters.setSort}
+            defaultSort={defaultSort}
+          />
           {hasFilters && (
             <button
               type="button"

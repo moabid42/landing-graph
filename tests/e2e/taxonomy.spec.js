@@ -137,8 +137,9 @@ test('recently updated sorting uses real dates and persists in the URL', async (
 }) => {
   await page.goto(url(pagePath('work')))
   await page
-    .getByRole('combobox', { name: 'Sort projects' })
-    .selectOption('updated')
+    .getByRole('button', { name: 'Sort projects by: Recommended' })
+    .click()
+  await page.getByRole('menuitemradio', { name: 'Recently updated' }).click()
   const dates = await page
     .locator('.project-list .result-updated time')
     .evaluateAll((elements) => elements.map((element) => element.dateTime))
@@ -147,8 +148,74 @@ test('recently updated sorting uses real dates and persists in the URL', async (
   expect(new URL(page.url()).searchParams.get('sort')).toBe('updated')
   await page.reload()
   await expect(
-    page.getByRole('combobox', { name: 'Sort projects' })
-  ).toHaveValue('updated')
+    page.getByRole('button', { name: 'Sort projects by: Recently updated' })
+  ).toBeVisible()
+})
+
+test('sort menus support keyboard selection and dismissal', async ({
+  page,
+}) => {
+  await page.goto(url(pagePath('work')))
+  const trigger = page.getByRole('button', { name: /^Sort projects by:/ })
+  const menu = page.getByRole('menu', { name: 'Sort projects' })
+  const recommended = page.getByRole('menuitemradio', { name: 'Recommended' })
+  const updated = page.getByRole('menuitemradio', { name: 'Recently updated' })
+
+  await trigger.focus()
+  await page.keyboard.press('ArrowDown')
+  await expect(recommended).toBeFocused()
+  await expect(recommended).toHaveAttribute('aria-checked', 'true')
+  await page.keyboard.press('End')
+  await expect(updated).toBeFocused()
+  await page.keyboard.press('Home')
+  await expect(recommended).toBeFocused()
+  await page.keyboard.press('ArrowUp')
+  await expect(updated).toBeFocused()
+  await page.keyboard.press('Enter')
+  await expect(menu).toBeHidden()
+  await expect(trigger).toBeFocused()
+  await expect(trigger).toContainText('Recently updated')
+
+  await page.keyboard.press('Space')
+  await expect(updated).toBeFocused()
+  await page.keyboard.press('Escape')
+  await expect(menu).toBeHidden()
+  await expect(trigger).toBeFocused()
+
+  for (const key of ['Tab', 'Shift+Tab']) {
+    await trigger.click()
+    await page.keyboard.press(key)
+    await expect(menu).toBeHidden()
+    await expect(page.locator(':focus')).toHaveCount(1)
+  }
+
+  await trigger.click()
+  await page.getByRole('searchbox', { name: 'Search projects' }).click()
+  await expect(menu).toBeHidden()
+})
+
+test('sort menus fit narrow screens across all archives', async ({ page }) => {
+  await page.setViewportSize({ width: 320, height: 844 })
+  for (const collection of collections) {
+    await page.goto(url(pagePath(collection.page)))
+    const trigger = page.getByRole('button', {
+      name: new RegExp(`^Sort ${collection.label} by:`),
+    })
+    await trigger.click()
+    const panel = await page.locator('.archive-sort-menu').boundingBox()
+    expect(panel.x).toBeGreaterThanOrEqual(0)
+    expect(panel.x + panel.width).toBeLessThanOrEqual(320)
+    expect(panel.y).toBeGreaterThanOrEqual(0)
+    expect(panel.y + panel.height).toBeLessThanOrEqual(844)
+    await page.getByRole('menuitemradio', { name: 'Recently updated' }).click()
+    await expect(trigger).toContainText('Recently updated')
+    expect(new URL(page.url()).searchParams.get('sort')).toBe('updated')
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth - innerWidth
+      )
+    ).toBeLessThanOrEqual(0)
+  }
 })
 
 test('short filtered results stay below search when the sidebar is taller', async ({
@@ -246,6 +313,11 @@ for (const theme of ['dark', 'light']) {
       await page
         .getByRole('searchbox', { name: `Search ${collection.label}` })
         .fill(collection.query)
+      await page
+        .getByRole('button', {
+          name: new RegExp(`^Sort ${collection.label} by:`),
+        })
+        .click()
       const { violations } = await new AxeBuilder({ page })
         .include(
           collection.page === 'work'
