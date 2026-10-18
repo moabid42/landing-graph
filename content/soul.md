@@ -92,7 +92,7 @@ But I like it. I like learning something well enough that I can explain it, chal
 
 That curiosity reaches well beyond my work. I read and write about life and death, AI, human behaviour, faith, and the things I do not think science has fully explained. A question does not have to become useful at work for me to want to spend time with it.
 
-Writing is how I work through a lot of those thoughts. Putting something into words makes me sit with it a little longer. It gives me a chance to see what I actually mean, and where I still have questions.
+Writing is how I work through a lot of these thoughts. Putting something into words makes me sit with it a little longer. It gives me a chance to see what I actually mean, and where I still have questions.
 
 So yes, **curiosity built this mind.**
 
@@ -180,7 +180,7 @@ There is another line I love:
 
 > “But how could you live and have no story to tell?”
 >
->  Fyodor Dostoevsky, [White Nights](https://libraryofagartha.com/Literature/Dostoevsky/Dostoevsky%2C%20Fyodor/Notes%20from%20Underground%20_%20White%20Nights%20_%20etc.%20%5Btrans.%20MacAndrew%5D/Dostoevsky%2C%20Fyodor%20-%20Notes%20from%20Underground%2C%20etc.%20%28Signet%2C%201961%29.pdf#page=20), translated by Andrew R. MacAndrew
+>  Fyodor Dostoevsky, [White Nights](https://libraryofagartha.com/Literature/Dostoevsky/Dostoevsky%2C%20Fyodor/Notes%20from%20Underground%20_%20White%20Nights%20_%20etc.%20%5Btrans.%20MacAndrew%5D/Dostoevsky%2C%20Fyodor%20-%20Notes%20from%20Underground%2C%20etc.%20%28Signet%2C%201961%29.pdf#page=20)
 
 ![life](./soul/white-nights.png)
 
@@ -196,4 +196,4 @@ So, that is where I am for now.
 
 **Still curious. Still learning. Still playing football on Mondays.**
 
-We'll see what the next chapter looks like :)
+Let's see what the next chapter looks like :)

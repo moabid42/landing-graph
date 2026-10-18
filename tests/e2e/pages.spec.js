@@ -7,6 +7,7 @@ import { pagePath, absolute } from '../../src/paths.js'
 import { absoluteImages, readPosts } from '../../plugins/posts.js'
 import { url } from './site.js'
 import { parseProjects } from '../../src/projects/parse.js'
+import { readingMinutes } from '../../src/readingTime.js'
 
 const projects = parseProjects(readFileSync('content/projects.md', 'utf8'))
 const pins = projects.filter((project) => project.pinned)
@@ -66,6 +67,16 @@ test('soul loads on demand and its authored text reaches the static exports', as
   await expect(prose).toBeVisible()
   expect((await prose.innerText()).trim()).not.toBe('')
   expect(bodyRequests).toHaveLength(1)
+  await expect(page.locator('.article-meta')).toContainText(
+    `${readingMinutes(body)} min read`
+  )
+  await expect(page.locator('.article-meta time')).toHaveAttribute(
+    'datetime',
+    '2026-10-04'
+  )
+  await expect(page.locator('.article-meta time')).toHaveText(
+    'Updated 04.10.2026'
+  )
 
   const markdown = await (
     await request.get(url(`${pagePath('soul')}index.md`))

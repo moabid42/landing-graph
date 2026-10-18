@@ -21,6 +21,7 @@
 // disagree with the post it points at.
 
 import { parseTags } from '../taxonomy.js'
+import { readingMinutes } from '../readingTime.js'
 
 function calendarDate(value, field, path) {
   if (!value) return ''
@@ -55,21 +56,13 @@ export function parsePost(path, raw) {
   // The first picture in the body, as written ("./blog/<slug>/01.webp").
   // Search engines show it beside the post; the share card stays og.png.
   const image = body.match(/!\[[^\]\n]*\]\(([^)\s]+)\)/)?.[1] || null
-  // Estimate at 200 words per minute, omitting image URLs and author notes.
-  // Store only the count in the eager index; post bodies still load on demand.
-  const words =
-    body
-      .replace(/<!--[\s\S]*?-->/g, '')
-      .replace(/!\[[^\]]*\]\([^)]*\)/g, '')
-      .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
-      .match(/\S+/g)?.length || 0
   return {
     slug,
     title: meta.title || slug,
     date: calendarDate(meta.date, 'date', path),
     updated: calendarDate(meta.updated, 'updated', path),
     summary: meta.summary || '',
-    readingMinutes: Math.max(1, Math.ceil(words / 200)),
+    readingMinutes: readingMinutes(body),
     draft: (meta.draft || '').toLowerCase() === 'true',
     domains: parseTags(meta.domains),
     languages: parseTags(meta.languages),

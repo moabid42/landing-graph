@@ -6,7 +6,7 @@ import { link } from './router.js'
 import { ENTRIES, POINTS } from './content.js'
 import { PROJECTS } from './projects.js'
 import { POSTS } from './blog/index.js'
-import { IconBook, IconFingerprint } from './icons.jsx'
+import { IconBook } from './icons.jsx'
 import { Pinned, Research, Contact } from './ProfileSections.jsx'
 import Timeline from './timeline/index.jsx'
 import Writing from './Writing.jsx'
@@ -32,45 +32,43 @@ const facts = {
 
 export default function SectionPage({ page }) {
   const info = PAGES[page]
-  const Icon = page === 'soul' ? IconFingerprint : IconBook
   return (
     <div className="section-page">
       <section className="page-intro" aria-label={`${info.title} introduction`}>
         <p className="post-back">
           <a {...link(homePath())}>← README</a>
         </p>
-        <div className="readme">
-          <div className="readme-head">
-            <Icon width={14} height={14} />
-            <span>{info.file}</span>
+        {page === 'soul' ? (
+          <ErrorBoundary label="This page">
+            <Suspense
+              fallback={
+                <p className="post-status loading" aria-live="polite">
+                  Loading…
+                </p>
+              }
+            >
+              <Soul info={info} />
+            </Suspense>
+          </ErrorBoundary>
+        ) : (
+          <div className="readme">
+            <div className="readme-head">
+              <IconBook width={14} height={14} />
+              <span>{info.file}</span>
+            </div>
+            <div className="readme-body">
+              <h1>{info.title}</h1>
+              <p className="hero-sub">{info.description}</p>
+              {facts[page] && (
+                <p className="page-facts">
+                  {facts[page].filter(Boolean).map((fact) => (
+                    <span key={fact}>{fact}</span>
+                  ))}
+                </p>
+              )}
+            </div>
           </div>
-          <div className="readme-body">
-            <h1>{info.title}</h1>
-            <p className="hero-sub">{info.description}</p>
-            {facts[page] && (
-              <p className="page-facts">
-                {facts[page].filter(Boolean).map((fact) => (
-                  <span key={fact}>{fact}</span>
-                ))}
-              </p>
-            )}
-            {page === 'soul' && (
-              <div className="soul-content">
-                <ErrorBoundary label="This page">
-                  <Suspense
-                    fallback={
-                      <p className="post-status loading" aria-live="polite">
-                        Loading…
-                      </p>
-                    }
-                  >
-                    <Soul />
-                  </Suspense>
-                </ErrorBoundary>
-              </div>
-            )}
-          </div>
-        </div>
+        )}
       </section>
       {page === 'work' && <Pinned full />}
       {page === 'timeline' && (

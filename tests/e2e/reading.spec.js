@@ -1,10 +1,51 @@
 import { expect, test } from '@playwright/test'
 import AxeBuilder from '@axe-core/playwright'
 import { postPath, url } from './site.js'
-import { feedPath } from '../../src/paths.js'
+import { feedPath, pagePath } from '../../src/paths.js'
 
 const cloud = postPath('surrounded-by-slops-cloud-red-teaming')
 const memory = postPath('did-someone-say-memory')
+
+for (const width of [320, 390, 1440]) {
+  test(`WhoAmI supports chapter navigation and bookmarks at ${width}px`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width, height: 900 })
+    await page.goto(url(pagePath('soul')))
+    await expect(page.locator('.article-meta')).toContainText(
+      'Updated 04.10.2026'
+    )
+    const contents = page.locator(
+      width < 1100 ? '.post-contents-mobile' : '.post-contents'
+    )
+    await expect(contents).toBeVisible()
+    await expect(contents.locator('a')).toHaveCount(
+      await page.locator('.soul-content h2[id], .soul-content h3[id]').count()
+    )
+    if (width < 1100) await contents.locator('summary').click()
+    const chapter = contents.locator('a[href="#germany-arc"]')
+    await chapter.click()
+    await expect(page).toHaveURL(/#germany-arc$/)
+    await expect(chapter).toHaveAttribute('aria-current', 'location')
+    if (width < 1100) await expect(contents).not.toHaveAttribute('open')
+
+    await page.reload()
+    await expect(chapter).toHaveAttribute('aria-current', 'location')
+    const heading = await page
+      .locator('.soul-content #germany-arc')
+      .boundingBox()
+    const header = await page.locator('.gh-header').boundingBox()
+    expect(heading.y).toBeGreaterThan(header.height)
+    expect(heading.y).toBeLessThan(header.height + 60)
+    expect(
+      await page.evaluate(
+        () =>
+          document.documentElement.scrollWidth -
+          document.documentElement.clientWidth
+      )
+    ).toBeLessThanOrEqual(0)
+  })
+}
 
 test('the sidebar follows chapters, stays visible, and supports bookmarked chapters', async ({
   page,
