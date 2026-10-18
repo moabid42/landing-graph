@@ -32,7 +32,7 @@ export default {
       "I've always had a habit of asking too many why question, and somehow curiosity has taken me further than any plan I've ever made.",
 
     // The green-dot status line. Set status to null to hide the whole row.
-    status: 'now · offensive security engineer @ Schwarz Digits',
+    status: 'now · offensive @ Schwarz Digits',
     location: 'Heilbronn, DE',
 
     email: 'moabid42@proton.me',
