@@ -290,8 +290,12 @@ needed today.
 `seo.url` in `site.config.js` is where the site is served from. It drives the
 base path, the canonical url on every route, the `og:url`, the schema.org
 block, and a `sitemap.xml`, `robots.txt` and `feed.xml` generated at build
-time. The feed is announced in the head of every page, so pasting the site
-url into a reader finds it.
+time. The RSS feed at `/feed.xml` lets people follow new posts in a
+feed-reader app: they add the feed link to their reader, which checks for
+updates automatically. Opening the link in a browser shows XML; it does not
+subscribe the visitor. The feed is also available during `npm run dev` and
+reflects content edits without a rebuild. It is announced in the head of
+every page, so pasting the site url into a reader finds it.
 `seo.image` is the picture shown when someone posts a link — put a 1200x630
 png in `public/` and point at it.
 

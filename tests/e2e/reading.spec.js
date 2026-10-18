@@ -196,10 +196,11 @@ test('related posts exclude the current article and the RSS feed is available', 
   for (const anchor of await related.all())
     expect(await anchor.getAttribute('href')).not.toBe(memory)
   await expect(
-    page.getByRole('link', { name: 'Subscribe via RSS' })
+    page.getByRole('link', { name: 'Open RSS feed' })
   ).toHaveAttribute('href', feedPath())
   const response = await request.get(url(feedPath()))
   expect(response.ok()).toBe(true)
+  expect(response.headers()['content-type']).toMatch(/xml/)
   expect(await response.text()).toContain('<rss')
   const title = await related.first().innerText()
   await related.first().click()

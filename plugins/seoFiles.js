@@ -15,7 +15,7 @@ import { readPosts } from './posts.js'
 // Emits robots.txt, sitemap.xml and feed.xml at build time from
 // site.config.js and the files in content/blog. All three are static facts
 // about the site, so generating them beats keeping hand-written files in step
-// with the posts.
+// with the posts. The feed is also served on demand during development.
 
 // AI crawlers, named one by one. `User-agent: *` already lets them in, but
 // several hosts and CDNs block these by default unless a site says otherwise,
@@ -88,7 +88,27 @@ function feed(posts) {
 export default function seoFiles({ blogDir = 'content/blog' } = {}) {
   return {
     name: 'landing-graph:seo-files',
-    apply: 'build',
+    configureServer(server) {
+      server.middlewares.use((req, res, next) => {
+        if (
+          !ORIGIN ||
+          !['GET', 'HEAD'].includes(req.method) ||
+          req.url?.split('?')[0] !== feedPath()
+        )
+          return next()
+
+        try {
+          // Read on each request so edits, new posts and drafts stay in sync
+          // without a rebuild. Handle this before Vite's HTML fallback.
+          const xml = feed(readPosts(blogDir))
+          res.setHeader('Content-Type', 'application/rss+xml; charset=utf-8')
+          res.setHeader('Cache-Control', 'no-cache')
+          res.end(req.method === 'HEAD' ? undefined : xml)
+        } catch (error) {
+          next(error)
+        }
+      })
+    },
     generateBundle() {
       // With no site url there is nothing absolute to point at, and a
       // sitemap of relative urls is worse than none.

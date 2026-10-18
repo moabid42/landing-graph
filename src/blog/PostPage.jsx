@@ -110,8 +110,8 @@ export default function PostPage({ post }) {
               <p>Follow new writing</p>
               <span>Get new posts in your feed reader.</span>
             </div>
-            <a className="gh-btn" href={feedPath()}>
-              Subscribe via RSS <span aria-hidden="true">↗</span>
+            <a className="gh-btn" href={feedPath()} type="application/rss+xml">
+              Open RSS feed <span aria-hidden="true">↗</span>
             </a>
           </div>
         </div>

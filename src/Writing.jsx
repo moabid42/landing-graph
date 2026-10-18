@@ -42,7 +42,11 @@ export default function Writing({ mediumUrl, full = false }) {
         </h2>
         {full ? (
           <div className="section-links">
-            <a className="sec-note" href={feedPath()}>
+            <a
+              className="sec-note"
+              href={feedPath()}
+              type="application/rss+xml"
+            >
               RSS feed <span aria-hidden="true">↗</span>
             </a>
             {mediumUrl && (
