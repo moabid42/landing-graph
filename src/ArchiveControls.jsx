@@ -41,12 +41,13 @@ function SidebarGroup({ facet, items, filters, available }) {
       <ul>
         {visible.map((value) => {
           const selected = filters.isSelected(param, value)
+          const count = counts.get(value) || 0
           return (
             <li key={value}>
               <button
                 type="button"
                 className="archive-filter-option"
-                aria-label={`${title}: ${tagLabel(key, value)}`}
+                aria-label={`${title}: ${tagLabel(key, value)} ${count}`}
                 aria-pressed={selected}
                 disabled={!counts.has(value) && !selected}
                 onClick={() => filters.setFacet(param, value)}
@@ -60,10 +61,8 @@ function SidebarGroup({ facet, items, filters, available }) {
                 ) : (
                   <FacetIcon className="filter-icon" />
                 )}
-                <span>{tagLabel(key, value)}</span>
-                <span className="filter-count" aria-hidden="true">
-                  {counts.get(value) || 0}
-                </span>
+                <span>{tagLabel(key, value)}</span>{' '}
+                <span className="filter-count">{count}</span>
               </button>
             </li>
           )

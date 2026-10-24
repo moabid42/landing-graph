@@ -53,20 +53,18 @@ test('sidebar counts, language colors and search stay synchronized', async ({
   const search = page.getByRole('searchbox', { name: 'Search projects' })
   const sidebar = page.getByRole('complementary', { name: 'projects filters' })
   await sidebar
-    .getByRole('button', { name: 'Domain: Cloud Security', exact: true })
+    .getByRole('button', { name: /^Domain: Cloud Security \d+$/ })
     .click()
   await expect(search).toHaveValue('domain:cloud-security')
-  await sidebar
-    .getByRole('button', { name: 'Language: Python', exact: true })
-    .click()
+  await sidebar.getByRole('button', { name: /^Language: Python \d+$/ }).click()
   await expect(search).toHaveValue('domain:cloud-security language:Python')
   await expect(page.locator('.project-list > li')).toHaveCount(3)
   await expect(
-    sidebar.getByRole('button', { name: 'Language: Python', exact: true })
+    sidebar.getByRole('button', { name: /^Language: Python \d+$/ })
   ).toHaveAttribute('aria-pressed', 'true')
   await expect(
     sidebar
-      .getByRole('button', { name: 'Language: Python', exact: true })
+      .getByRole('button', { name: /^Language: Python \d+$/ })
       .locator('.language-dot')
   ).toHaveCSS('background-color', 'rgb(53, 114, 165)')
   await search.fill('domain:cloud-security language:JavaScript')
@@ -97,7 +95,7 @@ test('quoted filters, exclusions and update-date ranges work together', async ({
   }
   await page
     .getByRole('complementary', { name: 'projects filters' })
-    .getByRole('button', { name: 'Language: Python', exact: true })
+    .getByRole('button', { name: /^Language: Python \d+$/ })
     .click()
   await expect(search).not.toHaveValue(/-language:Python/)
   await expect(page.locator('.project-list > li')).toHaveCount(3)
@@ -137,7 +135,7 @@ test('recently updated sorting uses real dates and persists in the URL', async (
 }) => {
   await page.goto(url(pagePath('work')))
   await page
-    .getByRole('button', { name: 'Sort projects by: Recommended' })
+    .getByRole('button', { name: 'Sort by: Recommended (projects)' })
     .click()
   await page.getByRole('menuitemradio', { name: 'Recently updated' }).click()
   const dates = await page
@@ -148,7 +146,7 @@ test('recently updated sorting uses real dates and persists in the URL', async (
   expect(new URL(page.url()).searchParams.get('sort')).toBe('updated')
   await page.reload()
   await expect(
-    page.getByRole('button', { name: 'Sort projects by: Recently updated' })
+    page.getByRole('button', { name: 'Sort by: Recently updated (projects)' })
   ).toBeVisible()
 })
 
@@ -156,7 +154,9 @@ test('sort menus support keyboard selection and dismissal', async ({
   page,
 }) => {
   await page.goto(url(pagePath('work')))
-  const trigger = page.getByRole('button', { name: /^Sort projects by:/ })
+  const trigger = page.getByRole('button', {
+    name: /^Sort by: .* \(projects\)$/,
+  })
   const menu = page.getByRole('menu', { name: 'Sort projects' })
   const recommended = page.getByRole('menuitemradio', { name: 'Recommended' })
   const updated = page.getByRole('menuitemradio', { name: 'Recently updated' })
@@ -199,7 +199,7 @@ test('sort menus fit narrow screens across all archives', async ({ page }) => {
   for (const collection of collections) {
     await page.goto(url(pagePath(collection.page)))
     const trigger = page.getByRole('button', {
-      name: new RegExp(`^Sort ${collection.label} by:`),
+      name: new RegExp(`^Sort by: .* \\(${collection.label}\\)$`),
     })
     await trigger.click()
     const panel = await page.locator('.archive-sort-menu').boundingBox()
@@ -276,8 +276,10 @@ test('mobile filters expand, select a language and return to results without ove
     await expect(sidebar).toHaveCSS('overflow-y', 'visible')
     await sidebar
       .getByRole('button', {
-        name: collection.page === 'work' ? 'Language: Python' : 'Language: C',
-        exact: true,
+        name:
+          collection.page === 'work'
+            ? /^Language: Python \d+$/
+            : /^Language: C \d+$/,
       })
       .click()
     await page.getByRole('button', { name: /^Show \d+ results?$/ }).click()
@@ -315,7 +317,7 @@ for (const theme of ['dark', 'light']) {
         .fill(collection.query)
       await page
         .getByRole('button', {
-          name: new RegExp(`^Sort ${collection.label} by:`),
+          name: new RegExp(`^Sort by: .* \\(${collection.label}\\)$`),
         })
         .click()
       const { violations } = await new AxeBuilder({ page })

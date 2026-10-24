@@ -102,7 +102,7 @@ export default function ArchiveSort({ label, value, onChange, defaultSort }) {
         ref={triggerRef}
         type="button"
         className="gh-btn archive-sort-toggle"
-        aria-label={`Sort ${label} by: ${options[selectedIndex].label}`}
+        aria-label={`Sort by: ${options[selectedIndex].label} (${label})`}
         aria-haspopup="menu"
         aria-expanded={open}
         aria-controls={open ? id : undefined}

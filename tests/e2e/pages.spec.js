@@ -160,7 +160,7 @@ test('research filters search summaries and topics and can recover from empty re
   await expect(page.locator('.research-release')).toHaveCount(0)
   await expect(page.getByText('No papers match these filters')).toBeVisible()
   await page.getByRole('button', { name: 'Clear filters' }).click()
-  await page.getByRole('button', { name: 'Language: C', exact: true }).click()
+  await page.getByRole('button', { name: /^Language: C \d+$/ }).click()
   await expect(page.locator('.research-release')).toHaveCount(1)
   await expect(page.locator('.release-body h3')).toHaveText(
     'HOP: Hook Oriented Programming'

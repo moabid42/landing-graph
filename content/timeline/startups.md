@@ -45,7 +45,6 @@ HOW TO EDIT — same format everywhere:
 - description: Designed and built a secure decentralized document verification system handling 1k+ transactions a month.
 
 ## CEO
-- highlight: true
 - org: lyraix
 - start: 2025-11
 - end: 2026-04
