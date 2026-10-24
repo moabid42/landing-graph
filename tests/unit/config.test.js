@@ -103,32 +103,6 @@ describe('tracks', () => {
   })
 })
 
-describe('research', () => {
-  it('is a list, empty or not', () => {
-    expect(Array.isArray(config.research)).toBe(true)
-  })
-
-  it('gives every paper a title, a tl;dr and a link', () => {
-    for (const r of config.research) {
-      expect(r.title?.trim(), r.title).toBeTruthy()
-      expect(r.tldr?.trim(), r.title).toBeTruthy()
-      expect(r.href, r.title).toMatch(/^https?:\/\//)
-    }
-  })
-
-  it('gives every paper topic pills', () => {
-    for (const r of config.research) {
-      expect(Array.isArray(r.topics), r.title).toBe(true)
-      expect(r.topics.length, r.title).toBeGreaterThan(0)
-    }
-  })
-
-  it('has unique titles, since they key the boxes', () => {
-    const titles = config.research.map((r) => r.title)
-    expect(new Set(titles).size).toBe(titles.length)
-  })
-})
-
 describe('spoken languages', () => {
   it('gives every language a name, level and hex colour', () => {
     expect(config.spokenLanguages.length).toBeGreaterThan(0)

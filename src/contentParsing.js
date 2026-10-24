@@ -1,4 +1,4 @@
-// Shared markdown fields and dates for timeline entries and projects.
+// Shared markdown fields and dates for timeline entries, projects and research.
 export const PROBLEMS = []
 export const problem = (file, title, msg) => {
   PROBLEMS.push({ file, title, msg })

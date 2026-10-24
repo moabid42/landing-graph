@@ -26,3 +26,6 @@ export const TAGS_FILE = 'content/tags.md'
 
 export { default as PROJECTS_SOURCE } from '../content/projects.md?raw'
 export const PROJECTS_FILE = 'content/projects.md'
+
+export { default as RESEARCH_SOURCE } from '../content/research.md?raw'
+export const RESEARCH_FILE = 'content/research.md'

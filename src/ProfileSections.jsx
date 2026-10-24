@@ -10,26 +10,21 @@ import {
   PROJECT_FACETS,
   PROJECT_PROBLEMS,
 } from './projects.js'
+import {
+  RESEARCH,
+  PINNED_RESEARCH,
+  RESEARCH_FACETS,
+  RESEARCH_PROBLEMS,
+} from './research.js'
 import ContentWarnings from './ContentWarnings.jsx'
 import { fmtDate } from './timeline/format.js'
 import useArchiveFilters from './useArchiveFilters.js'
-import {
-  paginate,
-  facetOptions,
-  filterContent,
-  sortContent,
-} from './archive.js'
+import { paginate, filterContent, sortContent } from './archive.js'
 import ContentTags from './ContentTags.jsx'
 import ResultMeta from './ResultMeta.jsx'
 
-const {
-  identity,
-  links,
-  research: RESEARCH,
-  spokenLanguages: SPOKEN_LANGUAGES,
-} = config
+const { identity, links, spokenLanguages: SPOKEN_LANGUAGES } = config
 const MAILTO = `mailto:${identity.email}`
-const RESEARCH_FACETS = facetOptions(RESEARCH)
 const RESEARCHGATE_URL = links.find((l) => l.name === 'researchgate')?.url
 const remoteNotes = {
   origin: 'Questions, ideas and conversations.',
@@ -213,9 +208,12 @@ export function Research({ full = false }) {
   const filters = useArchiveFilters('research', full, RESEARCH_FACETS)
   const papers = full
     ? sortContent(filterContent(RESEARCH, filters), filters.sort)
-    : RESEARCH.slice(0, 1)
+    : PINNED_RESEARCH
+  if (!full && papers.length === 0) return null
+
   return (
     <section id="research" aria-label="Research">
+      {full && <ContentWarnings problems={RESEARCH_PROBLEMS} />}
       <div className="sec-head">
         <h2>
           <IconFlask width={16} height={16} /> Research

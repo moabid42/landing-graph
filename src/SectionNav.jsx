@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import config from '../site.config.js'
 import { ENTRIES } from './content.js'
 import { PROJECTS } from './projects.js'
+import { RESEARCH } from './research.js'
 import { POSTS } from './blog/index.js'
 import { homePath, pagePath } from './paths.js'
 import { link } from './router.js'
@@ -34,7 +35,7 @@ const sections = [
     id: 'research',
     label: 'Research',
     icon: IconFlask,
-    count: config.research.length || null,
+    count: RESEARCH.length || null,
   },
   { id: 'soul', label: config.soul.title, icon: IconFingerprint },
   { id: 'more', label: 'Contact', icon: IconMail },

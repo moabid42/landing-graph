@@ -5,6 +5,7 @@ import { PAGES } from '../src/pages.js'
 import { absolute, postPath } from '../src/paths.js'
 import { absoluteImages } from './posts.js'
 import { taxonomyLines } from '../src/taxonomy.js'
+import { parseResearch } from '../src/research/parse.js'
 
 function timelineFile(timelineDir, key) {
   try {
@@ -42,7 +43,10 @@ export function pageMarkdown(page, posts, timelineDir) {
       )
     }
   } else if (page === 'research') {
-    for (const paper of config.research)
+    const research = parseResearch(
+      readFileSync(join(timelineDir, '..', 'research.md'), 'utf8')
+    )
+    for (const paper of research)
       lines.push(
         `## [${paper.title}](${paper.href})`,
         '',

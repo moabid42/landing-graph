@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import config from '../../site.config.js'
 import { PROJECTS } from '../../src/projects.js'
+import { RESEARCH } from '../../src/research.js'
 import { POSTS } from '../../src/blog/index.js'
 import { parsePost } from '../../src/blog/parse.js'
 import { parseProjects } from '../../src/projects/parse.js'
@@ -15,7 +15,7 @@ import { facetOptions, filterContent, readFilters } from '../../src/archive.js'
 
 describe('shared content taxonomy', () => {
   it('gives every published item a domain and specific topics from one vocabulary', () => {
-    for (const item of [...PROJECTS, ...POSTS, ...config.research]) {
+    for (const item of [...PROJECTS, ...POSTS, ...RESEARCH]) {
       expect(item.domains.length, item.title).toBeGreaterThan(0)
       expect(item.topics.length, item.title).toBeGreaterThan(0)
       for (const { key } of FACETS) {

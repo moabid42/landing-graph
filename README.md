@@ -30,12 +30,13 @@ npm run dev
 Then, in order:
 
 1. **`site.config.js`** — your name, handle, hero copy, links,
-   research, spoken languages, footer.
+   spoken languages, footer.
 2. **`content/timeline/*.md`** — your timeline, one file per track.
 3. **`content/projects.md`** — all projects; add `- pinned: true` to feature one.
-4. **`content/blog/*.md`** — your posts, one file each; the filename is the url.
-5. **`content/soul.md`** — your philosophy, values and who you are outside your work.
-6. **`public/favicon-default.svg`** — swap the graph mark for your own; it
+4. **`content/research.md`** — all papers; add `- pinned: true` to feature one on the README.
+5. **`content/blog/*.md`** — your posts, one file each; the filename is the url.
+6. **`content/soul.md`** — your philosophy, values and who you are outside your work.
+7. **`public/favicon-default.svg`** — swap the graph mark for your own; it
    is the icon `index.html` points at, and what `npm run og` draws the share
    card from.
 
@@ -78,6 +79,26 @@ file's order, so put your strongest work first. Optional `org`, `start` / `end`
 or `date` fields add context and dates without changing that order. Adding a
 project never adds it to the timeline.
 
+## Editing research
+
+All papers live in `content/research.md`. Use the same block format as projects:
+
+```markdown
+## My paper
+
+- pinned: true
+- domains: offensive-security
+- topics: attack-planning
+- link: https://www.researchgate.net/publication/123456789
+
+What it found, in a sentence or two.
+```
+
+Only papers with `- pinned: true` appear on the site's README, in file order.
+Omit the flag or set it to `false` to keep a paper on the full Research page
+and in the static exports. With no pins, the README hides its Research section.
+Every paper needs an HTTP(S) `link`; `languages` and `updated` are optional.
+
 ## Classifying projects, writing and research
 
 All three collections share the vocabulary in `src/taxonomy.js`:
@@ -90,9 +111,9 @@ All three collections share the vocabulary in `src/taxonomy.js`:
   C++ or JavaScript. Leave it empty when none apply.
 
 Use lowercase IDs from that file in `domains`, `topics` and `languages`.
-Project fields use comma-separated lists; blog frontmatter uses the same
-fields without the list marker; research entries in `site.config.js` use
-arrays. Add vocabulary there when a new subject needs it. Labels, including
+Project and research fields use comma-separated lists; blog frontmatter uses
+the same fields without the list marker. Add vocabulary there when a new
+subject needs it. Labels, including
 acronyms such as IAM and C++, are defined once and displayed consistently.
 Avoid generic tags like programming, security or research, narrative labels,
 and project status tags. A tag should help a reader find related work.

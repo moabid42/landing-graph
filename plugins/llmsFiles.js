@@ -6,6 +6,7 @@ import { PAGES } from '../src/pages.js'
 import { postMarkdown, readPosts } from './posts.js'
 import { pageMarkdown } from './pageSnapshot.js'
 import { parseProjects } from '../src/projects/parse.js'
+import { parseResearch } from '../src/research/parse.js'
 
 // Emits llms.txt and llms-full.txt at build time (https://llmstxt.org).
 //
@@ -16,7 +17,7 @@ import { parseProjects } from '../src/projects/parse.js'
 // fetch. Both are built from the files the page itself renders, so they
 // cannot drift from it.
 
-const { identity, seo, links, research = [], spokenLanguages = [] } = config
+const { identity, seo, links, spokenLanguages = [] } = config
 
 // A timeline file is already readable markdown once its editing notes and
 // its "# Work — timeline entries" heading are gone.
@@ -38,6 +39,9 @@ function track(dir, { key, label }) {
 export function header(posts, timelineDir = 'content/timeline') {
   const projects = parseProjects(
     readFileSync(join(timelineDir, '..', 'projects.md'), 'utf8')
+  )
+  const research = parseResearch(
+    readFileSync(join(timelineDir, '..', 'research.md'), 'utf8')
   )
   const lines = [
     `# ${identity.name}`,

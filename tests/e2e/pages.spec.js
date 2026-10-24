@@ -7,10 +7,13 @@ import { pagePath, absolute } from '../../src/paths.js'
 import { absoluteImages, readPosts } from '../../plugins/posts.js'
 import { url } from './site.js'
 import { parseProjects } from '../../src/projects/parse.js'
+import { parseResearch } from '../../src/research/parse.js'
 import { readingMinutes } from '../../src/readingTime.js'
 
 const projects = parseProjects(readFileSync('content/projects.md', 'utf8'))
 const pins = projects.filter((project) => project.pinned)
+const research = parseResearch(readFileSync('content/research.md', 'utf8'))
+const pinnedResearch = research.filter((paper) => paper.pinned)
 
 for (const [route, info] of Object.entries(PAGES)) {
   test(`${route} opens directly, survives a reload and has its own static metadata`, async ({
@@ -114,8 +117,8 @@ test('landing page contains highlights with working links to the complete collec
   await expect(page.locator('.post-row')).toHaveCount(
     Math.min(3, readPosts('content/blog').length)
   )
-  await expect(page.locator('.research-release')).toHaveCount(
-    Math.min(1, config.research.length)
+  await expect(page.locator('.research-release .release-body h3')).toHaveText(
+    pinnedResearch.map((paper) => paper.title)
   )
   await expect(page.locator('.tl-views')).toHaveCount(0)
   await expect(page.locator('.tl-view-note')).toContainText('Highlights')
@@ -146,9 +149,7 @@ test('research filters search summaries and topics and can recover from empty re
   page,
 }) => {
   await page.goto(url(pagePath('research')))
-  await expect(page.locator('.research-release')).toHaveCount(
-    config.research.length
-  )
+  await expect(page.locator('.research-release')).toHaveCount(research.length)
   await page.getByRole('searchbox', { name: 'Search research' }).fill('entropy')
   await expect(page.locator('.research-release')).toHaveCount(1)
   await expect(page.locator('.release-body h3')).toHaveText(

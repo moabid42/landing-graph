@@ -5,6 +5,7 @@ import { homePath, pagePath } from './paths.js'
 import { link } from './router.js'
 import { ENTRIES, POINTS } from './content.js'
 import { PROJECTS } from './projects.js'
+import { RESEARCH } from './research.js'
 import { POSTS } from './blog/index.js'
 import { IconBook } from './icons.jsx'
 import { Pinned, Research, Contact } from './ProfileSections.jsx'
@@ -23,10 +24,7 @@ const facts = {
     `${config.tracks.length} tracks`,
   ],
   writing: [`${POSTS.length} posts`, 'newest first'],
-  research: [
-    `${config.research.length} publications`,
-    'full texts linked below',
-  ],
+  research: [`${RESEARCH.length} publications`, 'full texts linked below'],
   more: [`${config.links.length} remotes`, config.identity.location],
 }
 
