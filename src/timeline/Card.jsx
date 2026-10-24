@@ -31,7 +31,19 @@ export default function Card({ e, ended, cardRef, style, dimmed = false }) {
       </p>
       <h3>{e.title}</h3>
       <p className="org">{e.org}</p>
-      <p className="txt">{e.text}</p>
+      {e.description.map((block, i) =>
+        block.type === 'list' ? (
+          <ul className="txt" key={i}>
+            {block.items.map((item, j) => (
+              <li key={j}>{item}</li>
+            ))}
+          </ul>
+        ) : (
+          <p className="txt" key={i}>
+            {block.text}
+          </p>
+        )
+      )}
       <div className="tl-labels">
         <span
           className={`state ${e.dropped ? 'dropped' : ended ? 'merged' : 'open'}`}

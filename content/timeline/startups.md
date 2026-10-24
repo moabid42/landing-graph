@@ -13,7 +13,15 @@ HOW TO EDIT — same format everywhere:
   - topics: comma, separated, labels
   - time: part-time | full-time     (optional — shows a colored chip)
 
-  Description paragraph.
+  - description: Description paragraph.
+
+  Or use indented bullet points:
+  - description:
+    - First achievement or detail.
+    - Another achievement or detail.
+
+  Paragraphs and lists can be combined inside the indented description.
+  Keep other fields unindented, before or after the description.
 -->
 
 ## Founder & captain, L3AK
@@ -24,7 +32,7 @@ HOW TO EDIT — same format everywhere:
 - topics: ctf, red team, community
 - link: https://ctftime.org/team/220336
 
-Founded and led a team of 100+ security researchers across 20 countries, achieving a consistent top-10 worldwide CTFtime ranking, with results at DEF CON CTF and Google CTF.
+- description: Founded and led a team of 100+ security researchers across 20 countries, achieving a consistent top-10 worldwide CTFtime ranking, with results at DEF CON CTF and Google CTF.
 
 ## CTO
 - org: xTID
@@ -34,7 +42,7 @@ Founded and led a team of 100+ security researchers across 20 countries, achievi
 - time: part-time
 - link: https://xtid.io/
 
-Designed and built a secure decentralized document verification system handling 1k+ transactions a month.
+- description: Designed and built a secure decentralized document verification system handling 1k+ transactions a month.
 
 ## CEO
 - highlight: true
@@ -45,4 +53,4 @@ Designed and built a secure decentralized document verification system handling 
 - time: part-time
 - link: https://lyraix.ai/blog/
 
-Founded lyraix, an AI security lab, and designed LyraixGuard, a real-time AI guardrail system with 300+ downloads on Hugging Face.
+- description: Founded lyraix, an AI security lab, and designed LyraixGuard, a real-time AI guardrail system with 300+ downloads on Hugging Face.

@@ -90,6 +90,101 @@ Only a body.
     expect(block.fields.start).toBe('2020-01')
   })
 
+  it('keeps lowercase bullets and colon text out of the metadata', () => {
+    const [block] = parseBlocks(`## T
+- start: 2020-01
+
+- built a scanner.
+- time: reduced response time.
+- org: coordinated across teams.
+`)
+    expect(block.fields).toEqual({ start: '2020-01' })
+    expect(block.bodyBlocks).toEqual([
+      {
+        type: 'list',
+        items: [
+          'built a scanner.',
+          'time: reduced response time.',
+          'org: coordinated across teams.',
+        ],
+      },
+    ])
+  })
+
+  it('recognizes bullets immediately after fields without a blank line', () => {
+    const [block] = parseBlocks(
+      '## T\n-start:2020-01\n- shipped a tool.\n- reduced latency.\n'
+    )
+    expect(block.fields).toEqual({ start: '2020-01' })
+    expect(block.bodyBlocks).toEqual([
+      { type: 'list', items: ['shipped a tool.', 'reduced latency.'] },
+    ])
+  })
+
+  it('scopes description bullets independently of surrounding fields', () => {
+    const [block] = parseBlocks(`## T
+- org: Original company
+
+- description:
+  - org: coordinated across teams.
+  - time: reduced response time.
+    without losing coverage.
+  - start: planned the rollout.
+
+- start: 2020-01
+- time: full-time
+- link: https://example.com
+`)
+    expect(block.fields).toEqual({
+      org: 'Original company',
+      start: '2020-01',
+      time: 'full-time',
+      link: 'https://example.com',
+    })
+    expect(block.bodyBlocks).toEqual([
+      {
+        type: 'list',
+        items: [
+          'org: coordinated across teams.',
+          'time: reduced response time. without losing coverage.',
+          'start: planned the rollout.',
+        ],
+      },
+    ])
+    expect(block.body).not.toContain('description:')
+    expect(block.body).not.toContain('https://example.com')
+  })
+
+  it('accepts inline descriptions with wrapped text and an empty description', () => {
+    const [paragraph, empty] = parseBlocks(`## Paragraph
+- description: Built a tool.
+  Improved reliability.
+- start: 2020-01
+
+## Empty
+- description:
+- start: 2021-01
+`)
+    expect(paragraph.bodyBlocks).toEqual([
+      { type: 'paragraph', text: 'Built a tool. Improved reliability.' },
+    ])
+    expect(paragraph.fields.start).toBe('2020-01')
+    expect(empty.bodyBlocks).toEqual([])
+    expect(empty.fields.start).toBe('2021-01')
+  })
+
+  it('keeps paragraph text compatible for other content consumers', () => {
+    const [block] = parseBlocks(
+      '## T\n\n-pinned: true\n\nFirst line.\nSecond line.\n\nLast paragraph.'
+    )
+    expect(block.fields.pinned).toBe('true')
+    expect(block.body).toBe('First line. Second line. Last paragraph.')
+    expect(block.bodyBlocks).toEqual([
+      { type: 'paragraph', text: 'First line. Second line.' },
+      { type: 'paragraph', text: 'Last paragraph.' },
+    ])
+  })
+
   it('returns nothing for a file with no entries', () => {
     expect(parseBlocks('# Just a title\n\nSome prose.\n')).toEqual([])
   })
@@ -106,12 +201,51 @@ describe('parseTrack', () => {
     expect(e.track).toBe('work')
     expect(e.org).toBe('ACME')
     expect(e.text).toBe('Did things.')
+    expect(e.description).toEqual([{ type: 'paragraph', text: 'Did things.' }])
     expect(e.dropped).toBe(false)
     expect(e.single).toBe(false)
   })
 
   it('honours an explicit id', () => {
     expect(one('## T\n- id: custom\n- start: 2020-01\n').id).toBe('custom')
+  })
+
+  it('supports paragraphs and wrapped bullets inside a description field', () => {
+    const e = one(`## My Job
+- start: 2020-01
+
+- description:
+  Built infrastructure
+  across teams.
+
+  - shipped a scanner
+    handling thousands of files.
+  * reduced response time.
+  + trained the team.
+
+  Continued improving reliability.
+`)
+    expect(e.description).toEqual([
+      { type: 'paragraph', text: 'Built infrastructure across teams.' },
+      {
+        type: 'list',
+        items: [
+          'shipped a scanner handling thousands of files.',
+          'reduced response time.',
+          'trained the team.',
+        ],
+      },
+      { type: 'paragraph', text: 'Continued improving reliability.' },
+    ])
+  })
+
+  it('handles Windows line endings and descriptions with no text', () => {
+    expect(
+      one(
+        '## T\r\n- start: 2020-01\r\n\r\n- description:\r\n  - shipped a tool.\r\n'
+      ).description
+    ).toEqual([{ type: 'list', items: ['shipped a tool.'] }])
+    expect(one('## T\n- start: 2020-01\n').description).toEqual([])
   })
 
   it('leaves end null for an ongoing entry', () => {

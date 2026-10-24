@@ -1,5 +1,28 @@
 import { expect } from '@playwright/test'
 
+export async function checkTimelineDescriptions(page, entries) {
+  const lists = page.locator(
+    `${entries}[data-id="work-offensive-security-engineer"] ul.txt`
+  )
+  await expect(lists).toHaveCount(1)
+  await expect(lists.locator('li')).toHaveCount(4)
+  await expect(lists.locator('li').nth(1)).toContainText(
+    'Owned and designed a GCP IAM red-teaming harness'
+  )
+  await expect(lists).toHaveCSS('list-style-type', 'disc')
+  await expect(page.locator('#timeline-graph')).not.toContainText(
+    'description:'
+  )
+  await expect(
+    page.locator(
+      `${entries}[data-id="work-software-security-engineer"] ul.txt li`
+    )
+  ).toHaveCount(2)
+  await expect(
+    page.locator(`${entries}[data-id="work-private-tutor-freelance"] p.txt`)
+  ).toContainText('Tutored 10+ students')
+}
+
 export async function checkTimelineEnd(page, head, fill) {
   await expect
     .poll(() =>

@@ -13,7 +13,15 @@ This file is intentionally empty until you add your entries.
   - highlight: true    (optional — features it on the landing page)
   - link: https://…     (optional — course or certificate URL)
 
-  What you learned or completed.
+  - description: What you learned or completed.
+
+  Or use indented bullet points:
+  - description:
+    - First achievement or detail.
+    - Another achievement or detail.
+
+  Paragraphs and lists can be combined inside the indented description.
+  Keep other fields unindented, before or after the description.
 -->
 
 ## COAE (Certified Offensive AI Expert)

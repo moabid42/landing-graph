@@ -3,6 +3,7 @@ import config from '../../site.config.js'
 import { POST_LINK, url } from './site.js'
 import { pagePath } from '../../src/paths.js'
 import {
+  checkTimelineDescriptions,
   checkTimelineEnd,
   checkTimelineViews,
   checkTrackDimming,
@@ -32,6 +33,10 @@ test.describe('the mobile timeline', () => {
     await expect(
       page.locator('svg.mtl-branches g.mbranch path')
     ).not.toHaveCount(0)
+  })
+
+  test('renders bullet descriptions alongside paragraphs', async ({ page }) => {
+    await checkTimelineDescriptions(page, '.mtl-entry')
   })
 
   test('switches between highlights and the complete history', async ({

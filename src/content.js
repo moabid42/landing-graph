@@ -63,7 +63,7 @@ for (const key of Object.keys(TRACK_SOURCES))
 
 export function parseTrack(md, track, file) {
   return parseBlocks(md)
-    .map(({ title, fields, body }) => {
+    .map(({ title, fields, body, bodyBlocks }) => {
       const ctx = { file, title }
       // "date: YYYY-MM" -> single-date event (a talk, a competition):
       // one moment instead of a start/end range
@@ -140,6 +140,7 @@ export function parseTrack(md, track, file) {
         time,
         link: link && /^https?:\/\//.test(link) ? link : null,
         text: body,
+        description: bodyBlocks,
         meta: fields.topics
           ? fields.topics
               .split(',')

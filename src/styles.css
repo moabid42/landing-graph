@@ -573,6 +573,8 @@ html[data-theme='light'] .archive-results .content-tags .topic { color: #0550ae;
 .tl-card h3 { font-size: 15.5px; font-weight: 600; line-height: 1.3; }
 .tl-card .org { font-size: 13px; color: var(--muted); margin-top: 2px; }
 .tl-card .txt { font-size: 13px; color: var(--muted); margin-top: 8px; line-height: 1.5; }
+.tl-card ul.txt { padding-left: 18px; list-style: disc; }
+.tl-card .txt li + li { margin-top: 4px; }
 .tl-labels {
   display: flex; gap: 6px; flex-wrap: wrap; align-items: center;
   margin-top: 11px;

@@ -139,8 +139,8 @@ content/timeline/trainings.md    content/tags.md   (milestones on the trunk)
 `content/timeline/trainings.md` is ready for your trainings; add entries
 when you have them.
 
-Each entry is a `## Title` block with `- key: value` fields and a
-description paragraph:
+Each entry is a `## Title` block with `- key: value` fields. Put its text
+under `- description:` as a paragraph, bullet points, or both:
 
 ```markdown
 ## Cloud security engineer
@@ -151,9 +151,22 @@ description paragraph:
 - topics: aws, lambda, terraform
 - time: full-time
 - link: https://example.com
-
-What you did, and what changed because you did it.
+- description: What you did, and what changed because you did it.
 ```
+
+For bullet points, leave the value of `description` empty and indent each
+item by two spaces. Use `-`, `*` or `+` as the bullet marker:
+
+```markdown
+- description:
+  - Built a malware scanning pipeline for uploaded files.
+  - Automated incident alerts and reduced response time.
+```
+
+All lines belonging to the description must be indented. Indent wrapped
+lines beneath their bullet; separate paragraphs and lists with a blank line.
+Other fields stay unindented and can appear before or after `description`.
+Existing free-text descriptions continue to work.
 
 | Field                    | Meaning                                                          |
 | ------------------------ | ---------------------------------------------------------------- |
@@ -163,6 +176,7 @@ What you did, and what changed because you did it.
 | `topics`                 | comma-separated labels shown under the title.                    |
 | `time`                   | `part-time` or `full-time` — an optional colored chip.           |
 | `link`                   | optional "Learn more" button.                                    |
+| `description`            | paragraph text or an indented block of paragraphs and bullets.   |
 | `highlight`              | `true` includes the entry in the default Highlights view.        |
 
 The landing page shows **Highlights**. The dedicated `/timeline/` page opens

@@ -3,6 +3,7 @@ import { url } from './site.js'
 import { pagePath } from '../../src/paths.js'
 import config from '../../site.config.js'
 import {
+  checkTimelineDescriptions,
   checkTimelineEnd,
   checkTimelineViews,
   checkTrackDimming,
@@ -51,6 +52,10 @@ test.describe('the timeline graph', () => {
     await expect(page.locator('.tl-entry')).not.toHaveCount(0)
     await expect(page.locator('svg.branches path.branch')).not.toHaveCount(0)
     await expect(page.locator('.head-node')).toHaveCount(1)
+  })
+
+  test('renders bullet descriptions alongside paragraphs', async ({ page }) => {
+    await checkTimelineDescriptions(page, '.tl-entry')
   })
 
   test('offers trainings and excludes projects from the graph', async ({

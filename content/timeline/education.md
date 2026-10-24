@@ -15,7 +15,15 @@ HOW TO EDIT — same format everywhere:
   - link: https://…     (optional — adds a "Learn more" button: project
                          repo, company site, talk recording, anything)
 
-  Description paragraph.
+  - description: Description paragraph.
+
+  Or use indented bullet points:
+  - description:
+    - First achievement or detail.
+    - Another achievement or detail.
+
+  Paragraphs and lists can be combined inside the indented description.
+  Keep other fields unindented, before or after the description.
 -->
 
 ## FSTT, MIP
@@ -25,7 +33,7 @@ HOW TO EDIT — same format everywhere:
 - topics: math, informatics, physics
 - link: https://fstt.uae.ac.ma/
 
-First reality check.
+- description: First reality check.
 
 ## Core curriculum, software engineering
 - highlight: true
@@ -35,7 +43,7 @@ First reality check.
 - topics: c, c++, systems
 - link: https://www.42heilbronn.de/en/
 
-Intensive peer-to-peer program: C, C++, systems programming, networking, full-stack.
+- description: Intensive peer-to-peer program: C, C++, systems programming, networking, full-stack.
 
 ## B.Sc. Computer Science, dual study
 - highlight: true
@@ -45,4 +53,4 @@ Intensive peer-to-peer program: C, C++, systems programming, networking, full-st
 - topics: math, software engineering, security, cryptography
 - link: https://www.mannheim.dhbw.de/
 
-Software engineering, IT security, network security, cryptography, alongside full-time work, the whole way through.
+- description: Software engineering, IT security, network security, cryptography, alongside full-time work, the whole way through.

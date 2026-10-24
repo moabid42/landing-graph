@@ -16,7 +16,15 @@ Each entry is a block starting with a "## Title" heading:
   - link: https://…     (optional — adds a "Learn more" button: project
                          repo, company site, talk recording, anything)
 
-  Description paragraph, one or two sentences.
+  - description: Description paragraph, one or two sentences.
+
+  Or use indented bullet points:
+  - description:
+    - First achievement or detail.
+    - Another achievement or detail.
+
+  Paragraphs and lists can be combined inside the indented description.
+  Keep other fields unindented, before or after the description.
 
 Add a block to add an entry, delete one to remove it. Order doesn't
 matter — the graph sorts by date and assigns branch lanes automatically.
@@ -29,7 +37,7 @@ matter — the graph sorts by date and assigns branch lanes automatically.
 - topics: math, english, french
 - time: part-time
 
-Tutored 10+ students (ages 4–18) in math, physics and English. Grounded each concept in its history and reasoning, prioritizing understanding over memorization and achieving a minimum 40% improvement in grades.
+- description: Tutored 10+ students (ages 4–18) in math, physics and English. Grounded each concept in its history and reasoning, prioritizing understanding over memorization and achieving a minimum 40% improvement in grades.
 
 ## Cloud Security Engineer, internship
 - org: Haufe Group · Freiburg
@@ -39,7 +47,7 @@ Tutored 10+ students (ages 4–18) in math, physics and English. Grounded each c
 - time: full-time
 - link: https://www.haufegroup.com/en
 
-Designed MalS3Scan, a serverless AWS malware-detection pipeline processing ~10k files/day across thousands of buckets, batch-dispatching to parallel Lambda scanners against a centralized YARA rule DB, with automated alerting for incident response.
+- description: Designed MalS3Scan, a serverless AWS malware-detection pipeline processing ~10k files/day across thousands of buckets, batch-dispatching to parallel Lambda scanners against a centralized YARA rule DB, with automated alerting for incident response.
 
 ## System Engineer, POS systems
 - highlight: true
@@ -50,7 +58,7 @@ Designed MalS3Scan, a serverless AWS malware-detection pipeline processing ~10k 
 - time: full-time
 - link: https://schwarz-digits.de/en
 
-Owned integration and security for 150,000+ point-of-sale systems with zero downtime.
+- description: Owned integration and security for 150,000+ point-of-sale systems with zero downtime.
 
 ## Software Security Engineering tutor & speaker
 - org: 42 Heilbronn & Arkadia
@@ -60,7 +68,7 @@ Owned integration and security for 150,000+ point-of-sale systems with zero down
 - time: part-time
 - link: https://www.42heilbronn.de/en/
 
-Taught thousands of students live advanced classes on C, data structures, reverse engineering and binary exploitation. Hosted Cybersecurity Day for 100+ people onsite.
+- description: Taught thousands of students live advanced classes on C, data structures, reverse engineering and binary exploitation. Hosted Cybersecurity Day for 100+ people onsite.
 
 ## Offensive Security Engineer
 - highlight: true
@@ -71,9 +79,11 @@ Taught thousands of students live advanced classes on C, data structures, revers
 - time: full-time
 - link: https://schwarz-digits.de/en
 
-Owned and designed a GCP IAM red-teaming harness with a deterministic propose-then-verify architecture.
-Conducted security reviews and code assessments across STACKIT’s global cloud infrastructure and applications serving millions of users.
-Engineered EDR evasion techniques by reverse-engineering Windows kernel telemetry and building custom payload delivery tooling in C and assembly.
+- description:
+  - Owned and Designed a dynamic zero-trust orchestration platform across STACKIT and GCP, via Kata microVMs and Cilium eBPF host rounting over WG transit mesh.
+  - Owned and designed a GCP IAM red-teaming harness with a deterministic propose-then-verify architecture.
+  - Conducted security reviews and code assessments across STACKIT’s global cloud infrastructure and applications serving millions of users.
+  - Engineered EDR evasion techniques by reverse-engineering Windows kernel telemetry and building custom payload delivery tooling in C and assembly.
 
 ## Software Security Engineer
 - highlight: true
@@ -84,5 +94,6 @@ Engineered EDR evasion techniques by reverse-engineering Windows kernel telemetr
 - time: part-time
 - link: https://mingabyte.de/en/
 
-Designed a secure high-load AI inference system in Rust and Python.
-Led the execution and delivery of the company's TISAX certification in less than 350 hours.
+- description:
+  - Designed a secure high-load AI inference system in Rust and Python.
+  - Led the execution and delivery of the company's TISAX certification in less than 350 hours.
