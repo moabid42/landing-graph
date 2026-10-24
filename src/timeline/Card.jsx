@@ -1,6 +1,10 @@
+import { version as reactVersion } from 'react'
 import { IconMerge, IconIssueOpen, IconClosed } from '../icons.jsx'
 import { fmtDate, sha } from './format.js'
 import { trackVar } from './tracks.js'
+
+// React 18 forwards inert as a string; React 19 treats it as a boolean.
+const INERT_VALUE = Number(reactVersion.split('.')[0]) >= 19 ? true : ''
 
 // One commit in the graph: the card that sits beside the branch line.
 export default function Card({ e, ended, cardRef, style, dimmed = false }) {
@@ -9,7 +13,7 @@ export default function Card({ e, ended, cardRef, style, dimmed = false }) {
       className="tl-card"
       ref={cardRef}
       style={style}
-      inert={dimmed ? '' : undefined}
+      inert={dimmed ? INERT_VALUE : undefined}
     >
       <p className="tl-meta">
         <span className="sha">{sha(e.id)}</span>

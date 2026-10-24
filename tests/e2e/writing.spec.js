@@ -206,6 +206,38 @@ test.describe('the writing section', () => {
     await expect(page.locator('body')).not.toBeEmpty()
   })
 
+  test('loads the reader on demand and builds the chapter menu after it arrives', async ({
+    page,
+  }) => {
+    let requested = false
+    let release
+    const held = new Promise((resolve) => (release = resolve))
+    await page.route('**/assets/markdown-*.js', async (route) => {
+      requested = true
+      await held
+      await route.continue()
+    })
+
+    try {
+      await page.reload()
+      await page.waitForLoadState('networkidle')
+      expect(requested).toBe(false)
+      await page.locator(POST_LINK).first().click()
+      await expect.poll(() => requested).toBe(true)
+      await expect(page.locator('.post-heading h1')).toBeVisible()
+      await expect(page.locator('.post-status.loading')).toBeVisible()
+    } finally {
+      release()
+    }
+
+    await expect(page.locator('.post-status')).toHaveCount(0)
+    const headings = page.locator('.post-body h2[id], .post-body h3[id]')
+    await expect(headings).not.toHaveCount(0)
+    await expect(page.locator('.post-contents a')).toHaveCount(
+      await headings.count()
+    )
+  })
+
   // A post page is short until its body chunk lands: title, date, topics,
   // then the footer. If it is shorter than the window at that point, the
   // arriving body pushes the footer down — and on Linux and Windows it also

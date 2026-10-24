@@ -59,9 +59,16 @@ export async function checkTrackDimming(page, entries) {
   // Faded context is not part of the selected track's accessible list.
   await expect(other).toHaveAttribute('aria-hidden', 'true')
   await expect(card).toHaveAttribute('inert', '')
+  await expect(card).toHaveJSProperty('inert', true)
+  const link = card.getByRole('link', { includeHidden: true }).first()
+  await link.evaluate((el) => el.focus())
+  await expect(link).not.toBeFocused()
   await page.locator('.tl-filter[aria-pressed="true"]').click()
   await expect(card).toHaveCSS('opacity', '1')
   await expect(card).not.toHaveAttribute('inert')
+  await expect(card).toHaveJSProperty('inert', false)
+  await link.focus()
+  await expect(link).toBeFocused()
   await expect(page.locator(`${entries}[aria-hidden="true"]`)).toHaveCount(0)
 }
 

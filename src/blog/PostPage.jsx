@@ -3,22 +3,30 @@ import { IconPencil } from '../icons.jsx'
 import { feedPath, pagePath, postPath } from '../paths.js'
 import { link } from '../router.js'
 import ErrorBoundary from '../ErrorBoundary.jsx'
-import Markdown from '../markdown.jsx'
 import { POSTS, loadBody } from './index.js'
 import { relatedPosts } from './related.js'
-import Contents from './Contents.jsx'
 import ContentTags from '../ContentTags.jsx'
 
 export default function PostPage({ post }) {
-  const [body, setBody] = useState(null)
+  const [content, setContent] = useState(null)
+  const body = content?.body ?? null
+  const Markdown = content?.Markdown
+  const Contents = content?.Contents
   const [failed, setFailed] = useState(false)
   const articleRef = useRef(null)
   const related = relatedPosts(post, POSTS)
 
   useEffect(() => {
     let current = true
-    loadBody(post.slug).then(
-      (text) => current && setBody(text),
+    // Load the reader with the article, keeping it out of the landing bundle.
+    // Publish both together so the chapter menu sees the rendered headings.
+    Promise.all([
+      loadBody(post.slug),
+      import('../markdown.jsx'),
+      import('./Contents.jsx'),
+    ]).then(
+      ([body, { default: Markdown }, { default: Contents }]) =>
+        current && setContent({ body, Markdown, Contents }),
       () => current && setFailed(true)
     )
     return () => {
@@ -85,7 +93,7 @@ export default function PostPage({ post }) {
             </div>
           </div>
         </article>
-        <Contents articleRef={articleRef} body={body} />
+        {Contents && <Contents articleRef={articleRef} body={body} />}
       </div>
       {body !== null && (
         <div className="post-after">
